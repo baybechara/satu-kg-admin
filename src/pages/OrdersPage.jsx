@@ -1,132 +1,225 @@
 import { useState } from 'react'
-import PageHeader from '../components/PageHeader'
+import Header from '../components/Header'
+
+const NewIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <mask id="cutout">
+      <rect width="24" height="24" fill="white" />
+      <circle cx="17.5" cy="6.5" r="3" fill="black" />
+    </mask>
+    <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="1.5" mask="url(#cutout)"/>
+    <path d="M8.5 12L11 14.5L15.5 9.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <circle cx="17.5" cy="6.5" r="2.5" fill="currentColor"/>
+  </svg>
+)
+
+const CompletedIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M5 13L8.5 16.5L14 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M10 13L13.5 16.5L20 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+)
+
+const CancelledIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="1.5"/>
+    <path d="M8 12H16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+  </svg>
+)
 
 const mockOrders = [
   {
-    id: 'ORD-001', customer: 'Азамат Касымов', phone: '+996 555 123 456',
-    items: [{ name: 'Соковыжималка Braun J700', qty: 1, price: 12500 }],
-    total: 12500, status: 'new', date: '12 мая 2026', time: '14:30',
-  },
-  {
-    id: 'ORD-002', customer: 'Айгуль Жумабекова', phone: '+996 700 789 012',
+    id: 'Заказ №1', customer: 'Азамат Касымов', phone: '+996 555 123 456', delivery: 'Самовывоз', comment: 'Заберу вечером в 19:00',
     items: [
-      { name: 'Утюг Philips GC4564/20', qty: 1, price: 4200 },
-      { name: 'Тостер Smeg TSF01', qty: 1, price: 15800 },
+      { name: 'Блендер погружной BEKO BKK 3020 HB', qty: 2, price: 4228, image: 'https://img.freepik.com/free-photo/blender-isolated-on-white-background_1232-1547.jpg' },
+      { name: 'Утюг Beko SIM 4123 T', qty: 1, price: 4044, image: 'https://img.freepik.com/free-photo/iron-isolated-on-white-background_1232-1549.jpg' }
     ],
-    total: 20000, status: 'new', date: '12 мая 2026', time: '12:15',
+    total: 12500, status: 'new', date: '12 мая 2026', time: '14:30', color: '#3B82F6'
   },
   {
-    id: 'ORD-003', customer: 'Бакыт Турсунбеков', phone: '+996 550 456 789',
-    items: [{ name: 'Пылесос Dyson V15', qty: 1, price: 45000 }],
-    total: 45000, status: 'completed', date: '11 мая 2026', time: '09:45',
-  },
-  {
-    id: 'ORD-004', customer: 'Нуржан Абдырахманов', phone: '+996 777 321 654',
-    items: [{ name: 'Блендер Bosch MMB6174S', qty: 2, price: 8700 }],
-    total: 17400, status: 'cancelled', date: '10 мая 2026', time: '16:20',
-  },
+    id: 'Заказ №2', customer: 'Айгуль Жумабекова', phone: '+996 700 789 012', delivery: 'Доставка', comment: '',
+    items: [
+      { name: 'Утюг Philips GC4564/20', qty: 1, price: 4200, image: 'https://img.freepik.com/free-photo/iron-isolated-on-white-background_1232-1549.jpg' },
+      { name: 'Тостер Smeg TSF01', qty: 1, price: 15800, image: 'https://img.freepik.com/free-photo/blender-isolated-on-white-background_1232-1547.jpg' }
+    ],
+    total: 20000, status: 'new', date: '12 мая 2026', time: '12:15', color: '#10B981'
+  }
 ]
 
 const tabs = [
-  { key: 'new', label: 'Новые', icon: 'inbox' },
-  { key: 'completed', label: 'Выполнено', icon: 'check_circle' },
-  { key: 'cancelled', label: 'Отменено', icon: 'cancel' },
+  { key: 'new', label: 'Новые', Icon: NewIcon },
+  { key: 'completed', label: 'Выполнено', Icon: CompletedIcon },
+  { key: 'cancelled', label: 'Отменено', Icon: CancelledIcon },
 ]
 
 export default function OrdersPage() {
   const [activeTab, setActiveTab] = useState('new')
-  const [expandedOrder, setExpandedOrder] = useState(null)
+  const [expandedOrder, setExpandedOrder] = useState('Заказ №1')
 
   const filteredOrders = mockOrders.filter((o) => o.status === activeTab)
 
-  const statusBadge = {
-    new: 'bg-info text-white',
-    completed: 'bg-accent text-white',
-    cancelled: 'bg-error text-white',
-  }
-
   return (
-    <div className="min-h-screen bg-bg">
-      <PageHeader title="Заказы" />
+    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-[#F8F8F8] relative pb-24 flex flex-col">
+      <Header title="Заказы" />
 
       {/* Tab bar */}
-      <div className="page-padding pt-4">
-        <div className="bg-surface-alt rounded-[20px] p-[3px] flex">
-          {tabs.map((tab) => (
-            <button
-              key={tab.key}
-              onClick={() => setActiveTab(tab.key)}
-              className={`flex-1 flex items-center justify-center gap-1.5 py-3 rounded-[16px] t-caption font-semibold transition-all ${
-                activeTab === tab.key
-                  ? 'bg-white text-text-primary shadow-sm'
-                  : 'text-text-muted'
-              }`}
-            >
-              <span className="material-symbols-rounded text-[18px]">{tab.icon}</span>
-              {tab.label}
-            </button>
-          ))}
+      <div className="page-padding pt-2">
+        <div className="orders-tab-container">
+          {tabs.map((tab) => {
+            const isActive = activeTab === tab.key;
+            return (
+              <button
+                key={tab.key}
+                onClick={() => setActiveTab(tab.key)}
+                className={`orders-tab-btn ${isActive ? 'active' : ''}`}
+              >
+                <div className="orders-tab-icon"><tab.Icon /></div>
+                <span className="orders-tab-label">{tab.label}</span>
+              </button>
+            )
+          })}
         </div>
       </div>
 
       {/* Orders list */}
-      <div className="flex flex-col gap-2.5 page-padding pt-5 pb-4">
+      <div className="orders-list page-padding">
         {filteredOrders.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 gap-4">
-            <span className="material-symbols-rounded text-[64px] text-[#D4D4D4]">receipt_long</span>
-            <p className="t-subtitle text-text-disabled">Заказов пока нет</p>
+          <div className="orders-empty-state">
+            <div className="orders-empty-card">
+              <div className="orders-empty-icon">
+                <span className="material-symbols-rounded" style={{fontSize: '28px'}}>info</span>
+              </div>
+              <p className="orders-empty-text">
+                Новых заказов пока нет.<br />
+                Поделитесь ссылкой на магазин.
+              </p>
+              <button className="orders-empty-link">Поделиться</button>
+            </div>
           </div>
         ) : (
-          filteredOrders.map((order) => (
-            <div key={order.id} className="card !p-0 overflow-hidden transition-all">
-              <button
-                onClick={() => setExpandedOrder(expandedOrder === order.id ? null : order.id)}
-                className="w-full flex items-center justify-between px-4 py-3.5 text-left"
-              >
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="t-caption font-bold text-text-primary">{order.id}</span>
-                    <span className={`t-small px-2 py-0.5 rounded-full ${statusBadge[order.status]}`}>
-                      {order.status === 'new' ? 'Новый' : order.status === 'completed' ? 'Выполнен' : 'Отменён'}
-                    </span>
-                  </div>
-                  <p className="t-subtitle font-medium text-text-secondary">{order.customer}</p>
-                  <p className="text-[13px] text-text-disabled mt-0.5">{order.date} • {order.time}</p>
-                </div>
-                <div className="flex flex-col items-end gap-1">
-                  <span className="t-btn font-bold text-text-primary">{order.total.toLocaleString()} сом</span>
-                  <span className={`material-symbols-rounded text-[20px] text-text-disabled transition-transform duration-200 ${expandedOrder === order.id ? 'rotate-180' : ''}`}>
-                    expand_more
-                  </span>
-                </div>
-              </button>
-
-              {expandedOrder === order.id && (
-                <div className="border-t border-surface-alt px-4 py-3 bg-[#FAFAFA] animate-slide-down">
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="material-symbols-rounded text-[18px] text-text-disabled">phone</span>
-                    <span className="t-caption text-text-secondary">{order.phone}</span>
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    {order.items.map((item, i) => (
-                      <div key={i} className="flex items-center justify-between">
-                        <span className="t-caption text-text-secondary">{item.name} × {item.qty}</span>
-                        <span className="t-caption font-semibold text-text-primary">{item.price.toLocaleString()} сом</span>
+          <div className="flex flex-col gap-4">
+            {filteredOrders.map((order) => {
+              const isExpanded = expandedOrder === order.id;
+              
+              return (
+                <div key={order.id} className="orders-card">
+                  <div 
+                    className="orders-card-header cursor-pointer" 
+                    onClick={() => setExpandedOrder(isExpanded ? null : order.id)}
+                  >
+                    <div className="flex-1">
+                      <div className="orders-id-row">
+                        <span className="orders-id" style={{color: order.color}}>{order.id}</span>
+                        <span className="orders-date">{order.date} • {order.time}</span>
                       </div>
-                    ))}
+                      <div className="orders-customer">{order.customer}</div>
+                    </div>
+                    
+                    <div className="flex flex-col items-end justify-center gap-1">
+                      <button className="orders-expand-btn">
+                        <span className="material-symbols-rounded">
+                          {isExpanded ? 'expand_less' : 'expand_more'}
+                        </span>
+                      </button>
+                    </div>
                   </div>
-                  {order.status === 'new' && (
-                    <div className="flex gap-2 mt-4">
-                      <button className="btn btn-accent flex-1 !py-2.5 !text-[14px] !rounded-xl">Выполнить</button>
-                      <button className="btn btn-danger flex-1 !py-2.5 !text-[14px] !rounded-xl">Отменить</button>
+
+                  {isExpanded && (
+                    <div className="orders-expanded-content">
+                      <div className="orders-divider"></div>
+                      
+                      {/* Customer Info */}
+                      <div className="orders-section-title">
+                        <span>Информация о заказе</span>
+                        <button className="orders-copy-btn">
+                          <span className="material-symbols-rounded" style={{fontSize: '20px'}}>content_copy</span>
+                        </button>
+                      </div>
+                      
+                      <div className="orders-info-box">
+                        <div className="orders-info-row">
+                          <div className="orders-info-icon">
+                            <span className="material-symbols-rounded">call</span>
+                          </div>
+                          <div className="flex-1">
+                            <div className="orders-info-label">Телефон покупателя:</div>
+                            <div className="orders-info-value">{order.phone}</div>
+                          </div>
+                        </div>
+                        <div className="orders-info-row">
+                          <div className="orders-info-icon">
+                            <span className="material-symbols-rounded">inventory_2</span>
+                          </div>
+                          <div className="flex-1">
+                            <div className="orders-info-label">Способ получения:</div>
+                            <div className="orders-info-value">{order.delivery}</div>
+                          </div>
+                        </div>
+                        {order.comment && (
+                          <div className="orders-info-row">
+                            <div className="orders-info-icon">
+                              <span className="material-symbols-rounded">chat</span>
+                            </div>
+                            <div className="flex-1">
+                              <div className="orders-info-label">Комментарий покупателя:</div>
+                              <div className="orders-info-value">{order.comment}</div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="orders-section-title mt-4">Товары</div>
+                      
+                      {/* Items */}
+                      <div className="orders-items-box">
+                        {order.items.map((item, idx) => (
+                          <div key={idx} className="orders-item-row">
+                            <div className="orders-item-img-container">
+                              <img src={item.image} alt="" className="orders-item-img" />
+                            </div>
+                            <div className="flex-1">
+                              <div className="orders-item-name">{item.name}</div>
+                              <div className="orders-item-price-block">
+                                <span className="orders-item-qty">{item.qty} шт.</span>
+                                <span className="orders-item-price">{item.price * item.qty} сом</span>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="orders-total-row mt-4">
+                        <span className="orders-total-label">Итого:</span>
+                        <span className="orders-total-value">{order.total} сом</span>
+                      </div>
+
+                      {order.status === 'new' && (
+                        <>
+                          {/* Распорка */}
+                          <div className="w-full h-[24px]"></div>
+                          <div className="orders-actions flex gap-3">
+                            <button className="orders-btn-cancel flex-1 flex items-center justify-center gap-1.5">
+                            <span className="material-symbols-rounded text-[20px]">close</span>
+                            <span>Отменить</span>
+                          </button>
+                          <button className="orders-btn-complete flex-1 flex items-center justify-center gap-1.5">
+                            <span className="material-symbols-rounded text-[20px]">check</span>
+                            <span>Выполнен</span>
+                          </button>
+                        </div>
+                        </>
+                      )}
                     </div>
                   )}
                 </div>
-              )}
-            </div>
-          ))
+              )
+            })}
+          </div>
         )}
       </div>
+
+      {/* Spacer for BottomNav */}
+      <div style={{ height: '120px', flexShrink: 0, width: '100%' }} />
     </div>
   )
 }

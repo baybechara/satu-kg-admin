@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import Header from '../components/Header'
+
 export default function AddProductPage() {
   const navigate = useNavigate()
   const [categories, setCategories] = useState([
@@ -33,15 +35,12 @@ export default function AddProductPage() {
     <div className="flex flex-col min-h-screen bg-[#F8F8F8] pb-32">
       
       {/* Header */}
-      <header className="admin-header admin-container flex items-center gap-4 bg-[#F8F8F8] sticky top-0 z-30">
-        <button 
-          onClick={() => navigate(-1)}
-          className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm border border-[#F1F1F1]"
-        >
-          <span className="material-symbols-rounded text-[#151515]">arrow_back</span>
-        </button>
-        <h1 className="text-[20px] font-bold text-[#151515] font-['Open_Sans']">Добавить новый товар</h1>
-      </header>
+      <Header 
+        title="Добавить новый товар" 
+        leftIcon="arrow_back" 
+        onLeftClick={() => navigate(-1)} 
+        variant="sub"
+      />
 
       <div className="admin-container flex flex-col gap-5 mt-2">
         

@@ -7,6 +7,9 @@ import RegisterPage from './pages/RegisterPage'
 import AddProductPage from './pages/AddProductPage'
 import CategoriesPage from './pages/CategoriesPage'
 import SplashScreen from './pages/SplashScreen'
+import OrdersPage from './pages/OrdersPage'
+import SettingsPage from './pages/SettingsPage'
+import SharePage from './pages/SharePage'
 
 function App() {
   return (
@@ -24,8 +27,9 @@ function App() {
         <Route path="/catalog" element={<CatalogPage />} />
         <Route path="/categories" element={<CategoriesPage />} />
         <Route path="/add-product" element={<AddProductPage />} />
-        <Route path="/orders" element={<div>Заказы</div>} />
-        <Route path="/settings" element={<div>Настройки</div>} />
+        <Route path="/orders" element={<OrdersPage />} />
+        <Route path="/settings/*" element={<SettingsPage />} />
+        <Route path="/share" element={<SharePage />} />
       </Route>
 
       {/* Редирект для всех остальных путей */}

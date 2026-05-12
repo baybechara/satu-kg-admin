@@ -14,7 +14,9 @@ export default function BottomNav() {
   return (
     <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[820px] h-[84px] bg-white border-t border-[#F1F1F1] flex items-center justify-around px-4 z-50 shadow-[0px_-4px_20px_rgba(0,0,0,0.03)]">
       {menuItems.map((item) => {
-        const isActive = location.pathname === item.path || (item.id === 'catalog' && location.pathname === '/add-product')
+        const isActive = location.pathname === item.path 
+          || (item.id === 'catalog' && location.pathname.startsWith('/add-product'))
+          || (item.id === 'settings' && location.pathname.startsWith('/settings'))
         
         return (
           <button

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Toggle from '../components/Toggle'
+import Header from '../components/Header'
 
 const initialCategories = [
   { id: 1, name: 'Соковыжималки', count: 8, active: true },
@@ -45,20 +46,11 @@ export default function CategoriesPage() {
   return (
     <div className="flex flex-col min-h-screen bg-[#F8F8F8] pb-32">
       
-      {/* Header */}
-      <header className="fixed top-0 left-1/2 -translate-x-1/2 z-50 w-full max-w-[820px] bg-[#F8F8F8]">
-        <div className="admin-header admin-container flex items-center gap-4">
-          <button 
-            onClick={() => navigate(-1)}
-            className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm border border-[#F1F1F1]"
-          >
-            <span className="material-symbols-rounded text-[#151515]">arrow_back</span>
-          </button>
-          <h1 className="text-[24px] font-bold text-[#151515] font-['Open_Sans']">Категории</h1>
-        </div>
-      </header>
-
-      <div className="h-[80px] w-full" />
+      <Header 
+        title="Категории" 
+        leftIcon="arrow_back" 
+        onLeftClick={() => navigate(-1)} 
+      />
 
       <div className="admin-container mt-4">
         
