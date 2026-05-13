@@ -11,7 +11,7 @@ export default function SharePage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#F8F8F8] pb-32">
+    <div className="flex flex-col min-h-screen bg-neutral-50 pb-32">
       <Header title="Поделиться магазином" />
 
       <div 
@@ -24,20 +24,20 @@ export default function SharePage() {
           className="w-full bg-white rounded-[20px] shadow-sm flex flex-col gap-4"
           style={{ padding: '20px' }}
         >
-          <h2 className="text-[18px] font-bold text-[#151515] font-['Open_Sans']">Ссылка на магазин</h2>
-          <p className="text-[14px] text-[#4A4A4A] leading-[1.4] font-['Open_Sans']">
+          <h2 className="text-[18px] font-bold text-neutral-900 font-['Open_Sans']">Ссылка на магазин</h2>
+          <p className="text-[14px] text-neutral-700 leading-[1.4] font-['Open_Sans']">
             Отправьте ссылку покупателям — они попадут прямо в ваш каталог
           </p>
           <div className="flex flex-col gap-3">
-            <button className="w-full bg-[#F0F7FF] border border-[#0066FF] text-[#0066FF] flex items-center justify-center gap-2 h-[52px] rounded-[16px] transition-all active:scale-[0.98]">
+            <button className="w-full bg-blue-50 border border-blue-600 text-blue-600 flex items-center justify-center gap-2 h-[52px] rounded-[16px] transition-all active:scale-[0.98]">
               <span className="text-[16px] font-semibold font-['Open_Sans']">mystore.satu.kg</span>
               <span className="material-symbols-rounded text-[20px]">arrow_outward</span>
             </button>
             <button 
               onClick={copyLink}
-              className="w-full bg-white border border-[#E0E0E0] text-[#151515] flex items-center justify-center gap-2 h-[52px] rounded-[16px] transition-all active:scale-[0.98]"
+              className="w-full bg-white border border-neutral-300 text-neutral-900 flex items-center justify-center gap-2 h-[52px] rounded-[16px] transition-all active:scale-[0.98]"
             >
-              <span className="material-symbols-rounded text-[24px] text-[#4A4A4A]">content_copy</span>
+              <span className="material-symbols-rounded text-[24px] text-neutral-700">content_copy</span>
               <span className="text-[16px] font-semibold font-['Open_Sans']">Копировать ссылку</span>
             </button>
           </div>
@@ -48,25 +48,25 @@ export default function SharePage() {
           className="w-full bg-white rounded-[20px] shadow-sm flex flex-col gap-4"
           style={{ padding: '20px' }}
         >
-          <h2 className="text-[18px] font-bold text-[#151515] font-['Open_Sans']">Поделиться в соцсетях</h2>
-          <p className="text-[14px] text-[#4A4A4A] leading-[1.4] font-['Open_Sans']">
+          <h2 className="text-[18px] font-bold text-neutral-900 font-['Open_Sans']">Поделиться в соцсетях</h2>
+          <p className="text-[14px] text-neutral-700 leading-[1.4] font-['Open_Sans']">
             Отправьте ссылку на магазин в Instagram, Telegram или WhatsApp
           </p>
           <div className="flex items-center gap-3 mt-1">
-            <button className="w-[52px] h-[52px] rounded-full bg-[#25D366] flex items-center justify-center transition-all active:scale-95 shrink-0">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" className="w-7 h-7 brightness-0 invert" alt="WhatsApp" />
+            <button className="w-[52px] h-[52px] rounded-full bg-green-500 flex items-center justify-center transition-all active:scale-95 shrink-0">
+              <img src="https://cdn.simpleicons.org/whatsapp/white" className="w-7 h-7" alt="WhatsApp" />
             </button>
             <button className="w-[52px] h-[52px] rounded-full flex items-center justify-center transition-all active:scale-95 shrink-0" style={{ background: 'linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)' }}>
-              <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" className="w-7 h-7 brightness-0 invert" alt="Instagram" />
+              <img src="https://cdn.simpleicons.org/instagram/white" className="w-7 h-7" alt="Instagram" />
             </button>
-            <button className="w-[52px] h-[52px] rounded-full bg-[#0088CC] flex items-center justify-center transition-all active:scale-95 shrink-0">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" className="w-7 h-7 brightness-0 invert" alt="Telegram" />
+            <button className="w-[52px] h-[52px] rounded-full bg-blue-600 flex items-center justify-center transition-all active:scale-95 shrink-0">
+              <img src="https://cdn.simpleicons.org/telegram/white" className="w-7 h-7" alt="Telegram" />
             </button>
             <button className="w-[52px] h-[52px] rounded-full bg-black flex items-center justify-center transition-all active:scale-95 shrink-0">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/c/ce/X_logo_2023.svg" className="w-6 h-6 brightness-0 invert" alt="X" />
+              <img src="https://cdn.simpleicons.org/x/white" className="w-6 h-6" alt="X" />
             </button>
-            <button className="w-[52px] h-[52px] rounded-full bg-[#2787F5] flex items-center justify-center transition-all active:scale-95 shrink-0">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/VK_Compact_Logo_%282021-present%29.svg" className="w-7 h-7 brightness-0 invert" alt="VK" />
+            <button className="w-[52px] h-[52px] rounded-full bg-blue-500 flex items-center justify-center transition-all active:scale-95 shrink-0">
+              <img src="https://cdn.simpleicons.org/vk/white" className="w-7 h-7" alt="VK" />
             </button>
           </div>
         </div>
@@ -76,12 +76,12 @@ export default function SharePage() {
           className="w-full bg-white rounded-[20px] shadow-sm flex flex-col gap-4"
           style={{ padding: '20px' }}
         >
-          <h2 className="text-[18px] font-bold text-[#151515] font-['Open_Sans']">QR-код магазина</h2>
-          <p className="text-[14px] text-[#4A4A4A] leading-[1.4] font-['Open_Sans']">
+          <h2 className="text-[18px] font-bold text-neutral-900 font-['Open_Sans']">QR-код магазина</h2>
+          <p className="text-[14px] text-neutral-700 leading-[1.4] font-['Open_Sans']">
             Распечатайте и разместите у кассы — покупатели смогут сканировать и сразу попасть в ваш магазин
           </p>
-          <button className="w-full bg-white border border-[#E0E0E0] text-[#151515] flex items-center justify-center gap-2 h-[52px] rounded-[16px] transition-all active:scale-[0.98] mt-1">
-            <span className="material-symbols-rounded text-[24px] text-[#4A4A4A]">print</span>
+          <button className="w-full bg-white border border-neutral-300 text-neutral-900 flex items-center justify-center gap-2 h-[52px] rounded-[16px] transition-all active:scale-[0.98] mt-1">
+            <span className="material-symbols-rounded text-[24px] text-neutral-700">print</span>
             <span className="text-[16px] font-semibold font-['Open_Sans']">Распечатать QR-код</span>
           </button>
         </div>

@@ -32,7 +32,7 @@ export default function AddProductPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#F8F8F8] pb-32">
+    <div className="flex flex-col min-h-screen bg-neutral-50 pb-32">
       
       {/* Header */}
       <Header 
@@ -50,7 +50,7 @@ export default function AddProductPage() {
           <div className="grid grid-cols-3 gap-4">
             {[1, 2, 3].map((i) => (
               <div key={i} className="image-upload-square">
-                <span className="material-symbols-rounded text-[#D4D4D4] text-[32px]">add_a_photo</span>
+                <span className="material-symbols-rounded text-neutral-300 text-[32px]">add_a_photo</span>
               </div>
             ))}
           </div>
@@ -74,7 +74,7 @@ export default function AddProductPage() {
         <section className="form-card">
           <div className="flex justify-between items-center">
             <h2 className="form-label">Описание товара<span>*</span></h2>
-            <span className="text-[12px] text-[#8F8F8F]">200 символов</span>
+            <span className="text-[12px] text-neutral-500">200 символов</span>
           </div>
           <textarea 
             className="form-textarea"
@@ -108,7 +108,7 @@ export default function AddProductPage() {
                 <div className="checkbox-box">
                   {cat.checked && <span className="material-symbols-rounded text-white text-[18px]">check</span>}
                 </div>
-                <span className={`text-[16px] font-medium ${cat.checked ? 'text-[#151515]' : 'text-[#8F8F8F]'}`}>
+                <span className={`text-[16px] font-medium ${cat.checked ? 'text-neutral-900' : 'text-neutral-500'}`}>
                   {cat.label}
                 </span>
               </div>
@@ -124,7 +124,7 @@ export default function AddProductPage() {
         <div className="mt-4">
           <button 
             onClick={() => navigate('/catalog')}
-            className="btn-add-product w-full bg-[#2D2D2D] hover:bg-[#151515] shadow-none"
+            className="btn-add-product w-full bg-neutral-800 hover:bg-neutral-900 shadow-none"
           >
             Сохранить товар
           </button>

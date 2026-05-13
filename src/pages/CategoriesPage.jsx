@@ -44,7 +44,7 @@ export default function CategoriesPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#F8F8F8] pb-32">
+    <div className="flex flex-col min-h-screen bg-neutral-50 pb-32">
       
       <Header 
         title="Категории" 
@@ -81,11 +81,11 @@ export default function CategoriesPage() {
           {filteredCategories.map((cat) => (
             <div 
               key={cat.id} 
-              className="category-item cursor-pointer shadow-sm border border-transparent hover:border-[#10B981]/20"
+              className="category-item cursor-pointer shadow-sm border border-transparent hover:border-green-500/20"
               onClick={() => setEditingCategory(cat)}
             >
-              <span className="material-symbols-rounded text-[#D4D4D4] select-none">drag_indicator</span>
-              <span className="flex-1 text-[18px] font-bold text-[#151515] font-['Open_Sans']">{cat.name}</span>
+              <span className="material-symbols-rounded text-neutral-300 select-none">drag_indicator</span>
+              <span className="flex-1 text-[18px] font-bold text-neutral-900 font-['Open_Sans']">{cat.name}</span>
               <div className="count-badge">{cat.count}</div>
             </div>
           ))}
@@ -105,21 +105,23 @@ export default function CategoriesPage() {
 
       {/* Add Modal */}
       {isAddModalOpen && (
-        <div className="modal-overlay-blur" onClick={() => setIsAddModalOpen(false)}>
-          <div className="modal-content-card" onClick={e => e.stopPropagation()}>
-            <button className="modal-close-btn" onClick={() => setIsAddModalOpen(false)}>
-              <span className="material-symbols-rounded text-[#151515]">close</span>
-            </button>
-            <h2 className="text-[24px] font-bold text-[#151515] mb-8 font-['Open_Sans']">Создать категорию</h2>
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-center justify-center p-5" onClick={() => setIsAddModalOpen(false)}>
+          <div className="custom-modal-outer" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between">
+              <h2 className="text-[22px] font-semibold text-neutral-900 font-['Open_Sans'] tracking-tight">Создать</h2>
+              <button className="w-9 h-9 rounded-full bg-white flex items-center justify-center shadow-sm" onClick={() => setIsAddModalOpen(false)}>
+                <span className="material-symbols-rounded text-neutral-900 text-[20px]">close</span>
+              </button>
+            </div>
             
-            <div className="flex flex-col gap-6">
-              <div className="flex flex-col gap-3">
-                <label className="text-[16px] font-bold text-[#151515] font-['Open_Sans']">
-                  Название категории <span className="text-[#FF4D4D]">*</span>
+            <div className="custom-modal-inner shadow-sm">
+              <div className="flex flex-col">
+                <label className="text-[16px] font-medium text-neutral-900 font-['Open_Sans']" style={{ marginBottom: '12px' }}>
+                  Название категории <span className="text-red-500">*</span>
                 </label>
                 <input 
                   type="text" 
-                  className="form-input" 
+                  className="form-input !border-neutral-200 focus:!border-blue-500" 
                   placeholder="Например, книги"
                   value={newCategoryName}
                   onChange={e => setNewCategoryName(e.target.value)}
@@ -127,14 +129,15 @@ export default function CategoriesPage() {
                 />
               </div>
 
-              <div className="flex items-center justify-between">
-                <span className="text-[16px] font-semibold text-[#8F8F8F] font-['Open_Sans']">Скрыть</span>
+              <div className="flex items-center justify-between" style={{ marginTop: '16px' }}>
+                <span className="text-[15px] font-semibold text-neutral-400 font-['Open_Sans']">Скрыт</span>
                 <Toggle enabled={false} onChange={() => {}} />
               </div>
 
               <button 
                 onClick={handleSaveCategory}
-                className="btn-add-product w-full bg-[#2D2D2D] hover:bg-[#151515] shadow-none mt-2 justify-center"
+                className="w-full h-14 bg-neutral-800 hover:bg-neutral-900 rounded-2xl text-white font-semibold text-[16px] font-['Open_Sans'] transition-colors"
+                style={{ marginTop: '24px' }}
               >
                 Создать
               </button>
@@ -145,44 +148,46 @@ export default function CategoriesPage() {
 
       {/* Edit Modal */}
       {editingCategory && (
-        <div className="modal-overlay-blur" onClick={() => setEditingCategory(null)}>
-          <div className="modal-content-card" onClick={e => e.stopPropagation()}>
-            <button className="modal-close-btn" onClick={() => setEditingCategory(null)}>
-              <span className="material-symbols-rounded text-[#151515]">close</span>
-            </button>
-            <h2 className="text-[24px] font-bold text-[#151515] mb-8 font-['Open_Sans']">Редактировать катего..</h2>
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-center justify-center p-5" onClick={() => setEditingCategory(null)}>
+          <div className="custom-modal-outer" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between">
+              <h2 className="text-[22px] font-semibold text-neutral-900 font-['Open_Sans'] tracking-tight">Изменить</h2>
+              <button className="w-9 h-9 rounded-full bg-white flex items-center justify-center shadow-sm" onClick={() => setEditingCategory(null)}>
+                <span className="material-symbols-rounded text-neutral-900 text-[20px]">close</span>
+              </button>
+            </div>
             
-            <div className="flex flex-col gap-6">
-              <div className="flex flex-col gap-3">
-                <label className="text-[16px] font-bold text-[#151515] font-['Open_Sans']">
-                  Название категории <span className="text-[#FF4D4D]">*</span>
+            <div className="custom-modal-inner shadow-sm">
+              <div className="flex flex-col">
+                <label className="text-[16px] font-medium text-neutral-900 font-['Open_Sans']" style={{ marginBottom: '12px' }}>
+                  Название категории
                 </label>
-                <div className="relative">
-                  <input 
-                    type="text" 
-                    className="form-input !border-[#3B82F6]/50 !bg-[#EFF6FF]" 
-                    value={editingCategory.name}
-                    onChange={e => setEditingCategory({...editingCategory, name: e.target.value})}
-                  />
-                  <div className="absolute inset-0 rounded-14 border-2 border-[#3B82F6] pointer-events-none opacity-20"></div>
-                </div>
+                <input 
+                  type="text" 
+                  className="form-input !border-neutral-200 focus:!border-blue-500" 
+                  value={editingCategory.name}
+                  onChange={e => setEditingCategory({...editingCategory, name: e.target.value})}
+                  autoFocus
+                />
               </div>
 
-              <div className="flex items-center justify-between">
-                <span className="text-[16px] font-bold text-[#10B981] font-['Open_Sans']">Показывать</span>
+              <div className="flex items-center justify-between" style={{ marginTop: '16px' }}>
+                <span className={`text-[15px] font-semibold font-['Open_Sans'] ${editingCategory.active ? 'text-green-500' : 'text-neutral-400'}`}>
+                  {editingCategory.active ? 'Активнен' : 'Скрыт'}
+                </span>
                 <Toggle enabled={editingCategory.active} onChange={() => setEditingCategory({...editingCategory, active: !editingCategory.active})} />
               </div>
 
-              <div className="flex gap-4 mt-2">
+              <div className="flex gap-3" style={{ marginTop: '24px' }}>
                 <button 
                   onClick={() => handleDeleteCategory(editingCategory.id)}
-                  className="btn-secondary !border-[#F1F1F1] !text-[#151515]"
+                  className="flex-1 h-14 rounded-2xl border border-neutral-200 bg-white text-neutral-900 font-semibold text-[16px] font-['Open_Sans'] transition-colors hover:bg-neutral-50"
                 >
                   Удалить
                 </button>
                 <button 
                   onClick={handleSaveCategory}
-                  className="btn-add-product flex-1 bg-[#2D2D2D] hover:bg-[#151515] shadow-none justify-center"
+                  className="flex-1 h-14 rounded-2xl bg-neutral-800 hover:bg-neutral-900 text-white font-semibold text-[16px] font-['Open_Sans'] transition-colors"
                 >
                   Сохранить
                 </button>

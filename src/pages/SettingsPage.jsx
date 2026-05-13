@@ -19,7 +19,7 @@ function SaveButton() {
       <div style={{ height: '200px', flexShrink: 0, width: '100%' }} />
       
       <div className="fixed bottom-[104px] left-1/2 -translate-x-1/2 w-full max-w-[820px] admin-container z-30">
-        <button className="w-full bg-[#2D2D2D] hover:bg-[#151515] text-white flex items-center justify-center h-[56px] rounded-[16px] shadow-[0px_4px_20px_rgba(0,0,0,0.15)] transition-all active:scale-95">
+        <button className="w-full bg-neutral-800 hover:bg-neutral-900 text-white flex items-center justify-center h-[56px] rounded-[16px] shadow-[0px_4px_20px_rgba(0,0,0,0.15)] transition-all active:scale-95">
           <span className="text-[16px] font-bold font-['Open_Sans']">Сохранить изменения</span>
         </button>
       </div>
@@ -46,7 +46,7 @@ function SettingsMenu() {
   ]
 
   return (
-    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-[#F8F8F8] relative pb-32 flex flex-col">
+    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-neutral-50 relative pb-32 flex flex-col">
       <Header 
         title="Настройки магазина" 
         rightIcon="person" 
@@ -56,7 +56,7 @@ function SettingsMenu() {
       <div className="flex flex-col gap-8 page-padding pt-6 pb-4">
         {sections.map((s) => (
           <div key={s.title} className="flex flex-col gap-4">
-            <h2 className="text-[15px] font-medium text-[#8F8F8F] font-['Open_Sans']">{s.title}</h2>
+            <h2 className="text-[15px] font-medium text-neutral-500 font-['Open_Sans']">{s.title}</h2>
             <div className="flex flex-col gap-2">
               {s.items.map((item) => (
                 <button 
@@ -64,8 +64,8 @@ function SettingsMenu() {
                   onClick={() => navigate(item.path)}
                   className="flex items-center gap-4 h-[52px] text-left transition-all active:opacity-70 bg-transparent"
                 >
-                  <span className="material-symbols-rounded text-[28px] text-[#4A4A4A] shrink-0">{item.icon}</span>
-                  <span className="text-[17px] font-semibold text-[#151515] font-['Open_Sans']">{item.label}</span>
+                  <span className="material-symbols-rounded text-[28px] text-neutral-700 shrink-0">{item.icon}</span>
+                  <span className="text-[17px] font-semibold text-neutral-900 font-['Open_Sans']">{item.label}</span>
                 </button>
               ))}
             </div>
@@ -78,7 +78,7 @@ function SettingsMenu() {
 
       {/* Floating Help Button */}
       <div className="fixed bottom-[104px] left-1/2 -translate-x-1/2 w-full max-w-[820px] admin-container z-30 flex justify-end">
-        <button className="btn-add-product bg-[#2D2D2D] hover:bg-[#151515] text-white flex items-center justify-center gap-2 px-6 h-[56px] rounded-[16px] shadow-[0px_4px_20px_rgba(0,0,0,0.15)] transition-all active:scale-95">
+        <button className="btn-add-product bg-neutral-800 hover:bg-neutral-900 text-white flex items-center justify-center gap-2 px-6 h-[56px] rounded-[16px] shadow-[0px_4px_20px_rgba(0,0,0,0.15)] transition-all active:scale-95">
           <span className="material-symbols-rounded text-[24px]">help</span>
           <span className="text-[16px] font-bold font-['Open_Sans']">Нужна помощь?</span>
         </button>
@@ -90,12 +90,12 @@ function SettingsMenu() {
 function SettingsAddress() {
   const navigate = useNavigate()
   return (
-    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-[#F8F8F8] relative pb-[120px] flex flex-col">
+    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-neutral-50 relative pb-[120px] flex flex-col">
       <SettingsSubpageHeader title="Адрес магазина" onBack={() => navigate('/settings')} />
       <div className="page-padding pt-6 flex flex-col gap-6">
         <div>
-          <h2 className="text-[24px] font-bold text-[#151515] mb-2 font-['Open_Sans']">Добавьте адрес</h2>
-          <p className="text-[15px] text-[#4A4A4A] font-['Open_Sans'] leading-[1.4]">Адрес магазина или точки выдачи</p>
+          <h2 className="text-[24px] font-bold text-neutral-900 mb-2 font-['Open_Sans']">Добавьте адрес</h2>
+          <p className="text-[15px] text-neutral-700 font-['Open_Sans'] leading-[1.4]">Адрес магазина или точки выдачи</p>
         </div>
         
         <InputField 
@@ -118,19 +118,19 @@ function SettingsAddress() {
 function SettingsSocials() {
   const navigate = useNavigate()
   return (
-    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-[#F8F8F8] relative pb-[120px] flex flex-col">
+    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-neutral-50 relative pb-[120px] flex flex-col">
       <SettingsSubpageHeader title="Соцсети и сайты" onBack={() => navigate('/settings')} />
       <div className="page-padding pt-6 flex flex-col gap-6">
         <div>
-          <h2 className="text-[24px] font-bold text-[#151515] mb-2 font-['Open_Sans']">Ваши соцсети и сайты</h2>
-          <p className="text-[15px] text-[#4A4A4A] font-['Open_Sans'] leading-[1.4]">
+          <h2 className="text-[24px] font-bold text-neutral-900 mb-2 font-['Open_Sans']">Ваши соцсети и сайты</h2>
+          <p className="text-[15px] text-neutral-700 font-['Open_Sans'] leading-[1.4]">
             Вы можете создавать ссылки на внешние сайты, которые будут отображаться в верхней части вашего магазина.
           </p>
         </div>
 
         <div className="flex flex-col gap-2.5">
-          <label className="text-[16px] font-semibold text-[#151515] font-['Open_Sans']">Instagram</label>
-          <div className="input-wrap bg-[#F0F0F0] !border-none">
+          <label className="text-[16px] font-semibold text-neutral-900 font-['Open_Sans']">Instagram</label>
+          <div className="input-wrap bg-neutral-100 !border-none">
             <div className="w-10 h-10 flex items-center justify-center shrink-0 ml-1">
               <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" className="w-6 h-6" alt="IG" />
             </div>
@@ -139,8 +139,8 @@ function SettingsSocials() {
         </div>
 
         <div className="flex flex-col gap-2.5">
-          <label className="text-[16px] font-semibold text-[#151515] font-['Open_Sans']">Telegram</label>
-          <div className="input-wrap bg-[#F0F0F0] !border-none">
+          <label className="text-[16px] font-semibold text-neutral-900 font-['Open_Sans']">Telegram</label>
+          <div className="input-wrap bg-neutral-100 !border-none">
             <div className="w-10 h-10 flex items-center justify-center shrink-0 ml-1">
               <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" className="w-6 h-6" alt="TG" />
             </div>
@@ -149,8 +149,8 @@ function SettingsSocials() {
         </div>
 
         <div className="flex flex-col gap-2.5">
-          <label className="text-[16px] font-semibold text-[#151515] font-['Open_Sans']">Youtube</label>
-          <div className="input-wrap bg-[#F0F0F0] !border-none">
+          <label className="text-[16px] font-semibold text-neutral-900 font-['Open_Sans']">Youtube</label>
+          <div className="input-wrap bg-neutral-100 !border-none">
             <div className="w-10 h-10 flex items-center justify-center shrink-0 ml-1">
               <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" className="w-6 h-6" alt="YT" />
             </div>
@@ -182,12 +182,12 @@ function SettingsSchedule() {
   })
 
   return (
-    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-[#F8F8F8] relative pb-[120px] flex flex-col">
+    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-neutral-50 relative pb-[120px] flex flex-col">
       <SettingsSubpageHeader title="График работы" onBack={() => navigate('/settings')} />
       <div className="page-padding pt-6 flex flex-col gap-6">
         <div>
-          <h2 className="text-[24px] font-bold text-[#151515] mb-2 font-['Open_Sans']">Часы работы магазина</h2>
-          <p className="text-[15px] text-[#4A4A4A] font-['Open_Sans'] leading-[1.4]">
+          <h2 className="text-[24px] font-bold text-neutral-900 mb-2 font-['Open_Sans']">Часы работы магазина</h2>
+          <p className="text-[15px] text-neutral-700 font-['Open_Sans'] leading-[1.4]">
             Рекомендуемый размер — 600 x 600 пикселей, максимальный размер — 5 МБ.
           </p>
         </div>
@@ -214,18 +214,18 @@ function SettingsSchedule() {
 function SettingsContacts() {
   const navigate = useNavigate()
   return (
-    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-[#F8F8F8] relative pb-[120px] flex flex-col">
+    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-neutral-50 relative pb-[120px] flex flex-col">
       <SettingsSubpageHeader title="Контакты" onBack={() => navigate('/settings')} />
       <div className="page-padding pt-6 flex flex-col gap-6">
         <div>
-          <h2 className="text-[24px] font-bold text-[#151515] mb-2 font-['Open_Sans']">Контакты магазина</h2>
-          <p className="text-[15px] text-[#4A4A4A] font-['Open_Sans'] leading-[1.4]">
+          <h2 className="text-[24px] font-bold text-neutral-900 mb-2 font-['Open_Sans']">Контакты магазина</h2>
+          <p className="text-[15px] text-neutral-700 font-['Open_Sans'] leading-[1.4]">
             Укажите телефон для связи — покупатели увидят его на витрине.
           </p>
         </div>
         
         <InputField 
-          label={<>Номер телефона <span className="text-[#FF4D4D]">*</span></>} 
+          label={<>Номер телефона <span className="text-red-500">*</span></>} 
           icon="phone_enabled" 
           defaultValue="+996 503 310 794" 
         />
@@ -257,12 +257,12 @@ function SettingsDelivery() {
   const [deliveryFreeLimitThreshold, setDeliveryFreeLimitThreshold] = useState('')
 
   return (
-    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-[#F8F8F8] relative pb-[120px] flex flex-col">
+    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-neutral-50 relative pb-[120px] flex flex-col">
       <SettingsSubpageHeader title="Доставка" onBack={() => navigate('/settings')} />
       <div className="page-padding pt-6 flex flex-col gap-6">
         <div>
-          <h2 className="text-[24px] font-bold text-[#151515] mb-2 font-['Open_Sans']">Доставка</h2>
-          <p className="text-[15px] text-[#4A4A4A] font-['Open_Sans'] leading-[1.4]">
+          <h2 className="text-[24px] font-bold text-neutral-900 mb-2 font-['Open_Sans']">Доставка</h2>
+          <p className="text-[15px] text-neutral-700 font-['Open_Sans'] leading-[1.4]">
             Выберите способы и настройте стоимость доставки.
           </p>
         </div>
@@ -271,7 +271,7 @@ function SettingsDelivery() {
           <div className="flex flex-col gap-3">
             <SwitchCard label="Самовывоз (забрать из магазина)" icon="store" enabled={deliveryPickup} onChange={setDeliveryPickup} />
             {deliveryPickup && (
-              <div className="bg-[#E8E8E8] rounded-[16px] p-4 text-[14px] text-[#4A4A4A]">
+              <div className="bg-neutral-300 rounded-[16px] p-4 text-[14px] text-neutral-700">
                 Покупатели увидят адрес: <span className="font-bold">г. Бишкек, ЦУМ</span>
               </div>
             )}
@@ -284,7 +284,7 @@ function SettingsDelivery() {
             )}
           </div>
 
-          <h3 className="text-[15px] font-bold text-[#151515] uppercase tracking-wider mt-4">Глобальные настройки стоимости</h3>
+          <h3 className="text-[15px] font-bold text-neutral-900 uppercase tracking-wider mt-4">Глобальные настройки стоимости</h3>
           
           <div className="flex flex-col gap-3">
             <SwitchCard label="Фиксированная стоимость на всё" icon="payments" enabled={deliveryFixed} onChange={setDeliveryFixed} />
@@ -309,17 +309,17 @@ function SettingsDelivery() {
 function SettingsLogo() {
   const navigate = useNavigate()
   return (
-    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-[#F8F8F8] relative pb-[120px] flex flex-col">
+    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-neutral-50 relative pb-[120px] flex flex-col">
       <SettingsSubpageHeader title="Логотип магазина" onBack={() => navigate('/settings')} />
       <div className="page-padding pt-6 flex flex-col gap-6">
         <div>
-          <h2 className="text-[24px] font-bold text-[#151515] mb-2 font-['Open_Sans']">Логотип магазина</h2>
-          <p className="text-[15px] text-[#4A4A4A] font-['Open_Sans'] leading-[1.4]">
+          <h2 className="text-[24px] font-bold text-neutral-900 mb-2 font-['Open_Sans']">Логотип магазина</h2>
+          <p className="text-[15px] text-neutral-700 font-['Open_Sans'] leading-[1.4]">
             Рекомендуемый размер: 600×600 пкс, не более 5 МБ. Форматы: JPG, PNG.
           </p>
         </div>
 
-        <div className="w-[140px] h-[140px] rounded-full bg-[#0088CC] flex items-center justify-center shrink-0 shadow-sm mx-0">
+        <div className="w-[140px] h-[140px] rounded-full bg-blue-600 flex items-center justify-center shrink-0 shadow-sm mx-0">
           <span className="text-white text-[32px] font-bold">beko</span>
         </div>
         
@@ -329,7 +329,7 @@ function SettingsLogo() {
             <span>Загрузить логотип</span>
           </Button>
           
-          <Button variant="alt" className="flex items-center justify-center gap-3 w-full bg-white border-transparent shadow-none text-[#151515]">
+          <Button variant="alt" className="flex items-center justify-center gap-3 w-full bg-white border-transparent shadow-none text-neutral-900">
             <span className="material-symbols-rounded text-[24px]">delete</span>
             <span>Удалить логотип</span>
           </Button>
@@ -343,12 +343,12 @@ function SettingsLogo() {
 function SettingsName() {
   const navigate = useNavigate()
   return (
-    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-[#F8F8F8] relative flex flex-col">
+    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-neutral-50 relative flex flex-col">
       <SettingsSubpageHeader title="Название компании" onBack={() => navigate('/settings')} />
       <div className="page-padding pt-6 flex flex-col gap-6">
         <div>
-          <h2 className="text-[24px] font-bold text-[#151515] mb-2 font-['Open_Sans']">Название магазина</h2>
-          <p className="text-[15px] text-[#4A4A4A] font-['Open_Sans'] leading-[1.4]">
+          <h2 className="text-[24px] font-bold text-neutral-900 mb-2 font-['Open_Sans']">Название магазина</h2>
+          <p className="text-[15px] text-neutral-700 font-['Open_Sans'] leading-[1.4]">
             Это название увидят покупатели на вашей витрине.
           </p>
         </div>
@@ -366,19 +366,19 @@ function SettingsName() {
 function SettingsDescription() {
   const navigate = useNavigate()
   return (
-    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-[#F8F8F8] relative flex flex-col">
+    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-neutral-50 relative flex flex-col">
       <SettingsSubpageHeader title="Описание магазина" onBack={() => navigate('/settings')} />
       <div className="page-padding pt-6 flex flex-col gap-6">
         <div>
-          <h2 className="text-[24px] font-bold text-[#151515] mb-2 font-['Open_Sans']">Описание</h2>
-          <p className="text-[15px] text-[#4A4A4A] font-['Open_Sans'] leading-[1.4]">
+          <h2 className="text-[24px] font-bold text-neutral-900 mb-2 font-['Open_Sans']">Описание</h2>
+          <p className="text-[15px] text-neutral-700 font-['Open_Sans'] leading-[1.4]">
             Коротко расскажите о вашем магазине, товарах или услугах. Это поможет покупателям больше узнать о вас.
           </p>
         </div>
         <div className="flex flex-col gap-2">
-          <label className="text-[14px] font-semibold text-[#8F8F8F] uppercase tracking-wider">О магазине</label>
+          <label className="text-[14px] font-semibold text-neutral-500 uppercase tracking-wider">О магазине</label>
           <textarea 
-            className="w-full bg-[#F0F0F0] rounded-[16px] p-4 text-[16px] text-[#151515] outline-none border-none resize-none min-h-[140px] font-['Open_Sans']"
+            className="w-full bg-neutral-100 rounded-[16px] p-4 text-[16px] text-neutral-900 outline-none border-none resize-none min-h-[140px] font-['Open_Sans']"
             placeholder="Опишите ваш магазин..."
             defaultValue="Официальный представитель Beko в Кыргызстане."
           />
@@ -392,12 +392,12 @@ function SettingsDescription() {
 function SettingsWhatsapp() {
   const navigate = useNavigate()
   return (
-    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-[#F8F8F8] relative flex flex-col">
+    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-neutral-50 relative flex flex-col">
       <SettingsSubpageHeader title="WhatsApp" onBack={() => navigate('/settings')} />
       <div className="page-padding pt-6 flex flex-col gap-6">
         <div>
-          <h2 className="text-[24px] font-bold text-[#151515] mb-2 font-['Open_Sans']">Номер для заказов</h2>
-          <p className="text-[15px] text-[#4A4A4A] font-['Open_Sans'] leading-[1.4]">
+          <h2 className="text-[24px] font-bold text-neutral-900 mb-2 font-['Open_Sans']">Номер для заказов</h2>
+          <p className="text-[15px] text-neutral-700 font-['Open_Sans'] leading-[1.4]">
             Укажите номер WhatsApp, на который будут приходить уведомления о новых заказах от покупателей.
           </p>
         </div>
@@ -416,43 +416,43 @@ function SettingsWhatsapp() {
 function SettingsProfile() {
   const navigate = useNavigate()
   return (
-    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-[#F8F8F8] relative flex flex-col">
+    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-neutral-50 relative flex flex-col">
       <SettingsSubpageHeader title="Профиль" onBack={() => navigate('/settings')} />
       <div className="page-padding pt-6 flex flex-col gap-8 pb-[120px]">
         
         <div className="flex items-center gap-4 bg-white p-5 rounded-[20px] shadow-sm">
-          <div className="w-16 h-16 rounded-[18px] bg-[#F0F0F0] flex items-center justify-center shrink-0">
-            <span className="material-symbols-rounded text-[32px] text-[#8F8F8F]">person</span>
+          <div className="w-16 h-16 rounded-[18px] bg-neutral-100 flex items-center justify-center shrink-0">
+            <span className="material-symbols-rounded text-[32px] text-neutral-500">person</span>
           </div>
           <div className="flex flex-col">
-            <h2 className="text-[18px] font-bold text-[#151515] font-['Open_Sans']">Имя Владельца</h2>
-            <p className="text-[14px] text-[#8F8F8F] font-['Open_Sans']">+996 500 00 00 00</p>
+            <h2 className="text-[18px] font-bold text-neutral-900 font-['Open_Sans']">Имя Владельца</h2>
+            <p className="text-[14px] text-neutral-500 font-['Open_Sans']">+996 500 00 00 00</p>
           </div>
         </div>
 
         <div className="flex flex-col gap-4">
-          <h2 className="text-[15px] font-medium text-[#8F8F8F] font-['Open_Sans']">Аккаунт</h2>
+          <h2 className="text-[15px] font-medium text-neutral-500 font-['Open_Sans']">Аккаунт</h2>
           <div className="flex flex-col gap-2">
             <button className="flex items-center gap-4 h-[52px] text-left transition-all active:opacity-70 bg-transparent">
-              <span className="material-symbols-rounded text-[28px] text-[#4A4A4A] shrink-0">lock</span>
-              <span className="text-[17px] font-semibold text-[#151515] font-['Open_Sans']">Сменить пароль</span>
+              <span className="material-symbols-rounded text-[28px] text-neutral-700 shrink-0">lock</span>
+              <span className="text-[17px] font-semibold text-neutral-900 font-['Open_Sans']">Сменить пароль</span>
             </button>
             <button 
               onClick={() => navigate('/login')}
               className="flex items-center gap-4 h-[52px] text-left transition-all active:opacity-70 bg-transparent"
             >
-              <span className="material-symbols-rounded text-[28px] text-[#FF4D4D] shrink-0">logout</span>
-              <span className="text-[17px] font-semibold text-[#FF4D4D] font-['Open_Sans']">Выйти из аккаунта</span>
+              <span className="material-symbols-rounded text-[28px] text-red-500 shrink-0">logout</span>
+              <span className="text-[17px] font-semibold text-red-500 font-['Open_Sans']">Выйти из аккаунта</span>
             </button>
           </div>
         </div>
 
         <div className="flex flex-col gap-4 mt-2">
-          <h2 className="text-[15px] font-medium text-[#8F8F8F] font-['Open_Sans']">Опасная зона</h2>
+          <h2 className="text-[15px] font-medium text-neutral-500 font-['Open_Sans']">Опасная зона</h2>
           <div className="flex flex-col gap-2">
             <button className="flex items-center gap-4 h-[52px] text-left transition-all active:opacity-70 bg-transparent">
-              <span className="material-symbols-rounded text-[28px] text-[#FF4D4D] shrink-0">delete_forever</span>
-              <span className="text-[17px] font-semibold text-[#FF4D4D] font-['Open_Sans']">Удалить магазин навсегда</span>
+              <span className="material-symbols-rounded text-[28px] text-red-500 shrink-0">delete_forever</span>
+              <span className="text-[17px] font-semibold text-red-500 font-['Open_Sans']">Удалить магазин навсегда</span>
             </button>
           </div>
         </div>

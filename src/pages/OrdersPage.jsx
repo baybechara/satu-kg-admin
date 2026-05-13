@@ -59,7 +59,7 @@ export default function OrdersPage() {
   const filteredOrders = mockOrders.filter((o) => o.status === activeTab)
 
   return (
-    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-[#F8F8F8] relative pb-24 flex flex-col">
+    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-neutral-50 relative pb-24 flex flex-col">
       <Header title="Заказы" />
 
       {/* Tab bar */}

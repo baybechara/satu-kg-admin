@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Button from '../components/Button'
 import Toggle from '../components/Toggle'
 
 const initialProducts = [
@@ -49,16 +48,16 @@ export default function CatalogPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#F8F8F8]">
+    <div className="flex flex-col min-h-screen bg-neutral-50">
       
       {showToast && (
         <div className="toast-overlay" onClick={() => setShowToast(false)}>
           <div className="toast-box" onClick={e => e.stopPropagation()}>
-            <div className="w-[56px] h-[56px] rounded-full bg-[#10B981]/10 flex items-center justify-center">
-              <span className="material-symbols-rounded text-[#10B981] text-[32px]">check_circle</span>
+            <div className="w-[56px] h-[56px] rounded-full bg-green-500/10 flex items-center justify-center">
+              <span className="material-symbols-rounded text-green-500 text-[32px]">check_circle</span>
             </div>
             <div className="text-center">
-              <p className="text-[18px] font-bold text-[#151515] font-['Open_Sans'] leading-[1.4]">
+              <p className="text-[18px] font-bold text-neutral-900 font-['Open_Sans'] leading-[1.4]">
                 Статус товара<br />успешно изменен!
               </p>
             </div>
@@ -67,15 +66,15 @@ export default function CatalogPage() {
       )}
 
       {/* FIXED Header */}
-      <div className="fixed top-0 left-1/2 -translate-x-1/2 z-50 w-full max-w-[820px] bg-[#F8F8F8]">
+      <div className="fixed top-0 left-1/2 -translate-x-1/2 z-50 w-full max-w-[820px] bg-neutral-50">
         <header className="admin-header admin-container flex items-center justify-between">
-          <div className="text-[#151515] text-[24px] font-semibold font-['Open_Sans'] leading-none">Каталог</div>
+          <div className="text-neutral-900 text-[24px] font-semibold font-['Open_Sans'] leading-none">Каталог</div>
           <button 
             onClick={() => navigate('/categories')}
-            className="flex items-center justify-center gap-3 bg-[#F1F1F1] w-[161px] h-[40px] rounded-[8px] border-none cursor-pointer shadow-sm"
+            className="flex items-center justify-center gap-3 bg-neutral-100 w-[161px] h-[40px] rounded-[8px] border-none cursor-pointer shadow-sm"
           >
-            <span className="material-symbols-rounded text-[#151515] text-[24px]">grid_view</span>
-            <span className="text-[#4A4A4A] text-[18px] font-semibold font-['Open_Sans']">Категории</span>
+            <span className="material-symbols-rounded text-neutral-900 text-[24px]">grid_view</span>
+            <span className="text-neutral-700 text-[18px] font-semibold font-['Open_Sans']">Категории</span>
           </button>
         </header>
       </div>
@@ -121,12 +120,12 @@ export default function CatalogPage() {
           <div key={product.id} className="product-card">
             <div className="flex items-center gap-4">
               <div className="flex items-center justify-center p-1">
-                <span className="material-symbols-rounded text-[#D4D4D4] text-[20px] select-none">drag_indicator</span>
+                <span className="material-symbols-rounded text-neutral-300 text-[20px] select-none">drag_indicator</span>
               </div>
               <div className="product-img-container">
                 <img src={product.image} className="w-full h-full object-cover" alt={product.name} />
               </div>
-              <h3 className="text-[16px] font-bold text-[#151515] leading-[1.3] flex-1 font-['Open_Sans']">
+              <h3 className="text-[16px] font-bold text-neutral-900 leading-[1.3] flex-1 font-['Open_Sans']">
                 {product.name}
               </h3>
             </div>
@@ -141,7 +140,7 @@ export default function CatalogPage() {
           </div>
         ))}
         {filteredProducts.length === 0 && (
-          <div className="py-20 text-center text-[#8F8F8F] font-['Open_Sans']">
+          <div className="py-20 text-center text-neutral-500 font-['Open_Sans']">
             В этом разделе пока нет товаров
           </div>
         )}

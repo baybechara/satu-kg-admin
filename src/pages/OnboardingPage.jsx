@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import Button from '../components/Button'
 import InputField from '../components/InputField'
 import ScheduleCard from '../components/ScheduleCard'
@@ -17,7 +17,7 @@ function ProgressBar({ current, total }) {
         <div 
           key={i} 
           className={`h-[3.5px] flex-1 rounded-full transition-all duration-500 ${
-            i <= current ? 'bg-[#2D2D2D]' : 'bg-[#E5E5E5]'
+            i <= current ? 'bg-neutral-800' : 'bg-neutral-300'
           }`}
         />
       ))}
@@ -42,7 +42,13 @@ function StepHeader({ title, subtitle, currentStep, onExit }) {
 
 export default function OnboardingPage() {
   const navigate = useNavigate()
-  const [step, setStep] = useState(0)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const step = parseInt(searchParams.get('step') || '0', 10)
+  
+  const setStep = (newStep) => {
+    setSearchParams({ step: newStep.toString() })
+  }
+
   const [isExitModalOpen, setIsExitModalOpen] = useState(false)
 
   const [domain, setDomain] = useState('')
@@ -79,7 +85,7 @@ export default function OnboardingPage() {
   const dayLabels = { mon:'Пн', tue:'Вт', wed:'Ср', thu:'Чт', fri:'Пт', sat:'Сб', sun:'Вс' }
 
   const handleNext = () => { step < TOTAL_STEPS - 1 ? setStep(step + 1) : navigate('/catalog') }
-  const handleBack = () => { if (step > 0) setStep(step - 1) }
+  const handleBack = () => { if (step > 0) navigate(-1) }
 
   const addPhoneBackup = () => { if (phoneBackups.length < 2) setPhoneBackups([...phoneBackups, '']) }
   const updatePhoneBackup = (index, value) => {
@@ -194,7 +200,7 @@ export default function OnboardingPage() {
             <div className="flex flex-col gap-3">
               <SwitchCard label="Самовывоз (забрать из магазина)" icon="store" enabled={deliveryPickup} onChange={setDeliveryPickup} />
               {deliveryPickup && (
-                <div className="bg-[#F5F5F5] rounded-[16px] p-4 animate-fade-in text-[14px] text-text-secondary">
+                <div className="bg-neutral-50 rounded-[16px] p-4 animate-fade-in text-[14px] text-text-secondary">
                   Покупатели увидят адрес: <span className="font-bold">{address || 'не указан'}</span>
                 </div>
               )}
@@ -270,8 +276,8 @@ export default function OnboardingPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-[#F0F0F0]">
-      <div className="max-w-[820px] w-full mx-auto bg-[#F8F8F8] min-h-screen flex flex-col shadow-2xl">
+    <div className="min-h-screen flex flex-col items-center bg-neutral-100">
+      <div className="max-w-[820px] w-full mx-auto bg-neutral-50 min-h-screen flex flex-col shadow-2xl">
         <div className="flex-1 flex flex-col justify-between auth-padding pt-14 pb-10">
           <div className="flex flex-col">{renderStep()}</div>
           <div className="auth-button-group">

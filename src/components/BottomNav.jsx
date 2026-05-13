@@ -12,7 +12,7 @@ export default function BottomNav() {
   ]
 
   return (
-    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[820px] h-[84px] bg-white border-t border-[#F1F1F1] flex items-center justify-around px-4 z-50 shadow-[0px_-4px_20px_rgba(0,0,0,0.03)]">
+    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[820px] h-[84px] bg-white border-t border-neutral-100 flex items-center justify-around px-4 z-50 shadow-[0px_-4px_20px_rgba(0,0,0,0.03)]">
       {menuItems.map((item) => {
         const isActive = location.pathname === item.path 
           || (item.id === 'catalog' && location.pathname.startsWith('/add-product'))
@@ -24,7 +24,7 @@ export default function BottomNav() {
             onClick={() => navigate(item.path)}
             className="flex flex-col items-center gap-1.5 min-w-[80px] transition-all outline-none"
           >
-            <div className={`transition-all duration-300 ${isActive ? 'text-[#151515]' : 'text-[#8F8F8F]'}`}>
+            <div className={`transition-all duration-300 ${isActive ? 'text-neutral-900' : 'text-neutral-500'}`}>
               <span 
                 className="material-symbols-rounded text-[30px] block transition-all"
                 style={{ 
@@ -38,8 +38,8 @@ export default function BottomNav() {
             </div>
             <span className={`text-[12px] transition-all tracking-tight ${
               isActive 
-                ? 'font-bold text-[#151515]' 
-                : 'font-medium text-[#8F8F8F]'
+                ? 'font-bold text-neutral-900' 
+                : 'font-medium text-neutral-500'
             }`}>
               {item.label}
             </span>
