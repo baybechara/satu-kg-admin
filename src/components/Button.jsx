@@ -1,3 +1,5 @@
+import { Button as ShadcnButton } from "@/components/ui/button"
+
 /**
  * Unified Button component
  * Variants: primary | dark | light | accent | danger
@@ -28,13 +30,14 @@ export default function Button({
   }[size] || ''
 
   return (
-    <button
+    <ShadcnButton
       type={type}
       onClick={onClick}
       className={`btn ${variantClass} ${sizeClass} ${className}`}
       {...props}
     >
       {children}
-    </button>
+    </ShadcnButton>
   )
 }
+

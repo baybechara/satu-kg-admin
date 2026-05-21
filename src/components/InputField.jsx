@@ -1,3 +1,6 @@
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+
 /**
  * Unified InputField component with validation states
  * Variants: default | success | error
@@ -13,7 +16,8 @@ export default function InputField({
   onRightIconClick,
   state = 'default', // default, success, error
   hint,
-  required = false
+  required = false,
+  ...props
 }) {
   const stateClass = {
     success: 'input-success',
@@ -24,19 +28,21 @@ export default function InputField({
   return (
     <div className="flex flex-col gap-3">
       {label && (
-        <label className="text-[16px] font-semibold text-text-primary">
+        <Label className="text-[16px] font-semibold text-text-primary">
           {label} {required && <span className="text-error">*</span>}
-        </label>
+        </Label>
       )}
       <div className={`input-wrap ${stateClass}`}>
         {icon && (
           <span className="material-symbols-rounded input-icon">{icon}</span>
         )}
-        <input
+        <Input
           type={type}
           placeholder={placeholder}
           value={value}
           onChange={onChange}
+          className="flex-1 bg-transparent border-none outline-none shadow-none focus-visible:ring-0 focus-visible:border-none p-0 h-auto text-[18px] text-text-primary placeholder:text-text-placeholder"
+          {...props}
         />
         {rightIcon && (
           <button
@@ -61,3 +67,4 @@ export default function InputField({
     </div>
   )
 }
+

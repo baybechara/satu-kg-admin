@@ -1,28 +1,30 @@
+import { Checkbox as ShadcnCheckbox } from "@/components/ui/checkbox"
+import { Label } from "@/components/ui/label"
+
 /**
  * Unified Checkbox component
  * Matches Figma: Rounded 8px, Green when checked
  */
-export default function Checkbox({ label, checked, onChange }) {
+export default function Checkbox({ label, checked, onChange, className = "", ...props }) {
+  const id = label ? `checkbox-${label.replace(/[^a-zA-Z0-9-]/g, '').toLowerCase()}` : undefined;
+
   return (
-    <label 
-      className="flex items-center gap-3 cursor-pointer group"
-      onClick={(e) => {
-        e.preventDefault();
-        onChange(!checked);
-      }}
-    >
-      <div className={`checkbox ${checked ? 'checked' : ''}`}>
-        {checked && (
-          <span className="material-symbols-rounded text-white text-[18px]">
-            check
-          </span>
-        )}
-      </div>
+    <div className={`flex items-center gap-3 ${className}`}>
+      <ShadcnCheckbox
+        id={id}
+        checked={checked}
+        onCheckedChange={(val) => onChange(!!val)}
+        {...props}
+      />
       {label && (
-        <span className="t-caption text-text-disabled group-hover:text-text-secondary transition-colors">
+        <Label
+          htmlFor={id}
+          className="t-caption text-text-disabled hover:text-text-secondary cursor-pointer transition-colors"
+        >
           {label}
-        </span>
+        </Label>
       )}
-    </label>
+    </div>
   )
 }
+

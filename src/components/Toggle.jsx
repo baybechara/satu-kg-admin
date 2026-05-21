@@ -1,10 +1,13 @@
-export default function Toggle({ enabled, onChange }) {
+import { Switch } from "@/components/ui/switch"
+
+export default function Toggle({ enabled, onChange, className = "", ...props }) {
   return (
-    <div 
-      onClick={() => onChange(!enabled)}
-      className={`switch-root ${enabled ? 'switch-on' : 'switch-off'}`}
-    >
-      <div className="switch-thumb" />
-    </div>
+    <Switch 
+      checked={enabled}
+      onCheckedChange={onChange}
+      className={className}
+      {...props}
+    />
   )
 }
+

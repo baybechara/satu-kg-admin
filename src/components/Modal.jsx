@@ -1,5 +1,10 @@
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import Button from './Button'
-import IconButton from './IconButton'
 
 export default function Modal({ 
   isOpen, 
@@ -10,38 +15,44 @@ export default function Modal({
   cancelText = 'НЕТ', 
   onConfirm 
 }) {
-  if (!isOpen) return null
-
   return (
-    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-center justify-center p-5" onClick={onClose}>
-      <div className="custom-modal-outer" onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-center justify-between">
-          <h2 className="text-[22px] font-semibold text-neutral-900 font-['Open_Sans'] tracking-tight">{title}</h2>
-          <button className="w-9 h-9 rounded-full bg-white flex items-center justify-center shadow-sm" onClick={onClose}>
+    <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
+      <DialogContent className="max-w-[400px] p-6 gap-6 rounded-2xl bg-white border border-neutral-100 shadow-xl" showCloseButton={false}>
+        <DialogHeader className="flex flex-row items-center justify-between gap-4">
+          <DialogTitle className="text-[22px] font-semibold text-neutral-900 tracking-tight leading-none">
+            {title}
+          </DialogTitle>
+          <button 
+            className="w-9 h-9 rounded-full bg-white flex items-center justify-center shadow-sm border border-neutral-100 hover:bg-neutral-50 transition-colors" 
+            onClick={onClose}
+          >
             <span className="material-symbols-rounded text-neutral-900 text-[20px]">close</span>
           </button>
-        </div>
+        </DialogHeader>
         
-        <div className="custom-modal-inner shadow-sm">
-          <p className="text-[16px] font-medium text-neutral-900 font-['Open_Sans']">{message}</p>
-          <div className="flex gap-3" style={{ marginTop: '24px' }}>
+        <div className="flex flex-col gap-6">
+          <p className="text-[16px] font-medium text-neutral-600 leading-normal">
+            {message}
+          </p>
+          <div className="flex gap-3">
             <Button 
               variant="alt" 
               onClick={onClose}
-              className="flex-1 uppercase font-bold"
+              className="flex-1 uppercase font-bold text-sm h-12 rounded-xl"
             >
               {cancelText}
             </Button>
             <Button 
               variant="dark" 
               onClick={onConfirm}
-              className="flex-1 uppercase font-bold"
+              className="flex-1 uppercase font-bold text-sm h-12 rounded-xl"
             >
               {confirmText}
             </Button>
           </div>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   )
 }
+
