@@ -95,6 +95,19 @@ export default function AddProductPage() {
           />
         </section>
 
+        {/* Количество */}
+        <section className="form-card">
+          <h2 className="form-label">Количество товаров</h2>
+          <p className="form-hint -mt-2">
+            Укажите количество товара в наличии
+          </p>
+          <input 
+            type="text" 
+            className="form-input" 
+            placeholder="Напр. 10 (в шт.)"
+          />
+        </section>
+
         {/* Категории */}
         <section className="form-card">
           <h2 className="form-label">Выберите категории</h2>
