@@ -1,58 +1,35 @@
 import Toggle from './Toggle'
+import TimePicker from './TimePicker'
 
-export default function ScheduleCard({ 
-  day, 
-  timeFrom, 
-  timeTo, 
-  enabled, 
-  onToggle,
-  onTimeChange 
-}) {
-  const openPicker = (e) => {
-    const input = e.currentTarget.querySelector('input');
-    if (input && input.showPicker) {
-      input.showPicker();
-    }
-  };
-
+export default function ScheduleCard({ day, timeFrom, timeTo, enabled, onToggle, onTimeChange }) {
   return (
-    <div className="card-base !px-6">
-      <span className="text-[16px] font-bold text-text-primary w-[50px]">{day}</span>
-      
-      <div className="flex items-center gap-4">
-        {enabled && (
-          <div className="time-range-box">
-            <div 
-              onClick={openPicker}
-              className="flex-1 h-full flex items-center justify-center gap-1.5 hover:bg-black/5 transition-colors cursor-pointer"
-            >
-              <input 
-                type="time" 
-                value={timeFrom}
-                onChange={(e) => onTimeChange(e.target.value, timeTo)}
-                className="bg-transparent border-none outline-none text-inherit font-inherit pointer-events-none w-[46px] text-[15px]"
-              />
-              <span className="material-symbols-rounded text-[18px] text-text-placeholder">schedule</span>
-            </div>
+    <div className={`
+      flex items-center justify-between px-3 py-2.5 rounded-[10px] border transition-all
+      ${enabled
+        ? 'bg-white border-neutral-200'
+        : 'bg-neutral-50 border-neutral-100'
+      }
+    `}>
+      {/* Day label */}
+      <span className={`w-[28px] text-[13px] font-bold shrink-0 ${enabled ? 'text-neutral-800' : 'text-neutral-400'}`}>
+        {day}
+      </span>
 
-            <span className="text-text-disabled select-none mx-0.5">—</span>
-
-            <div 
-              onClick={openPicker}
-              className="flex-1 h-full flex items-center justify-center gap-1.5 hover:bg-black/5 transition-colors cursor-pointer"
-            >
-              <input 
-                type="time" 
-                value={timeTo}
-                onChange={(e) => onTimeChange(timeFrom, e.target.value)}
-                className="bg-transparent border-none outline-none text-inherit font-inherit pointer-events-none w-[46px] text-[15px]"
-              />
-              <span className="material-symbols-rounded text-[18px] text-text-placeholder">schedule</span>
-            </div>
-          </div>
+      {/* Time range */}
+      <div className="flex items-center gap-1.5 flex-1 mx-3">
+        {enabled ? (
+          <>
+            <TimePicker value={timeFrom} onChange={(v) => onTimeChange(v, timeTo)} />
+            <span className="text-[12px] text-neutral-400 select-none">—</span>
+            <TimePicker value={timeTo} onChange={(v) => onTimeChange(timeFrom, v)} />
+          </>
+        ) : (
+          <span className="text-[12px] text-neutral-400 italic">выходной</span>
         )}
-        <Toggle enabled={enabled} onChange={onToggle} />
       </div>
+
+      {/* Toggle */}
+      <Toggle enabled={enabled} onChange={onToggle} />
     </div>
   )
 }

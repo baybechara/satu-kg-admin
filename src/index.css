@@ -352,10 +352,18 @@ body {
   transform: scale(0.95);
 }
 
-/* Скрываем нативные иконки времени/даты */
+/* Скрываем нативные иконки времени/даты визуально, но оставляем функциональность showPicker() */
 input[type="time"]::-webkit-calendar-picker-indicator {
-  display: none;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+}
+input[type="time"]::-webkit-inner-spin-button,
+input[type="time"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
+}
+input[type="time"] {
+  -moz-appearance: textfield;
 }
 
 /* ═══════════════════════════════════════════
