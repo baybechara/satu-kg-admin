@@ -157,7 +157,6 @@
 }
 
 /* ─── Reset ─── */
-* { margin: 0; padding: 0; box-sizing: border-box; }
 html, body, #root { height: 100%; }
 
 body {
@@ -1651,6 +1650,9 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 @layer base {
   * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
     @apply border-border outline-ring/50;
   }
   body {
