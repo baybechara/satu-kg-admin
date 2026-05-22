@@ -3,56 +3,73 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
 } from "@/components/ui/dialog"
-import Button from './Button'
+import { XIcon } from "lucide-react"
 
 export default function Modal({ 
   isOpen, 
   onClose, 
   title, 
   message, 
-  confirmText = 'ДА', 
-  cancelText = 'НЕТ', 
-  onConfirm 
+  confirmText = 'Да', 
+  cancelText = 'Отмена', 
+  onConfirm,
+  variant = 'default',
 }) {
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
-      <DialogContent className="max-w-[400px] p-6 gap-6 rounded-2xl bg-white border border-neutral-100 shadow-xl" showCloseButton={false}>
-        <DialogHeader className="flex flex-row items-center justify-between gap-4">
-          <DialogTitle className="text-[22px] font-semibold text-neutral-900 tracking-tight leading-none">
+    <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose() }}>
+      <DialogContent
+        className="max-w-[420px] rounded-lg border border-neutral-200 bg-white p-6 shadow-lg gap-0"
+        showCloseButton={false}
+      >
+        {/* Close X — точно как у shadcn */}
+        <DialogClose asChild>
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 w-6 h-6 flex items-center justify-center rounded-sm text-neutral-500 hover:text-neutral-900 transition-colors ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none"
+          >
+            <XIcon size={16} strokeWidth={2} />
+            <span className="sr-only">Закрыть</span>
+          </button>
+        </DialogClose>
+
+        {/* Header */}
+        <DialogHeader className="mb-1 pr-6">
+          <DialogTitle className="text-[17px] font-semibold text-neutral-900 leading-snug tracking-tight">
             {title}
           </DialogTitle>
-          <button 
-            className="w-9 h-9 rounded-full bg-white flex items-center justify-center shadow-sm border border-neutral-100 hover:bg-neutral-50 transition-colors" 
-            onClick={onClose}
-          >
-            <span className="material-symbols-rounded text-neutral-900 text-[20px]">close</span>
-          </button>
         </DialogHeader>
-        
-        <div className="flex flex-col gap-6">
-          <p className="text-[16px] font-medium text-neutral-600 leading-normal">
+
+        {/* Message */}
+        {message && (
+          <DialogDescription className="text-[14px] text-neutral-500 leading-relaxed mb-6">
             {message}
-          </p>
-          <div className="flex gap-3">
-            <Button 
-              variant="alt" 
-              onClick={onClose}
-              className="flex-1 uppercase font-bold text-sm h-12 rounded-xl"
-            >
-              {cancelText}
-            </Button>
-            <Button 
-              variant="dark" 
-              onClick={onConfirm}
-              className="flex-1 uppercase font-bold text-sm h-12 rounded-xl"
-            >
-              {confirmText}
-            </Button>
-          </div>
-        </div>
+          </DialogDescription>
+        )}
+
+        {/* Buttons — правый угол, как у shadcn */}
+        <DialogFooter className="flex flex-row justify-end gap-2 sm:flex-row sm:space-x-0">
+          <button
+            onClick={onClose}
+            className="h-[38px] px-5 border border-neutral-200 bg-white hover:bg-neutral-50 active:scale-[0.98] text-neutral-900 text-[14px] font-medium rounded-md transition-all"
+          >
+            {cancelText}
+          </button>
+          <button
+            onClick={onConfirm}
+            className={`h-[38px] px-5 active:scale-[0.98] text-white text-[14px] font-medium rounded-md transition-all ${
+              variant === 'danger'
+                ? 'bg-red-500 hover:bg-red-600'
+                : 'bg-neutral-900 hover:bg-neutral-800'
+            }`}
+          >
+            {confirmText}
+          </button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   )
 }
-
