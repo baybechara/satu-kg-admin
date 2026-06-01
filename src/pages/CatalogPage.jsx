@@ -13,6 +13,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import Toggle from '../components/Toggle'
+import { GripVertical, LayoutGrid, Plus } from 'lucide-react'
 import {
   DndContext,
   closestCenter,
@@ -65,52 +66,51 @@ function SortableRow({ product, toggleProductStatus }) {
     <TableRow
       ref={setNodeRef}
       style={style}
-      className={`border-neutral-100 transition-colors hover:bg-neutral-50/50 ${isDragging ? 'opacity-50 bg-neutral-100 shadow-md' : ''}`}
+      className={`border-neutral-200 transition-colors bg-white ${isDragging ? 'opacity-70 bg-neutral-50 shadow-md ring-1 ring-neutral-200' : 'hover:bg-neutral-50/50'}`}
     >
       {/* Drag handle */}
-      <TableCell className="pl-4">
-        <span
+      <TableCell className="pl-4 w-[40px]">
+        <button
           {...attributes}
           {...listeners}
-          className="material-symbols-rounded text-neutral-300 text-[18px] cursor-grab active:cursor-grabbing select-none hover:text-neutral-500 transition-colors outline-none block p-2 -m-2"
+          className="text-neutral-400 cursor-grab active:cursor-grabbing select-none hover:text-neutral-600 transition-colors outline-none block p-2 -m-2"
         >
-          drag_indicator
-        </span>
+          <GripVertical className="w-5 h-5" />
+        </button>
       </TableCell>
 
       {/* Name + image */}
-      <TableCell className="max-w-[160px] sm:max-w-none">
+      <TableCell className="max-w-[160px] sm:max-w-none py-3">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-[8px] overflow-hidden border border-neutral-100 shrink-0 bg-neutral-50">
             <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
           </div>
-          <span className="text-[14px] font-semibold text-neutral-900 leading-tight whitespace-normal break-words">
+          <span className="text-[14px] font-medium text-neutral-900 leading-tight whitespace-normal break-words">
             {product.name}
           </span>
         </div>
       </TableCell>
 
       {/* Category */}
-      <TableCell className="hidden sm:table-cell">
-        <Badge variant="outline" className="text-[12px] font-medium text-neutral-600 border-neutral-200 rounded-[6px]">
+      <TableCell className="hidden sm:table-cell py-3">
+        <Badge variant="outline" className="text-[12px] font-medium text-neutral-600 border-neutral-200 bg-neutral-50/50 rounded-[6px]">
           {product.category}
         </Badge>
       </TableCell>
 
       {/* Price */}
-      <TableCell className="text-right text-[14px] font-semibold text-neutral-800 tabular-nums">
+      <TableCell className="text-right text-[14px] font-medium text-neutral-900 tabular-nums py-3">
         {product.price.toLocaleString()} сом
       </TableCell>
 
       {/* Stock */}
-      <TableCell className="text-right text-[14px] text-neutral-500 hidden sm:table-cell tabular-nums">
+      <TableCell className="text-right text-[14px] text-neutral-500 hidden sm:table-cell tabular-nums py-3">
         {product.stock} шт.
       </TableCell>
 
       {/* Toggle */}
-      <TableCell className="text-center">
-        {/* onClick handler stops propagation to prevent drag conflicts on the switch */}
-        <div onPointerDown={(e) => e.stopPropagation()}>
+      <TableCell className="text-right pr-4 py-3">
+        <div onPointerDown={(e) => e.stopPropagation()} className="inline-block">
           <Toggle enabled={product.active} onChange={() => toggleProductStatus(product.id)} />
         </div>
       </TableCell>
@@ -127,7 +127,7 @@ export default function CatalogPage() {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 5, // 5px movement required before drag starts to allow clicks to pass through
+        distance: 5,
       },
     }),
     useSensor(KeyboardSensor, {
@@ -168,69 +168,73 @@ export default function CatalogPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-neutral-50">
+    <div className="flex flex-col min-h-screen bg-neutral-50/50 font-sans">
 
-      {/* FIXED Header */}
-      <div className="fixed top-0 left-1/2 -translate-x-1/2 z-50 w-full max-w-[820px] bg-neutral-50">
-        <header className="admin-header admin-container flex items-center justify-between">
-          <div className="text-neutral-900 text-[24px] font-semibold font-['Open_Sans'] leading-none">Каталог</div>
+      {/* Header */}
+      <header className="fixed top-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-md border-b border-neutral-200">
+        <div className="w-full max-w-[820px] mx-auto px-4 sm:px-6 h-[60px] flex items-center justify-between">
+          <h1 className="text-[20px] font-bold tracking-tight text-neutral-900">Каталог</h1>
           <Button
             variant="outline"
+            size="sm"
             onClick={() => navigate('/categories')}
-            className="h-[38px] gap-2 text-[14px] font-semibold"
+            className="h-8 gap-2 font-medium"
           >
-            <span className="material-symbols-rounded text-[18px]">grid_view</span>
+            <LayoutGrid className="w-4 h-4" />
             Категории
           </Button>
-        </header>
-      </div>
-
-      {/* Spacer */}
-      <div className="h-[70px] w-full" />
-
-      {/* Category Chips */}
-      <div className="category-chips-container">
-        <div className="flex gap-[8px] overflow-x-auto no-scrollbar admin-container">
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setActiveCategoryId(cat.id)}
-              className={`chip-base shrink-0 ${activeCategoryId === cat.id ? 'chip-active' : 'chip-inactive'}`}
-            >
-              {cat.label}
-            </button>
-          ))}
         </div>
-      </div>
+      </header>
 
-      {/* Status Tabs */}
-      <div className="filter-status-container admin-container">
-        <Tabs value={activeStatus} onValueChange={setActiveStatus} className="w-full">
-          <TabsList className="h-auto bg-transparent gap-2 p-0">
-            <TabsTrigger
-              value="active"
-              className="h-[36px] px-3.5 rounded-[8px] gap-2 text-[14px] font-semibold data-[state=active]:bg-neutral-900 data-[state=active]:text-white data-[state=inactive]:bg-transparent data-[state=inactive]:text-neutral-500 hover:text-neutral-700 transition-all shadow-none"
-            >
-              Активно
-              <Badge className={`text-[12px] px-1.5 py-0 h-5 font-semibold border-0 ${activeStatus === 'active' ? 'bg-white/20 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
-                {activeCount}
-              </Badge>
-            </TabsTrigger>
-            <TabsTrigger
-              value="hidden"
-              className="h-[36px] px-3.5 rounded-[8px] gap-2 text-[14px] font-semibold data-[state=active]:bg-neutral-900 data-[state=active]:text-white data-[state=inactive]:bg-transparent data-[state=inactive]:text-neutral-500 hover:text-neutral-700 transition-all shadow-none"
-            >
-              Отключено
-              <Badge className={`text-[12px] px-1.5 py-0 h-5 font-semibold border-0 ${activeStatus === 'hidden' ? 'bg-white/20 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
-                {hiddenCount}
-              </Badge>
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
-      </div>
+      {/* Main Content */}
+      <main className="flex-1 w-full max-w-[820px] mx-auto px-4 sm:px-6 pt-[84px] pb-[140px] flex flex-col gap-6">
+        
+        {/* Category Chips */}
+        <div className="w-[calc(100%+32px)] -ml-4 sm:w-full sm:ml-0">
+          <div className="flex gap-2 overflow-x-auto no-scrollbar px-4 sm:px-0 pb-1 after:content-[''] after:min-w-[1px] sm:after:hidden">
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setActiveCategoryId(cat.id)}
+                className={`inline-flex items-center justify-center whitespace-nowrap rounded-md text-[13px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border shrink-0 h-8 px-3 ${
+                  activeCategoryId === cat.id
+                    ? 'bg-neutral-100 border-neutral-200 text-neutral-900'
+                    : 'bg-white border-neutral-200 text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900'
+                }`}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
+        </div>
 
-      {/* Table */}
-      <div className="admin-container mt-2 mb-[140px]">
+        {/* Status Tabs */}
+        <div>
+          <Tabs value={activeStatus} onValueChange={setActiveStatus} className="w-full sm:w-auto inline-block">
+            <TabsList className="h-9 bg-neutral-100/80 p-1 rounded-lg inline-flex gap-1">
+              <TabsTrigger
+                value="active"
+                className="h-full px-3 rounded-md gap-2 text-[13px] font-medium transition-all data-[state=active]:bg-white data-[state=active]:text-neutral-900 data-[state=active]:shadow-sm data-[state=inactive]:text-neutral-500 hover:text-neutral-700 border-0"
+              >
+                Активно
+                <span className={`text-[11px] font-medium rounded-full min-w-[20px] h-[20px] flex items-center justify-center px-1.5 ${activeStatus === 'active' ? 'bg-neutral-200 text-neutral-900' : 'bg-neutral-200/50 text-neutral-500'}`}>
+                  {activeCount}
+                </span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="hidden"
+                className="h-full px-3 rounded-md gap-2 text-[13px] font-medium transition-all data-[state=active]:bg-white data-[state=active]:text-neutral-900 data-[state=active]:shadow-sm data-[state=inactive]:text-neutral-500 hover:text-neutral-700 border-0"
+              >
+                Отключено
+                <span className={`text-[11px] font-medium rounded-full min-w-[20px] h-[20px] flex items-center justify-center px-1.5 ${activeStatus === 'hidden' ? 'bg-neutral-200 text-neutral-900' : 'bg-neutral-200/50 text-neutral-500'}`}>
+                  {hiddenCount}
+                </span>
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
+        </div>
+
+        {/* Table */}
         <div className="rounded-xl border border-neutral-200 bg-white overflow-hidden">
           <DndContext 
             sensors={sensors}
@@ -239,19 +243,19 @@ export default function CatalogPage() {
           >
             <Table>
               <TableHeader>
-                <TableRow className="border-neutral-200 hover:bg-transparent">
-                  <TableHead className="w-[32px] pl-4" />
-                  <TableHead className="text-[13px] font-semibold text-neutral-600">Товар</TableHead>
-                  <TableHead className="text-[13px] font-semibold text-neutral-600 hidden sm:table-cell">Категория</TableHead>
-                  <TableHead className="text-[13px] font-semibold text-neutral-600 text-right">Цена</TableHead>
-                  <TableHead className="text-[13px] font-semibold text-neutral-600 text-right hidden sm:table-cell">Склад</TableHead>
-                  <TableHead className="text-[13px] font-semibold text-neutral-600 text-center">Статус</TableHead>
+                <TableRow className="border-neutral-200 hover:bg-transparent bg-neutral-50/50">
+                  <TableHead className="w-[40px] pl-4" />
+                  <TableHead className="text-[13px] font-medium text-neutral-500 h-10">Товар</TableHead>
+                  <TableHead className="text-[13px] font-medium text-neutral-500 h-10 hidden sm:table-cell">Категория</TableHead>
+                  <TableHead className="text-[13px] font-medium text-neutral-500 h-10 text-right">Цена</TableHead>
+                  <TableHead className="text-[13px] font-medium text-neutral-500 h-10 text-right hidden sm:table-cell">Склад</TableHead>
+                  <TableHead className="text-[13px] font-medium text-neutral-500 h-10 text-right pr-4">Статус</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredProducts.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={8} className="text-center py-16 text-neutral-400 text-[14px]">
+                    <TableCell colSpan={8} className="text-center py-12 text-neutral-400 text-[14px]">
                       В этом разделе пока нет товаров
                     </TableCell>
                   </TableRow>
@@ -275,24 +279,26 @@ export default function CatalogPage() {
 
           {/* Table footer */}
           {filteredProducts.length > 0 && (
-            <div className="flex items-center justify-between px-4 py-3 border-t border-neutral-100">
-              <span className="text-[13px] text-neutral-400">
-                {filteredProducts.length} товаров
+            <div className="flex items-center justify-between px-4 py-3 border-t border-neutral-200 bg-neutral-50/50">
+              <span className="text-[13px] text-neutral-500 font-medium">
+                Всего товаров: {filteredProducts.length}
               </span>
             </div>
           )}
         </div>
-      </div>
+      </main>
 
       {/* Floating Add Button */}
-      <div className="fixed bottom-[104px] left-1/2 -translate-x-1/2 w-full max-w-[820px] admin-container z-30 flex justify-end">
-        <button
-          onClick={() => navigate('/add-product')}
-          className="btn-add-product"
-        >
-          <span className="material-symbols-rounded text-[24px]">add</span>
-          <span>Добавить товар</span>
-        </button>
+      <div className="fixed bottom-[84px] sm:bottom-[96px] left-0 w-full z-50 pointer-events-none flex justify-center">
+        <div className="w-full max-w-[820px] px-4 sm:px-6 flex justify-end">
+          <Button 
+            onClick={() => navigate('/add-product')}
+            className="h-[48px] px-6 rounded-full shadow-none bg-neutral-900 hover:bg-neutral-800 text-white gap-2 font-medium text-[14px] pointer-events-auto"
+          >
+            <Plus className="w-5 h-5" />
+            Добавить товар
+          </Button>
+        </div>
       </div>
 
     </div>

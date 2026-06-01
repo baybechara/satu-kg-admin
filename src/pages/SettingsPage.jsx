@@ -1,3 +1,4 @@
+import Icon from '../components/Icon.jsx'
 import { useState } from 'react'
 import { Routes, Route, useNavigate } from 'react-router-dom'
 import PageHeader from '../components/PageHeader'
@@ -64,7 +65,7 @@ function SettingsMenu() {
                   onClick={() => navigate(item.path)}
                   className="flex items-center gap-4 h-[52px] text-left transition-all active:opacity-70 bg-transparent"
                 >
-                  <span className="material-symbols-rounded text-[28px] text-neutral-700 shrink-0">{item.icon}</span>
+                  <Icon name={item.icon} className="text-[28px] text-neutral-700 shrink-0"  />
                   <span className="text-[17px] font-semibold text-neutral-900 font-['Open_Sans']">{item.label}</span>
                 </button>
               ))}
@@ -79,7 +80,7 @@ function SettingsMenu() {
       {/* Floating Help Button */}
       <div className="fixed bottom-[104px] left-1/2 -translate-x-1/2 w-full max-w-[820px] admin-container z-30 flex justify-end">
         <button className="btn-add-product bg-neutral-800 hover:bg-neutral-900 text-white flex items-center justify-center gap-2 px-6 h-[56px] rounded-[16px] shadow-[0px_4px_20px_rgba(0,0,0,0.15)] transition-all active:scale-95">
-          <span className="material-symbols-rounded text-[24px]">help</span>
+          <Icon name="help" className="text-[24px]"  />
           <span className="text-[16px] font-bold font-['Open_Sans']">Нужна помощь?</span>
         </button>
       </div>
@@ -106,7 +107,7 @@ function SettingsAddress() {
         />
         
         <Button variant="alt" className="flex items-center justify-center gap-3 w-full bg-white">
-          <span className="material-symbols-rounded text-[24px]">add_location_alt</span>
+          <Icon name="add_location_alt" className="text-[24px]"  />
           <span>Добавить еще адрес</span>
         </Button>
       </div>
@@ -159,7 +160,7 @@ function SettingsSocials() {
         </div>
 
         <Button variant="alt" className="flex items-center justify-center gap-3 w-full mt-2 bg-white">
-          <span className="material-symbols-rounded text-[24px]">link</span>
+          <Icon name="link" className="text-[24px]"  />
           <span>Добавить еще</span>
         </Button>
       </div>
@@ -237,7 +238,7 @@ function SettingsContacts() {
         />
         
         <Button variant="alt" className="flex items-center justify-center gap-3 w-full mt-2 bg-white">
-          <span className="material-symbols-rounded text-[24px]">add_call</span>
+          <Icon name="add_call" className="text-[24px]"  />
           <span>Добавить резервный номер</span>
         </Button>
       </div>
@@ -325,12 +326,12 @@ function SettingsLogo() {
         
         <div className="flex flex-col gap-3 mt-2">
           <Button variant="alt" className="flex items-center justify-center gap-3 w-full bg-white">
-            <span className="material-symbols-rounded text-[24px]">add_a_photo</span>
+            <Icon name="add_a_photo" className="text-[24px]"  />
             <span>Загрузить логотип</span>
           </Button>
           
           <Button variant="alt" className="flex items-center justify-center gap-3 w-full bg-white border-transparent shadow-none text-neutral-900">
-            <span className="material-symbols-rounded text-[24px]">delete</span>
+            <Icon name="delete" className="text-[24px]"  />
             <span>Удалить логотип</span>
           </Button>
         </div>
@@ -422,7 +423,7 @@ function SettingsProfile() {
         
         <div className="flex items-center gap-4 bg-white p-5 rounded-[20px] shadow-sm">
           <div className="w-16 h-16 rounded-[18px] bg-neutral-100 flex items-center justify-center shrink-0">
-            <span className="material-symbols-rounded text-[32px] text-neutral-500">person</span>
+            <Icon name="person" className="text-[32px] text-neutral-500"  />
           </div>
           <div className="flex flex-col">
             <h2 className="text-[18px] font-bold text-neutral-900 font-['Open_Sans']">Имя Владельца</h2>
@@ -434,14 +435,14 @@ function SettingsProfile() {
           <h2 className="text-[15px] font-medium text-neutral-500 font-['Open_Sans']">Аккаунт</h2>
           <div className="flex flex-col gap-2">
             <button className="flex items-center gap-4 h-[52px] text-left transition-all active:opacity-70 bg-transparent">
-              <span className="material-symbols-rounded text-[28px] text-neutral-700 shrink-0">lock</span>
+              <Icon name="lock" className="text-[28px] text-neutral-700 shrink-0"  />
               <span className="text-[17px] font-semibold text-neutral-900 font-['Open_Sans']">Сменить пароль</span>
             </button>
             <button 
               onClick={() => navigate('/login')}
               className="flex items-center gap-4 h-[52px] text-left transition-all active:opacity-70 bg-transparent"
             >
-              <span className="material-symbols-rounded text-[28px] text-red-500 shrink-0">logout</span>
+              <Icon name="logout" className="text-[28px] text-red-500 shrink-0"  />
               <span className="text-[17px] font-semibold text-red-500 font-['Open_Sans']">Выйти из аккаунта</span>
             </button>
           </div>
@@ -451,7 +452,7 @@ function SettingsProfile() {
           <h2 className="text-[15px] font-medium text-neutral-500 font-['Open_Sans']">Опасная зона</h2>
           <div className="flex flex-col gap-2">
             <button className="flex items-center gap-4 h-[52px] text-left transition-all active:opacity-70 bg-transparent">
-              <span className="material-symbols-rounded text-[28px] text-red-500 shrink-0">delete_forever</span>
+              <Icon name="delete_forever" className="text-[28px] text-red-500 shrink-0"  />
               <span className="text-[17px] font-semibold text-red-500 font-['Open_Sans']">Удалить магазин навсегда</span>
             </button>
           </div>

@@ -1,3 +1,4 @@
+import Icon from './Icon.jsx'
 import React from 'react'
 
 export default function Header({ 
@@ -23,7 +24,7 @@ export default function Header({
             onClick={onLeftClick} 
             className="w-11 h-11 rounded-full bg-white flex items-center justify-center shadow-sm border border-neutral-100 shrink-0 active:scale-95 transition-all"
           >
-            <span className="material-symbols-rounded text-neutral-900">{leftIcon}</span>
+            <Icon name={leftIcon} className="text-neutral-900"  />
           </button>
         )}
         <h1 className="text-[24px] font-semibold text-neutral-900 font-['Open_Sans'] leading-none tracking-tight">
@@ -41,14 +42,14 @@ export default function Header({
               rightIcon === 'person' ? 'rounded-[14px]' : 'rounded-full'
             }`}
           >
-            <span className="material-symbols-rounded text-neutral-900">{rightIcon}</span>
+            <Icon name={rightIcon} className="text-neutral-900"  />
           </button>
         ) : rightIcon && rightLabel ? (
           <button 
             onClick={onRightClick} 
             className="flex items-center gap-2 px-4 h-10 rounded-[12px] bg-neutral-300 text-neutral-900 hover:bg-neutral-300 active:scale-95 transition-all"
           >
-            <span className="material-symbols-rounded text-[20px]">{rightIcon}</span>
+            <Icon name={rightIcon} className="text-[20px]"  />
             <span className="text-[14px] font-semibold font-['Open_Sans']">{rightLabel}</span>
           </button>
         ) : null}

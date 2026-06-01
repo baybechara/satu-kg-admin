@@ -1,10 +1,16 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-
-import Header from '../components/Header'
+import { ArrowLeft, ImagePlus, Plus, Check, Save } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Checkbox } from '@/components/ui/checkbox'
 
 export default function AddProductPage() {
   const navigate = useNavigate()
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+
   const [categories, setCategories] = useState([
     { id: 1, label: 'Все', checked: false },
     { id: 2, label: 'Соковыжималки', checked: true },
@@ -12,18 +18,17 @@ export default function AddProductPage() {
     { id: 4, label: 'Стиральные машины', checked: false },
   ])
 
+  const isFormValid = title.trim().length > 0 && description.trim().length > 0
+
   const toggleCategory = (id) => {
     if (id === 1) {
-      // Логика "Выбрать все"
       const allChecked = !categories.find(c => c.id === 1).checked
       setCategories(prev => prev.map(cat => ({ ...cat, checked: allChecked })))
     } else {
-      // Логика обычного чекбокса
       setCategories(prev => {
         const nextState = prev.map(cat => 
           cat.id === id ? { ...cat, checked: !cat.checked } : cat
         )
-        // Если все остальные выбраны, ставим галочку на "Все"
         const otherCats = nextState.filter(c => c.id !== 1)
         const allOthersSelected = otherCats.every(c => c.checked)
         return nextState.map(cat => cat.id === 1 ? { ...cat, checked: allOthersSelected } : cat)
@@ -31,119 +36,169 @@ export default function AddProductPage() {
     }
   }
 
+  const textareaClasses = "flex min-h-[120px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 resize-y"
+
   return (
-    <div className="flex flex-col min-h-screen bg-neutral-50 pb-32">
+    <div className="flex flex-col min-h-screen bg-neutral-50/50 font-sans pb-[120px]">
       
       {/* Header */}
-      <Header 
-        title="Добавить новый товар" 
-        leftIcon="arrow_back" 
-        onLeftClick={() => navigate(-1)} 
-        variant="sub"
-      />
+      <header className="fixed top-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-md border-b border-neutral-200">
+        <div className="w-full max-w-[820px] mx-auto px-4 sm:px-6 h-[60px] flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={() => navigate(-1)}
+              className="w-9 h-9 rounded-full bg-white flex items-center justify-center border border-neutral-200 shrink-0 active:scale-95 transition-all hover:bg-neutral-50"
+            >
+              <ArrowLeft className="w-5 h-5 text-neutral-700" />
+            </button>
+            <h1 className="text-lg font-semibold tracking-tight text-neutral-900">Добавить товар</h1>
+          </div>
+          <Button 
+            disabled={!isFormValid}
+            onClick={() => navigate('/catalog')} 
+            size="sm"
+            className="h-8 gap-2 font-medium hidden sm:flex bg-neutral-900 hover:bg-neutral-800 text-white"
+          >
+            <Save className="w-4 h-4" />
+            Сохранить
+          </Button>
+        </div>
+      </header>
 
-      <div className="admin-container flex flex-col gap-5 mt-2">
+      {/* Main Content */}
+      <main className="flex-1 w-full max-w-[820px] mx-auto px-4 sm:px-6 pt-[84px] flex flex-col gap-6">
         
         {/* Фотографии */}
-        <section className="form-card">
-          <h2 className="form-label">Выбор фотографии</h2>
-          <div className="grid grid-cols-3 gap-4">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="image-upload-square">
-                <span className="material-symbols-rounded text-neutral-300 text-[32px]">add_a_photo</span>
-              </div>
-            ))}
+        <section className="rounded-xl border bg-card text-card-foreground">
+          <div className="p-6 flex flex-col gap-4">
+            <div className="flex flex-col space-y-1.5">
+              <h3 className="font-semibold leading-none tracking-tight">Фотографии</h3>
+              <p className="text-sm text-muted-foreground">Рекомендуемый размер: 800×800 пкс, до 5 МБ</p>
+            </div>
+            <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="aspect-square bg-muted/50 rounded-md border border-dashed border-input flex items-center justify-center cursor-pointer hover:bg-muted transition-colors">
+                  <ImagePlus className="w-5 h-5 text-muted-foreground" />
+                </div>
+              ))}
+            </div>
           </div>
-          <p className="form-hint">
-            Рекомендуемый размер:<br />
-            800×800 пкс, не более 5 МБ
-          </p>
         </section>
 
         {/* Название */}
-        <section className="form-card">
-          <h2 className="form-label">Название товара<span>*</span></h2>
-          <input 
-            type="text" 
-            className="form-input" 
-            placeholder="Например, красное платье"
-          />
+        <section className="rounded-xl border bg-card text-card-foreground">
+          <div className="p-6 flex flex-col space-y-3">
+            <Label htmlFor="title" className="font-semibold">Название товара <span className="text-red-500">*</span></Label>
+            <Input 
+              id="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Например, красное платье"
+            />
+          </div>
         </section>
 
         {/* Описание */}
-        <section className="form-card">
-          <div className="flex justify-between items-center">
-            <h2 className="form-label">Описание товара<span>*</span></h2>
-            <span className="text-[12px] text-neutral-500">200 символов</span>
+        <section className="rounded-xl border bg-card text-card-foreground">
+          <div className="p-6 flex flex-col space-y-3">
+            <div className="flex justify-between items-center">
+              <Label htmlFor="desc" className="font-semibold">Описание товара <span className="text-red-500">*</span></Label>
+              <span className="text-xs text-muted-foreground">{description.length} / 2000</span>
+            </div>
+            <textarea 
+              id="desc"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className={textareaClasses}
+              placeholder="Напр. Блендер погружной BEKO BKK 3020 HB..."
+            />
           </div>
-          <textarea 
-            className="form-textarea"
-            placeholder="Напр. Блендер погружной BEKO BKK 3020 HB"
-          />
         </section>
 
-        {/* Цена */}
-        <section className="form-card">
-          <h2 className="form-label">Цена товара</h2>
-          <p className="form-hint -mt-2">
-            Если цена не указана, товар отобразится без цены
-          </p>
-          <input 
-            type="text" 
-            className="form-input" 
-            placeholder="Напр. 2500 (в сомах)"
-          />
-        </section>
-
-        {/* Количество */}
-        <section className="form-card">
-          <h2 className="form-label">Количество товаров</h2>
-          <p className="form-hint -mt-2">
-            Укажите количество товара в наличии
-          </p>
-          <input 
-            type="text" 
-            className="form-input" 
-            placeholder="Напр. 10 (в шт.)"
-          />
-        </section>
-
-        {/* Категории */}
-        <section className="form-card">
-          <h2 className="form-label">Выберите категории</h2>
-          <div className="flex flex-col">
-            {categories.map((cat) => (
-              <div 
-                key={cat.id} 
-                onClick={() => toggleCategory(cat.id)}
-                className={`category-checkbox ${cat.checked ? 'checkbox-active' : ''}`}
-              >
-                <div className="checkbox-box">
-                  {cat.checked && <span className="material-symbols-rounded text-white text-[18px]">check</span>}
-                </div>
-                <span className={`text-[16px] font-medium ${cat.checked ? 'text-neutral-900' : 'text-neutral-500'}`}>
-                  {cat.label}
-                </span>
+        {/* Цена и Количество (Grid) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {/* Цена */}
+          <section className="rounded-xl border bg-card text-card-foreground">
+            <div className="p-6 flex flex-col space-y-3">
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="price" className="font-semibold">Цена товара</Label>
+                <p className="text-[13px] text-muted-foreground">Если не указать, будет "Без цены"</p>
               </div>
-            ))}
-          </div>
-          <button className="btn-secondary mt-2">
-            <span className="material-symbols-rounded">add</span>
-            <span>Создать новую категорию</span>
-          </button>
-        </section>
+              <div className="relative">
+                <Input 
+                  id="price"
+                  type="text" 
+                  className="pr-12" 
+                  placeholder="0"
+                />
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">сом</div>
+              </div>
+            </div>
+          </section>
 
-        {/* Кнопка сохранения */}
-        <div className="mt-4">
-          <button 
-            onClick={() => navigate('/catalog')}
-            className="btn-add-product w-full bg-neutral-800 hover:bg-neutral-900 shadow-none"
-          >
-            Сохранить товар
-          </button>
+          {/* Количество */}
+          <section className="rounded-xl border bg-card text-card-foreground">
+            <div className="p-6 flex flex-col space-y-3">
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="qty" className="font-semibold">Количество</Label>
+                <p className="text-[13px] text-muted-foreground">Остаток на складе</p>
+              </div>
+              <div className="relative">
+                <Input 
+                  id="qty"
+                  type="text" 
+                  className="pr-10" 
+                  placeholder="10"
+                />
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">шт</div>
+              </div>
+            </div>
+          </section>
         </div>
 
+        {/* Категории */}
+        <section className="rounded-xl border bg-card text-card-foreground">
+          <div className="p-6 flex flex-col space-y-4">
+            <h3 className="font-semibold leading-none tracking-tight">Категории</h3>
+            <div className="flex flex-col space-y-3 mt-2">
+              {categories.map((cat) => (
+                <div key={cat.id} className="flex items-center space-x-3">
+                  <Checkbox 
+                    id={`category-${cat.id}`}
+                    checked={cat.checked}
+                    onCheckedChange={() => toggleCategory(cat.id)}
+                  />
+                  <Label 
+                    htmlFor={`category-${cat.id}`}
+                    className="text-sm font-medium leading-none cursor-pointer peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    {cat.label}
+                  </Label>
+                </div>
+              ))}
+            </div>
+            
+            <Button variant="outline" className="mt-2 w-full sm:w-fit border-dashed text-muted-foreground hover:text-foreground">
+              <Plus className="w-4 h-4 mr-2" />
+              Создать новую категорию
+            </Button>
+          </div>
+        </section>
+
+      </main>
+
+      {/* Mobile Sticky Footer */}
+      <div className="fixed bottom-0 left-0 w-full bg-background border-t p-4 sm:hidden z-40 pb-[calc(1rem+env(safe-area-inset-bottom))]">
+        <Button 
+          disabled={!isFormValid}
+          onClick={() => navigate('/catalog')} 
+          className="w-full gap-2 bg-neutral-900 hover:bg-neutral-800 text-white"
+        >
+          <Save className="w-4 h-4" />
+          Сохранить товар
+        </Button>
       </div>
+
     </div>
   )
 }

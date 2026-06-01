@@ -1,3 +1,4 @@
+import Icon from './Icon.jsx'
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
@@ -34,7 +35,7 @@ export default function InputField({
       )}
       <div className={`input-wrap ${stateClass}`}>
         {icon && (
-          <span className="material-symbols-rounded input-icon">{icon}</span>
+          <Icon name={icon} className="input-icon"  />
         )}
         <Input
           type={type}
@@ -50,17 +51,13 @@ export default function InputField({
             onClick={onRightIconClick}
             className="text-text-placeholder hover:text-text-secondary transition-colors p-1"
           >
-            <span className="material-symbols-rounded text-[24px]">
-              {rightIcon}
-            </span>
+            <Icon name={rightIcon} className="text-[24px]"  />
           </button>
         )}
       </div>
       {hint && (
         <div className={`input-hint ${state === 'success' ? 'input-hint-success' : 'input-hint-error'}`}>
-          <span className="material-symbols-rounded text-[16px]">
-            {state === 'success' ? 'done_all' : 'error'}
-          </span>
+          <Icon name={state === 'success' ? 'done_all' : 'error'} className="text-[16px]"  />
           {hint}
         </div>
       )}

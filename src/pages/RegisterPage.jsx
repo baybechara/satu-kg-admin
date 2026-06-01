@@ -1,5 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 const GoogleIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -17,79 +20,80 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('')
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-neutral-100 p-4">
-      <div className="w-full max-w-[420px] bg-neutral-0 rounded-[20px] border border-neutral-300 shadow-sm p-7 flex flex-col gap-5">
+    <div className="min-h-screen w-full flex items-center justify-center bg-neutral-100 p-4 font-sans">
+      <div className="w-full max-w-[420px] bg-white rounded-xl border border-neutral-200 shadow-sm p-7 flex flex-col gap-5">
 
         {/* Header */}
-        <div className="flex flex-col gap-1">
-          <h1 className="text-[20px] font-bold leading-snug text-neutral-900">
+        <div className="flex flex-col gap-1.5">
+          <h1 className="text-xl font-bold tracking-tight text-neutral-900">
             Создайте аккаунт
           </h1>
-          <p className="text-[14px] text-neutral-500 leading-normal">
+          <p className="text-sm text-muted-foreground">
             Зарегистрируйтесь, чтобы начать продавать
           </p>
         </div>
 
         {/* Fields */}
         <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-1.5">
-            <label className="text-[13px] font-semibold text-neutral-700">Ваше имя</label>
-            <input
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="name" className="font-semibold text-neutral-800">Ваше имя</Label>
+            <Input
+              id="name"
               type="text"
               placeholder="Как вас зовут?"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="h-[44px] w-full bg-white border border-neutral-300 rounded-[10px] px-3 text-[14px] text-neutral-800 placeholder:text-neutral-400 outline-none transition-all focus:border-neutral-400 focus:bg-neutral-50"
             />
           </div>
 
-          <div className="flex flex-col gap-1.5">
-            <label className="text-[13px] font-semibold text-neutral-700">Номер телефона</label>
-            <input
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="phone" className="font-semibold text-neutral-800">Номер телефона</Label>
+            <Input
+              id="phone"
               type="tel"
               placeholder="+996 (___) ___-___"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="h-[44px] w-full bg-white border border-neutral-300 rounded-[10px] px-3 text-[14px] text-neutral-800 placeholder:text-neutral-400 outline-none transition-all focus:border-neutral-400 focus:bg-neutral-50"
             />
           </div>
 
-          <div className="flex flex-col gap-1.5">
-            <label className="text-[13px] font-semibold text-neutral-700">Пароль</label>
-            <input
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="password" className="font-semibold text-neutral-800">Пароль</Label>
+            <Input
+              id="password"
               type="password"
               placeholder="Придумайте пароль"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="h-[44px] w-full bg-white border border-neutral-300 rounded-[10px] px-3 text-[14px] text-neutral-800 placeholder:text-neutral-400 outline-none transition-all focus:border-neutral-400 focus:bg-neutral-50"
             />
           </div>
         </div>
 
         {/* Buttons */}
         <div className="flex flex-col gap-2.5 mt-1">
-          <button
+          <Button
             onClick={() => navigate('/onboarding')}
-            className="w-full h-[44px] bg-neutral-900 hover:bg-neutral-800 active:scale-[0.98] text-white text-[14px] font-semibold rounded-[10px] transition-all"
+            className="w-full"
           >
             Зарегистрироваться
-          </button>
+          </Button>
 
-          <button
+          <Button
+            variant="outline"
             onClick={() => {}}
-            className="w-full h-[44px] bg-white hover:bg-neutral-50 active:scale-[0.98] border border-neutral-300 text-neutral-800 text-[14px] font-semibold rounded-[10px] transition-all flex items-center justify-center gap-2"
+            className="w-full"
           >
             <GoogleIcon />
             Регистрация через Google
-          </button>
+          </Button>
         </div>
 
         {/* Footer */}
-        <p className="text-center text-[13px] text-neutral-500">
+        <p className="text-center text-sm text-muted-foreground mt-2">
           Уже есть аккаунт?{' '}
           <button
             onClick={() => navigate('/login')}
-            className="font-semibold text-neutral-800 underline underline-offset-2 hover:text-neutral-600 transition-colors"
+            className="font-semibold text-neutral-900 hover:underline underline-offset-2 transition-all"
           >
             Войти
           </button>

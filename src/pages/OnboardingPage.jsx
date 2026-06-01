@@ -1,15 +1,15 @@
+import Icon from '../components/Icon.jsx'
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import ScheduleCard from '../components/ScheduleCard'
 import Toggle from '../components/Toggle'
 import Modal from '../components/Modal'
 import { Checkbox } from '@/components/ui/checkbox'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 const TOTAL_STEPS = 9
-
-// ─── Shared input style ───────────────────────────────────────────────────────
-const inputCls =
-  'h-[44px] w-full bg-white border border-neutral-300 rounded-[10px] px-3 text-[14px] text-neutral-800 placeholder:text-neutral-400 outline-none transition-all focus:border-neutral-400 focus:bg-neutral-50'
 
 // ─── Field wrapper ────────────────────────────────────────────────────────────
 function Field({ label, required, children, right }) {
@@ -17,9 +17,9 @@ function Field({ label, required, children, right }) {
     <div className="flex flex-col gap-1.5">
       {label && (
         <div className="flex items-center justify-between">
-          <label className="text-[13px] font-semibold text-neutral-700">
+          <Label className="font-semibold text-neutral-800">
             {label}{required && <span className="text-red-500 ml-0.5">*</span>}
-          </label>
+          </Label>
           {right}
         </div>
       )}
@@ -48,7 +48,7 @@ function ProgressBar({ current, total }) {
 function SwitchRow({ label, enabled, onChange }) {
   return (
     <div className="flex items-center justify-between py-2.5 border-b border-neutral-100 last:border-0">
-      <span className="text-[14px] text-neutral-700">{label}</span>
+      <span className="text-sm font-medium text-neutral-700">{label}</span>
       <Toggle enabled={enabled} onChange={onChange} />
     </div>
   )
@@ -57,22 +57,22 @@ function SwitchRow({ label, enabled, onChange }) {
 // ─── Add button ───────────────────────────────────────────────────────────────
 function AddButton({ onClick, children }) {
   return (
-    <button
-      type="button"
+    <Button
+      variant="outline"
       onClick={onClick}
-      className="w-full h-[40px] border border-dashed border-neutral-300 rounded-[10px] text-[13px] font-semibold text-neutral-500 hover:border-neutral-400 hover:text-neutral-700 transition-all flex items-center justify-center gap-2"
+      className="w-full border-dashed text-muted-foreground hover:text-foreground"
     >
-      <span className="material-symbols-rounded text-[18px]">add</span>
+      <Icon name="add" className="text-[18px] mr-2"  />
       {children}
-    </button>
+    </Button>
   )
 }
 
 // ─── Social input ─────────────────────────────────────────────────────────────
 function SocialInput({ logo, placeholder, value, onChange }) {
   return (
-    <div className="flex items-center border border-neutral-300 rounded-[10px] overflow-hidden focus-within:border-neutral-400 focus-within:bg-neutral-50 transition-all">
-      <div className="flex items-center justify-center w-[44px] h-[44px] shrink-0 border-r border-neutral-200">
+    <div className="flex items-center border border-input rounded-md overflow-hidden focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 transition-all">
+      <div className="flex items-center justify-center w-10 h-10 shrink-0 border-r border-input bg-muted/50">
         {logo}
       </div>
       <input
@@ -80,7 +80,7 @@ function SocialInput({ logo, placeholder, value, onChange }) {
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className="flex-1 h-[44px] px-3 text-[14px] text-neutral-800 placeholder:text-neutral-400 outline-none bg-transparent"
+        className="flex h-10 w-full bg-background px-3 py-2 text-sm placeholder:text-muted-foreground outline-none disabled:cursor-not-allowed disabled:opacity-50"
       />
     </div>
   )
@@ -148,11 +148,11 @@ export default function OnboardingPage() {
       case 0: return (
         <div className="flex flex-col gap-4">
           <Field label="Адрес магазина (домен)" required>
-            <input className={inputCls} type="text" placeholder="mystore" value={domain} onChange={e => setDomain(e.target.value)} />
-            <p className="text-[12px] text-neutral-400 mt-0.5">mystore.satu.kg</p>
+            <Input type="text" placeholder="mystore" value={domain} onChange={e => setDomain(e.target.value)} />
+            <p className="text-[12px] text-muted-foreground mt-0.5">mystore.satu.kg</p>
           </Field>
           <Field label="Название магазина" required>
-            <input className={inputCls} type="text" placeholder="Напр. Beko Kyrgyzstan" value={storeName} onChange={e => setStoreName(e.target.value)} />
+            <Input type="text" placeholder="Напр. Beko Kyrgyzstan" value={storeName} onChange={e => setStoreName(e.target.value)} />
           </Field>
         </div>
       )
@@ -162,13 +162,13 @@ export default function OnboardingPage() {
           <Field
             label="Описание"
             required
-            right={<span className="text-[12px] text-neutral-400">{200 - description.length} симв.</span>}
+            right={<span className="text-[12px] text-muted-foreground">{200 - description.length} симв.</span>}
           >
             <textarea
               value={description}
               onChange={e => setDescription(e.target.value.slice(0, 200))}
               placeholder="Напр. Магазин бытовой техники с доставкой по Бишкеку"
-              className="w-full h-28 bg-white border border-neutral-300 rounded-[10px] px-3 py-2.5 text-[14px] text-neutral-800 placeholder:text-neutral-400 outline-none transition-all focus:border-neutral-400 focus:bg-neutral-50 resize-none"
+              className="flex min-h-[120px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 resize-y"
             />
           </Field>
         </div>
@@ -176,9 +176,9 @@ export default function OnboardingPage() {
 
       case 2: return (
         <div className="flex flex-col gap-3">
-          <div className="w-full aspect-square max-h-[180px] border-2 border-dashed border-neutral-200 rounded-[14px] flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-neutral-300 hover:bg-neutral-50 transition-all">
-            <span className="material-symbols-rounded text-[36px] text-neutral-300">add_a_photo</span>
-            <span className="text-[13px] text-neutral-400">Нажмите, чтобы выбрать логотип</span>
+          <div className="w-full aspect-square max-h-[180px] border-2 border-dashed border-input rounded-[14px] flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-neutral-300 hover:bg-neutral-50 transition-all text-muted-foreground">
+            <Icon name="add_a_photo" className="text-[36px]"  />
+            <span className="text-[13px]">Нажмите, чтобы выбрать логотип</span>
           </div>
         </div>
       )
@@ -186,10 +186,10 @@ export default function OnboardingPage() {
       case 3: return (
         <div className="flex flex-col gap-4">
           <Field label="Основной номер WhatsApp" required>
-            <input className={inputCls} type="tel" placeholder="+996 (___) ___-___" value={whatsapp} onChange={e => setWhatsapp(e.target.value)} />
+            <Input type="tel" placeholder="+996 (___) ___-___" value={whatsapp} onChange={e => setWhatsapp(e.target.value)} />
           </Field>
           <Field label="Резервный номер (необязательно)">
-            <input className={inputCls} type="tel" placeholder="+996 (___) ___-___" value={whatsappBackup} onChange={e => setWhatsappBackup(e.target.value)} />
+            <Input type="tel" placeholder="+996 (___) ___-___" value={whatsappBackup} onChange={e => setWhatsappBackup(e.target.value)} />
           </Field>
         </div>
       )
@@ -197,11 +197,11 @@ export default function OnboardingPage() {
       case 4: return (
         <div className="flex flex-col gap-4">
           <Field label="Номер телефона" required>
-            <input className={inputCls} type="tel" placeholder="+996 (___) ___-___" value={phone} onChange={e => setPhone(e.target.value)} />
+            <Input type="tel" placeholder="+996 (___) ___-___" value={phone} onChange={e => setPhone(e.target.value)} />
           </Field>
           {phoneBackups.map((val, idx) => (
             <Field key={idx} label={`Резервный номер ${idx + 1}`}>
-              <input className={inputCls} type="tel" placeholder="+996 (___) ___-___" value={val} onChange={e => {
+              <Input type="tel" placeholder="+996 (___) ___-___" value={val} onChange={e => {
                 const nb = [...phoneBackups]; nb[idx] = e.target.value; setPhoneBackups(nb)
               }} />
             </Field>
@@ -216,7 +216,7 @@ export default function OnboardingPage() {
 
       case 5: return (
         <Field label="Адрес магазина" required>
-          <input className={inputCls} type="text" placeholder="г. Бишкек, ул. ..." value={address} onChange={e => setAddress(e.target.value)} />
+          <Input type="text" placeholder="г. Бишкек, ул. ..." value={address} onChange={e => setAddress(e.target.value)} />
         </Field>
       )
 
@@ -241,14 +241,14 @@ export default function OnboardingPage() {
 
           {/* ── Способы доставки ── */}
           <div className="flex flex-col gap-2">
-            <p className="text-[11px] font-semibold text-neutral-400 uppercase tracking-widest">Способы доставки</p>
+            <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-widest">Способы доставки</p>
 
             {/* Самовывоз */}
             <label
-              className={`flex items-start gap-3 p-3.5 rounded-[12px] border cursor-pointer transition-all ${
+              className={`flex items-start gap-3 p-3.5 rounded-xl border cursor-pointer transition-all ${
                 deliveryPickup
                   ? 'border-green-300 bg-green-50/40'
-                  : 'border-neutral-200 bg-white hover:border-neutral-300'
+                  : 'border-input bg-card hover:border-neutral-300'
               }`}
             >
               <Checkbox
@@ -257,20 +257,20 @@ export default function OnboardingPage() {
                 className="mt-0.5 shrink-0"
               />
               <div className="flex flex-col gap-0.5 flex-1">
-                <span className="text-[14px] font-semibold text-neutral-800">Самовывоз из магазина</span>
-                <span className="text-[12px] text-neutral-400">
+                <span className="text-sm font-semibold text-neutral-800">Самовывоз из магазина</span>
+                <span className="text-xs text-muted-foreground">
                   {address ? address : 'Покупатель заберёт заказ сам'}
                 </span>
               </div>
-              <span className="material-symbols-rounded text-[22px] text-neutral-300 shrink-0">store</span>
+              <Icon name="store" className="text-[22px] text-muted-foreground shrink-0"  />
             </label>
 
             {/* Курьер */}
             <label
-              className={`flex items-start gap-3 p-3.5 rounded-[12px] border cursor-pointer transition-all ${
+              className={`flex items-start gap-3 p-3.5 rounded-xl border cursor-pointer transition-all ${
                 deliveryCourier
                   ? 'border-green-300 bg-green-50/40'
-                  : 'border-neutral-200 bg-white hover:border-neutral-300'
+                  : 'border-input bg-card hover:border-neutral-300'
               }`}
             >
               <Checkbox
@@ -280,12 +280,12 @@ export default function OnboardingPage() {
               />
               <div className="flex flex-col gap-2 flex-1">
                 <div className="flex flex-col gap-0.5">
-                  <span className="text-[14px] font-semibold text-neutral-800">Доставка курьером</span>
-                  <span className="text-[12px] text-neutral-400">Укажите стоимость доставки</span>
+                  <span className="text-sm font-semibold text-neutral-800">Доставка курьером</span>
+                  <span className="text-xs text-muted-foreground">Укажите стоимость доставки</span>
                 </div>
                 {deliveryCourier && (
                   <div
-                    className="flex items-center border border-neutral-200 rounded-[8px] overflow-hidden bg-white"
+                    className="flex items-center border border-input rounded-md overflow-hidden bg-background"
                     onClick={e => e.preventDefault()}
                   >
                     <input
@@ -293,26 +293,26 @@ export default function OnboardingPage() {
                       placeholder="0"
                       value={deliveryCourierCost}
                       onChange={e => setDeliveryCourierCost(e.target.value)}
-                      className="flex-1 h-[36px] px-2.5 text-[14px] text-neutral-800 placeholder:text-neutral-300 outline-none bg-transparent"
+                      className="flex-1 h-9 px-2.5 text-sm text-neutral-800 placeholder:text-muted-foreground outline-none bg-transparent"
                     />
-                    <span className="text-[13px] text-neutral-400 pr-3 shrink-0">сом</span>
+                    <span className="text-xs text-muted-foreground pr-3 shrink-0">сом</span>
                   </div>
                 )}
               </div>
-              <span className="material-symbols-rounded text-[22px] text-neutral-300 shrink-0">local_shipping</span>
+              <Icon name="local_shipping" className="text-[22px] text-muted-foreground shrink-0"  />
             </label>
           </div>
 
           {/* ── Ценовые модификаторы ── */}
           <div className="flex flex-col gap-2">
-            <p className="text-[11px] font-semibold text-neutral-400 uppercase tracking-widest">Ценовые правила</p>
+            <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-widest">Ценовые правила</p>
 
             {/* Фиксированная цена */}
             <label
-              className={`flex items-start gap-3 p-3.5 rounded-[12px] border cursor-pointer transition-all ${
+              className={`flex items-start gap-3 p-3.5 rounded-xl border cursor-pointer transition-all ${
                 deliveryFixed
                   ? 'border-green-300 bg-green-50/40'
-                  : 'border-neutral-200 bg-white hover:border-neutral-300'
+                  : 'border-input bg-card hover:border-neutral-300'
               }`}
             >
               <Checkbox
@@ -322,12 +322,12 @@ export default function OnboardingPage() {
               />
               <div className="flex flex-col gap-2 flex-1">
                 <div className="flex flex-col gap-0.5">
-                  <span className="text-[14px] font-semibold text-neutral-800">Фиксированная цена на всё</span>
-                  <span className="text-[12px] text-neutral-400">Одна цена доставки для всех товаров</span>
+                  <span className="text-sm font-semibold text-neutral-800">Фиксированная цена на всё</span>
+                  <span className="text-xs text-muted-foreground">Одна цена доставки для всех товаров</span>
                 </div>
                 {deliveryFixed && (
                   <div
-                    className="flex items-center border border-neutral-200 rounded-[8px] overflow-hidden bg-white"
+                    className="flex items-center border border-input rounded-md overflow-hidden bg-background"
                     onClick={e => e.preventDefault()}
                   >
                     <input
@@ -335,21 +335,21 @@ export default function OnboardingPage() {
                       placeholder="0"
                       value={deliveryFixedCost}
                       onChange={e => setDeliveryFixedCost(e.target.value)}
-                      className="flex-1 h-[36px] px-2.5 text-[14px] text-neutral-800 placeholder:text-neutral-300 outline-none bg-transparent"
+                      className="flex-1 h-9 px-2.5 text-sm text-neutral-800 placeholder:text-muted-foreground outline-none bg-transparent"
                     />
-                    <span className="text-[13px] text-neutral-400 pr-3 shrink-0">сом</span>
+                    <span className="text-xs text-muted-foreground pr-3 shrink-0">сом</span>
                   </div>
                 )}
               </div>
-              <span className="material-symbols-rounded text-[22px] text-neutral-300 shrink-0">payments</span>
+              <Icon name="payments" className="text-[22px] text-muted-foreground shrink-0"  />
             </label>
 
             {/* Бесплатно от суммы */}
             <label
-              className={`flex items-start gap-3 p-3.5 rounded-[12px] border cursor-pointer transition-all ${
+              className={`flex items-start gap-3 p-3.5 rounded-xl border cursor-pointer transition-all ${
                 deliveryFreeLimit
                   ? 'border-green-300 bg-green-50/40'
-                  : 'border-neutral-200 bg-white hover:border-neutral-300'
+                  : 'border-input bg-card hover:border-neutral-300'
               }`}
             >
               <Checkbox
@@ -359,12 +359,12 @@ export default function OnboardingPage() {
               />
               <div className="flex flex-col gap-2 flex-1">
                 <div className="flex flex-col gap-0.5">
-                  <span className="text-[14px] font-semibold text-neutral-800">Бесплатно от суммы</span>
-                  <span className="text-[12px] text-neutral-400">Доставка бесплатна при заказе выше порога</span>
+                  <span className="text-sm font-semibold text-neutral-800">Бесплатно от суммы</span>
+                  <span className="text-xs text-muted-foreground">Доставка бесплатна при заказе выше порога</span>
                 </div>
                 {deliveryFreeLimit && (
                   <div
-                    className="flex items-center border border-neutral-200 rounded-[8px] overflow-hidden bg-white"
+                    className="flex items-center border border-input rounded-md overflow-hidden bg-background"
                     onClick={e => e.preventDefault()}
                   >
                     <input
@@ -372,13 +372,13 @@ export default function OnboardingPage() {
                       placeholder="0"
                       value={deliveryFreeLimitThreshold}
                       onChange={e => setDeliveryFreeLimitThreshold(e.target.value)}
-                      className="flex-1 h-[36px] px-2.5 text-[14px] text-neutral-800 placeholder:text-neutral-300 outline-none bg-transparent"
+                      className="flex-1 h-9 px-2.5 text-sm text-neutral-800 placeholder:text-muted-foreground outline-none bg-transparent"
                     />
-                    <span className="text-[13px] text-neutral-400 pr-3 shrink-0">сом</span>
+                    <span className="text-xs text-muted-foreground pr-3 shrink-0">сом</span>
                   </div>
                 )}
               </div>
-              <span className="material-symbols-rounded text-[22px] text-neutral-300 shrink-0">redeem</span>
+              <Icon name="redeem" className="text-[22px] text-muted-foreground shrink-0"  />
             </label>
           </div>
 
@@ -406,7 +406,7 @@ export default function OnboardingPage() {
           </Field>
           {customLinks.map((val, idx) => (
             <Field key={idx} label={`Другой сайт ${idx + 1}`}>
-              <input className={inputCls} type="url" placeholder="https://yoursite.com" value={val} onChange={e => {
+              <Input type="url" placeholder="https://yoursite.com" value={val} onChange={e => {
                 const nl = [...customLinks]; nl[idx] = e.target.value; setCustomLinks(nl)
               }} />
             </Field>
@@ -424,32 +424,32 @@ export default function OnboardingPage() {
   }
 
   return (
-    <div className="min-h-screen w-full flex items-start justify-center bg-neutral-100 p-4 py-8">
-      <div className="w-full max-w-[480px] bg-white rounded-[20px] border border-neutral-300 shadow-sm flex flex-col gap-0 overflow-hidden">
+    <div className="min-h-screen w-full flex items-start justify-center bg-neutral-100 p-4 py-8 font-sans">
+      <div className="w-full max-w-[480px] bg-card text-card-foreground rounded-xl border border-border shadow-sm flex flex-col gap-0 overflow-hidden">
 
         {/* Progress */}
-        <div className="px-6 pt-5 pb-4 border-b border-neutral-100">
+        <div className="px-6 pt-5 pb-4 border-b border-border">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-[12px] font-semibold text-neutral-400 uppercase tracking-wide">
+            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
               Шаг {step + 1} из {TOTAL_STEPS}
             </span>
             <button
               onClick={() => setIsExitModalOpen(true)}
-              className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-neutral-100 transition-colors text-neutral-400 hover:text-neutral-700"
+              className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
             >
-              <span className="material-symbols-rounded text-[18px]">close</span>
+              <Icon name="close" className="text-[18px]"  />
             </button>
           </div>
           <ProgressBar current={step} total={TOTAL_STEPS} />
         </div>
 
         {/* Header */}
-        <div className="px-6 pt-5 pb-1">
-          <h1 className="text-[18px] font-bold text-neutral-900 leading-snug">
+        <div className="px-6 pt-5 pb-1 flex flex-col space-y-1.5">
+          <h1 className="text-lg font-semibold tracking-tight leading-none">
             {steps[step]?.title}
           </h1>
           {steps[step]?.subtitle && (
-            <p className="text-[13px] text-neutral-500 mt-1 leading-normal">
+            <p className="text-sm text-muted-foreground">
               {steps[step].subtitle}
             </p>
           )}
@@ -461,20 +461,21 @@ export default function OnboardingPage() {
         </div>
 
         {/* Footer buttons */}
-        <div className="px-6 pb-6 flex flex-col gap-2.5 border-t border-neutral-100 pt-4">
-          <button
+        <div className="px-6 pb-6 flex flex-col gap-2.5 border-t border-border pt-4">
+          <Button
             onClick={handleNext}
-            className="w-full h-[44px] bg-neutral-900 hover:bg-neutral-800 active:scale-[0.98] text-white text-[14px] font-semibold rounded-[10px] transition-all"
+            className="w-full"
           >
             {step === TOTAL_STEPS - 1 ? 'Открыть мой магазин' : 'Далее'}
-          </button>
+          </Button>
           {step > 0 && (
-            <button
+            <Button
+              variant="outline"
               onClick={handleBack}
-              className="w-full h-[44px] bg-white hover:bg-neutral-50 active:scale-[0.98] border border-neutral-300 text-neutral-700 text-[14px] font-semibold rounded-[10px] transition-all"
+              className="w-full"
             >
               Назад
-            </button>
+            </Button>
           )}
         </div>
 

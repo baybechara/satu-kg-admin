@@ -1,3 +1,4 @@
+import Icon from '../components/Icon.jsx'
 import { useNavigate } from 'react-router-dom'
 import Button from '../components/Button'
 import Header from '../components/Header'
@@ -31,13 +32,13 @@ export default function SharePage() {
           <div className="flex flex-col gap-3">
             <button className="w-full bg-blue-50 border border-blue-600 text-blue-600 flex items-center justify-center gap-2 h-[52px] rounded-[16px] transition-all active:scale-[0.98]">
               <span className="text-[16px] font-semibold font-['Open_Sans']">mystore.satu.kg</span>
-              <span className="material-symbols-rounded text-[20px]">arrow_outward</span>
+              <Icon name="arrow_outward" className="text-[20px]"  />
             </button>
             <button 
               onClick={copyLink}
               className="w-full bg-white border border-neutral-300 text-neutral-900 flex items-center justify-center gap-2 h-[52px] rounded-[16px] transition-all active:scale-[0.98]"
             >
-              <span className="material-symbols-rounded text-[24px] text-neutral-700">content_copy</span>
+              <Icon name="content_copy" className="text-[24px] text-neutral-700"  />
               <span className="text-[16px] font-semibold font-['Open_Sans']">Копировать ссылку</span>
             </button>
           </div>
@@ -81,7 +82,7 @@ export default function SharePage() {
             Распечатайте и разместите у кассы — покупатели смогут сканировать и сразу попасть в ваш магазин
           </p>
           <button className="w-full bg-white border border-neutral-300 text-neutral-900 flex items-center justify-center gap-2 h-[52px] rounded-[16px] transition-all active:scale-[0.98] mt-1">
-            <span className="material-symbols-rounded text-[24px] text-neutral-700">print</span>
+            <Icon name="print" className="text-[24px] text-neutral-700"  />
             <span className="text-[16px] font-semibold font-['Open_Sans']">Распечатать QR-код</span>
           </button>
         </div>

@@ -1,51 +1,47 @@
 import { useNavigate, useLocation } from 'react-router-dom'
+import { LayoutGrid, ShoppingBag, Settings, Share } from 'lucide-react'
 
 export default function BottomNav() {
   const navigate = useNavigate()
   const location = useLocation()
 
   const menuItems = [
-    { id: 'catalog', label: 'Каталог', icon: 'grid_view', path: '/catalog' },
-    { id: 'orders', label: 'Заказы', icon: 'shopping_bag', path: '/orders' },
-    { id: 'settings', label: 'Настройки', icon: 'settings', path: '/settings' },
-    { id: 'share', label: 'Поделиться', icon: 'ios_share', path: '/share' },
+    { id: 'catalog', label: 'Каталог', icon: LayoutGrid, path: '/catalog' },
+    { id: 'orders', label: 'Заказы', icon: ShoppingBag, path: '/orders' },
+    { id: 'settings', label: 'Настройки', icon: Settings, path: '/settings' },
+    { id: 'share', label: 'Поделиться', icon: Share, path: '/share' },
   ]
 
   return (
-    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[820px] h-[84px] bg-white border-t border-neutral-100 flex items-center justify-around px-4 z-50 shadow-[0px_-4px_20px_rgba(0,0,0,0.03)]">
-      {menuItems.map((item) => {
-        const isActive = location.pathname === item.path 
-          || (item.id === 'catalog' && location.pathname.startsWith('/add-product'))
-          || (item.id === 'settings' && location.pathname.startsWith('/settings'))
-        
-        return (
-          <button
-            key={item.id}
-            onClick={() => navigate(item.path)}
-            className="flex flex-col items-center gap-1.5 min-w-[80px] transition-all outline-none"
-          >
-            <div className={`transition-all duration-300 ${isActive ? 'text-neutral-900' : 'text-neutral-500'}`}>
-              <span 
-                className="material-symbols-rounded text-[30px] block transition-all"
-                style={{ 
-                  fontVariationSettings: isActive 
-                    ? "'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24" 
-                    : "'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24" 
-                }}
-              >
-                {item.icon}
+    <div className="fixed bottom-0 left-0 w-full h-[64px] sm:h-[72px] bg-white/90 backdrop-blur-md border-t border-neutral-200 flex justify-center z-50 shadow-sm">
+      <div className="w-full max-w-[820px] flex items-center justify-around px-2 sm:px-4">
+        {menuItems.map((item) => {
+          const isActive = location.pathname === item.path 
+            || (item.id === 'catalog' && location.pathname.startsWith('/add-product'))
+            || (item.id === 'settings' && location.pathname.startsWith('/settings'))
+          
+          return (
+            <button
+              key={item.id}
+              onClick={() => navigate(item.path)}
+              className="flex flex-col items-center justify-center gap-1 w-16 h-full transition-all outline-none group"
+            >
+              <div className={`transition-all duration-200 flex items-center justify-center w-8 h-8 rounded-full ${isActive ? 'bg-neutral-100 text-neutral-900' : 'text-neutral-500 group-hover:bg-neutral-50'}`}>
+                <item.icon 
+                  className={`w-[20px] h-[20px] transition-all ${isActive ? 'stroke-[2.5px]' : 'stroke-[2px]'}`}
+                />
+              </div>
+              <span className={`text-[10px] transition-all tracking-tight ${
+                isActive 
+                  ? 'font-bold text-neutral-900' 
+                  : 'font-medium text-neutral-500'
+              }`}>
+                {item.label}
               </span>
-            </div>
-            <span className={`text-[12px] transition-all tracking-tight ${
-              isActive 
-                ? 'font-bold text-neutral-900' 
-                : 'font-medium text-neutral-500'
-            }`}>
-              {item.label}
-            </span>
-          </button>
-        )
-      })}
+            </button>
+          )
+        })}
+      </div>
     </div>
   )
 }

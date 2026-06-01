@@ -1,3 +1,4 @@
+import Icon from './Icon.jsx'
 import { Button as ShadcnButton } from "@/components/ui/button"
 
 export default function IconButton({ 
@@ -15,7 +16,7 @@ export default function IconButton({
       onClick={onClick}
       className={`icon-btn ${roundedClass} ${className}`}
     >
-      <span className="material-symbols-rounded text-[22px]">{icon}</span>
+      <Icon name={icon} className="text-[22px]"  />
     </ShadcnButton>
   )
 }

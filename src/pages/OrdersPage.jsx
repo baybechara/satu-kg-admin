@@ -1,3 +1,4 @@
+import Icon from '../components/Icon.jsx'
 import { useState } from 'react'
 import Header from '../components/Header'
 
@@ -87,7 +88,7 @@ export default function OrdersPage() {
           <div className="orders-empty-state">
             <div className="orders-empty-card">
               <div className="orders-empty-icon">
-                <span className="material-symbols-rounded" style={{fontSize: '28px'}}>info</span>
+                <Icon name="info" className="w-7 h-7" />
               </div>
               <p className="orders-empty-text">
                 Новых заказов пока нет.<br />
@@ -117,9 +118,7 @@ export default function OrdersPage() {
                     
                     <div className="flex flex-col items-end justify-center gap-1">
                       <button className="orders-expand-btn">
-                        <span className="material-symbols-rounded">
-                          {isExpanded ? 'expand_less' : 'expand_more'}
-                        </span>
+                        <Icon name={isExpanded ? 'expand_less' : 'expand_more'} className=""  />
                       </button>
                     </div>
                   </div>
@@ -132,14 +131,14 @@ export default function OrdersPage() {
                       <div className="orders-section-title">
                         <span>Информация о заказе</span>
                         <button className="orders-copy-btn">
-                          <span className="material-symbols-rounded" style={{fontSize: '20px'}}>content_copy</span>
+                          <Icon name="content_copy" className="w-5 h-5" />
                         </button>
                       </div>
                       
                       <div className="orders-info-box">
                         <div className="orders-info-row">
                           <div className="orders-info-icon">
-                            <span className="material-symbols-rounded">call</span>
+                            <Icon name="call" className=""  />
                           </div>
                           <div className="flex-1">
                             <div className="orders-info-label">Телефон покупателя:</div>
@@ -148,7 +147,7 @@ export default function OrdersPage() {
                         </div>
                         <div className="orders-info-row">
                           <div className="orders-info-icon">
-                            <span className="material-symbols-rounded">inventory_2</span>
+                            <Icon name="inventory_2" className=""  />
                           </div>
                           <div className="flex-1">
                             <div className="orders-info-label">Способ получения:</div>
@@ -158,7 +157,7 @@ export default function OrdersPage() {
                         {order.comment && (
                           <div className="orders-info-row">
                             <div className="orders-info-icon">
-                              <span className="material-symbols-rounded">chat</span>
+                              <Icon name="chat" className=""  />
                             </div>
                             <div className="flex-1">
                               <div className="orders-info-label">Комментарий покупателя:</div>
@@ -199,11 +198,11 @@ export default function OrdersPage() {
                           <div className="w-full h-[24px]"></div>
                           <div className="orders-actions flex gap-3">
                             <button className="orders-btn-cancel flex-1 flex items-center justify-center gap-1.5">
-                            <span className="material-symbols-rounded text-[20px]">close</span>
+                            <Icon name="close" className="text-[20px]"  />
                             <span>Отменить</span>
                           </button>
                           <button className="orders-btn-complete flex-1 flex items-center justify-center gap-1.5">
-                            <span className="material-symbols-rounded text-[20px]">check</span>
+                            <Icon name="check" className="text-[20px]"  />
                             <span>Выполнен</span>
                           </button>
                         </div>
