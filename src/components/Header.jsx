@@ -1,5 +1,6 @@
-import Icon from './Icon.jsx'
 import React from 'react'
+import Icon from './Icon.jsx'
+import { Button } from '@/components/ui/button'
 
 export default function Header({ 
   title, 
@@ -11,49 +12,52 @@ export default function Header({
   rightNode,
   sticky = true,
   className = '',
-  variant = 'main' // 'main' | 'sub' (left for compatibility)
+  variant = 'main'
 }) {
   return (
-    <header 
-      className={`w-full max-w-[820px] mx-auto flex items-center justify-between bg-neutral-50 ${sticky ? 'sticky top-0 z-30' : ''} ${className}`}
-      style={{ padding: '20px' }}
-    >
-      <div className="flex items-center gap-4">
-        {leftIcon && (
-          <button 
-            onClick={onLeftClick} 
-            className="w-11 h-11 rounded-full bg-white flex items-center justify-center shadow-sm border border-neutral-100 shrink-0 active:scale-95 transition-all"
-          >
-            <Icon name={leftIcon} className="text-neutral-900"  />
-          </button>
-        )}
-        <h1 className="text-[24px] font-semibold text-neutral-900 font-['Open_Sans'] leading-none tracking-tight">
-          {title}
-        </h1>
-      </div>
+    <>
+      <header className={`fixed top-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-md border-b border-neutral-200 ${className}`}>
+        <div className="w-full max-w-[820px] mx-auto px-4 sm:px-6 h-[60px] flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            {leftIcon && (
+              <button 
+                onClick={onLeftClick} 
+                className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-neutral-100 transition-colors"
+              >
+                <Icon name={leftIcon} className="text-[20px] text-neutral-600" />
+              </button>
+            )}
+            <h1 className="text-[20px] font-bold tracking-tight text-neutral-900">
+              {title}
+            </h1>
+          </div>
 
-      <div>
-        {rightNode ? (
-          rightNode
-        ) : rightIcon && !rightLabel ? (
-          <button 
-            onClick={onRightClick} 
-            className={`w-11 h-11 bg-white flex items-center justify-center shadow-sm border border-neutral-100 shrink-0 active:scale-95 transition-all ${
-              rightIcon === 'person' ? 'rounded-[14px]' : 'rounded-full'
-            }`}
-          >
-            <Icon name={rightIcon} className="text-neutral-900"  />
-          </button>
-        ) : rightIcon && rightLabel ? (
-          <button 
-            onClick={onRightClick} 
-            className="flex items-center gap-2 px-4 h-10 rounded-[12px] bg-neutral-300 text-neutral-900 hover:bg-neutral-300 active:scale-95 transition-all"
-          >
-            <Icon name={rightIcon} className="text-[20px]"  />
-            <span className="text-[14px] font-semibold font-['Open_Sans']">{rightLabel}</span>
-          </button>
-        ) : null}
-      </div>
-    </header>
+          <div>
+            {rightNode ? (
+              rightNode
+            ) : rightIcon && !rightLabel ? (
+              <button 
+                onClick={onRightClick} 
+                className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-neutral-100 transition-colors"
+              >
+                <Icon name={rightIcon} className="text-[20px] text-neutral-600" />
+              </button>
+            ) : rightIcon && rightLabel ? (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={onRightClick}
+                className="h-8 gap-2 font-medium"
+              >
+                <Icon name={rightIcon} className="text-[16px]" />
+                {rightLabel}
+              </Button>
+            ) : null}
+          </div>
+        </div>
+      </header>
+      {/* Spacer to prevent content from hiding behind fixed header */}
+      <div className="h-[60px] shrink-0 w-full" />
+    </>
   )
 }

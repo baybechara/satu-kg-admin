@@ -39,7 +39,7 @@ export default function AddProductPage() {
   const textareaClasses = "flex min-h-[120px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 resize-y"
 
   return (
-    <div className="flex flex-col min-h-screen bg-neutral-50/50 font-sans pb-[120px]">
+    <>
       
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-md border-b border-neutral-200">
@@ -66,7 +66,7 @@ export default function AddProductPage() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 w-full max-w-[820px] mx-auto px-4 sm:px-6 pt-[84px] flex flex-col gap-6">
+      <main className="flex-1 pt-[84px] flex flex-col gap-6">
         
         {/* Фотографии */}
         <section className="rounded-xl border bg-card text-card-foreground">
@@ -199,6 +199,6 @@ export default function AddProductPage() {
         </Button>
       </div>
 
-    </div>
+    </>
   )
 }

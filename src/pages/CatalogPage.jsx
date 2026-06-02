@@ -13,6 +13,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import Toggle from '../components/Toggle'
+import Header from '../components/Header'
 import { GripVertical, LayoutGrid, Plus } from 'lucide-react'
 import {
   DndContext,
@@ -168,12 +169,12 @@ export default function CatalogPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-neutral-50/50 font-sans">
+    <>
 
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-md border-b border-neutral-200">
-        <div className="w-full max-w-[820px] mx-auto px-4 sm:px-6 h-[60px] flex items-center justify-between">
-          <h1 className="text-[20px] font-bold tracking-tight text-neutral-900">Каталог</h1>
+      <Header 
+        title="Каталог" 
+        rightNode={
           <Button
             variant="outline"
             size="sm"
@@ -183,15 +184,15 @@ export default function CatalogPage() {
             <LayoutGrid className="w-4 h-4" />
             Категории
           </Button>
-        </div>
-      </header>
+        }
+      />
 
       {/* Main Content */}
-      <main className="flex-1 w-full max-w-[820px] mx-auto px-4 sm:px-6 pt-[84px] pb-[140px] flex flex-col gap-6">
+      <main className="flex-1 pt-6 pb-[140px] flex flex-col gap-6">
         
         {/* Category Chips */}
-        <div className="w-[calc(100%+32px)] -ml-4 sm:w-full sm:ml-0">
-          <div className="flex gap-2 overflow-x-auto no-scrollbar px-4 sm:px-0 pb-1 after:content-[''] after:min-w-[1px] sm:after:hidden">
+        <div className="w-[calc(100%+32px)] sm:w-[calc(100%+48px)] -ml-4 sm:-ml-6">
+          <div className="flex gap-2 overflow-x-auto no-scrollbar px-4 sm:px-6 pb-1 after:content-[''] after:min-w-[1px] sm:after:hidden">
             {categories.map((cat) => (
               <button
                 key={cat.id}
@@ -211,22 +212,22 @@ export default function CatalogPage() {
         {/* Status Tabs */}
         <div>
           <Tabs value={activeStatus} onValueChange={setActiveStatus} className="w-full sm:w-auto inline-block">
-            <TabsList className="h-9 bg-neutral-100/80 p-1 rounded-lg inline-flex gap-1">
+            <TabsList className="h-11 bg-neutral-200/50 p-1 rounded-xl inline-flex gap-1">
               <TabsTrigger
                 value="active"
-                className="h-full px-3 rounded-md gap-2 text-[13px] font-medium transition-all data-[state=active]:bg-white data-[state=active]:text-neutral-900 data-[state=active]:shadow-sm data-[state=inactive]:text-neutral-500 hover:text-neutral-700 border-0"
+                className="h-full px-4 rounded-lg gap-2 text-[14px] font-medium transition-all data-[state=active]:bg-white data-[state=active]:text-neutral-900 data-[state=active]:shadow-sm data-[state=inactive]:text-neutral-500 hover:text-neutral-700 border-0"
               >
                 Активно
-                <span className={`text-[11px] font-medium rounded-full min-w-[20px] h-[20px] flex items-center justify-center px-1.5 ${activeStatus === 'active' ? 'bg-neutral-200 text-neutral-900' : 'bg-neutral-200/50 text-neutral-500'}`}>
+                <span className={`text-[12px] font-bold rounded-full min-w-[20px] h-[20px] flex items-center justify-center px-1.5 ${activeStatus === 'active' ? 'bg-neutral-200 text-neutral-900' : 'bg-neutral-200/50 text-neutral-500'}`}>
                   {activeCount}
                 </span>
               </TabsTrigger>
               <TabsTrigger
                 value="hidden"
-                className="h-full px-3 rounded-md gap-2 text-[13px] font-medium transition-all data-[state=active]:bg-white data-[state=active]:text-neutral-900 data-[state=active]:shadow-sm data-[state=inactive]:text-neutral-500 hover:text-neutral-700 border-0"
+                className="h-full px-4 rounded-lg gap-2 text-[14px] font-medium transition-all data-[state=active]:bg-white data-[state=active]:text-neutral-900 data-[state=active]:shadow-sm data-[state=inactive]:text-neutral-500 hover:text-neutral-700 border-0"
               >
                 Отключено
-                <span className={`text-[11px] font-medium rounded-full min-w-[20px] h-[20px] flex items-center justify-center px-1.5 ${activeStatus === 'hidden' ? 'bg-neutral-200 text-neutral-900' : 'bg-neutral-200/50 text-neutral-500'}`}>
+                <span className={`text-[12px] font-bold rounded-full min-w-[20px] h-[20px] flex items-center justify-center px-1.5 ${activeStatus === 'hidden' ? 'bg-neutral-200 text-neutral-900' : 'bg-neutral-200/50 text-neutral-500'}`}>
                   {hiddenCount}
                 </span>
               </TabsTrigger>
@@ -301,6 +302,6 @@ export default function CatalogPage() {
         </div>
       </div>
 
-    </div>
+    </>
   )
 }

@@ -1,6 +1,10 @@
-import Icon from '../components/Icon.jsx'
 import { useState } from 'react'
-import Header from '../components/Header'
+import Icon from '@/components/Icon'
+import Header from '@/components/Header'
+import { Button } from '@/components/ui/button'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Badge } from '@/components/ui/badge'
+import { Copy, Phone, Package, MessageSquare, ChevronDown, ChevronUp, Check, X, Info } from 'lucide-react'
 
 const NewIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -60,153 +64,140 @@ export default function OrdersPage() {
   const filteredOrders = mockOrders.filter((o) => o.status === activeTab)
 
   return (
-    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-neutral-50 relative pb-24 flex flex-col">
+    <>
       <Header title="Заказы" />
 
-      {/* Tab bar */}
-      <div className="page-padding pt-2">
-        <div className="orders-tab-container">
-          {tabs.map((tab) => {
-            const isActive = activeTab === tab.key;
-            return (
-              <button
-                key={tab.key}
-                onClick={() => setActiveTab(tab.key)}
-                className={`orders-tab-btn ${isActive ? 'active' : ''}`}
+      <div className="pt-4">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="w-full grid grid-cols-3 h-12 bg-neutral-200/50 rounded-xl p-1 mb-4">
+            {tabs.map((tab) => (
+              <TabsTrigger 
+                key={tab.key} 
+                value={tab.key} 
+                className="flex items-center justify-center gap-2 text-[14px] font-medium rounded-lg transition-all data-[state=active]:bg-white data-[state=active]:text-neutral-900 data-[state=active]:shadow-sm data-[state=inactive]:text-neutral-500 hover:text-neutral-700"
               >
-                <div className="orders-tab-icon"><tab.Icon /></div>
-                <span className="orders-tab-label">{tab.label}</span>
-              </button>
-            )
-          })}
-        </div>
+                <span>{tab.label}</span>
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
       </div>
 
-      {/* Orders list */}
-      <div className="orders-list page-padding">
+      <div className="pb-4">
         {filteredOrders.length === 0 ? (
-          <div className="orders-empty-state">
-            <div className="orders-empty-card">
-              <div className="orders-empty-icon">
-                <Icon name="info" className="w-7 h-7" />
-              </div>
-              <p className="orders-empty-text">
-                Новых заказов пока нет.<br />
-                Поделитесь ссылкой на магазин.
-              </p>
-              <button className="orders-empty-link">Поделиться</button>
+          <div className="flex flex-col items-center justify-center py-12 px-4 text-center rounded-xl border border-dashed bg-card text-card-foreground mt-2">
+            <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-4">
+              <Info className="w-6 h-6 text-muted-foreground" />
             </div>
+            <h3 className="text-lg font-bold tracking-tight mb-1">Новых заказов пока нет</h3>
+            <p className="text-sm text-muted-foreground mb-5">Поделитесь ссылкой на магазин.</p>
+            <Button variant="outline" className="h-11 px-6 rounded-lg font-semibold">
+              Поделиться
+            </Button>
           </div>
         ) : (
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 mt-2">
             {filteredOrders.map((order) => {
               const isExpanded = expandedOrder === order.id;
               
               return (
-                <div key={order.id} className="orders-card">
+                <div key={order.id} className="rounded-xl border bg-card text-card-foreground overflow-hidden transition-all">
                   <div 
-                    className="orders-card-header cursor-pointer" 
+                    className="p-4 sm:p-5 flex items-center justify-between cursor-pointer hover:bg-muted/40 transition-colors" 
                     onClick={() => setExpandedOrder(isExpanded ? null : order.id)}
                   >
-                    <div className="flex-1">
-                      <div className="orders-id-row">
-                        <span className="orders-id" style={{color: order.color}}>{order.id}</span>
-                        <span className="orders-date">{order.date} • {order.time}</span>
+                    <div className="flex flex-col gap-1.5">
+                      <div className="flex items-center gap-2.5">
+                        <span className="text-base font-semibold tracking-tight" style={{color: order.color}}>{order.id}</span>
+                        <Badge variant="secondary" className="font-medium text-muted-foreground hover:bg-secondary">{order.date} • {order.time}</Badge>
                       </div>
-                      <div className="orders-customer">{order.customer}</div>
+                      <div className="text-[15px] font-medium leading-none">{order.customer}</div>
                     </div>
                     
-                    <div className="flex flex-col items-end justify-center gap-1">
-                      <button className="orders-expand-btn">
-                        <Icon name={isExpanded ? 'expand_less' : 'expand_more'} className=""  />
-                      </button>
+                    <div className="w-8 h-8 flex items-center justify-center rounded-full bg-muted text-muted-foreground shrink-0 hover:bg-muted-foreground/10 transition-colors">
+                      {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
                     </div>
                   </div>
 
                   {isExpanded && (
-                    <div className="orders-expanded-content">
-                      <div className="orders-divider"></div>
+                    <div className="px-4 sm:px-5 pb-5 pt-3 animate-in slide-in-from-top-2 duration-200">
                       
                       {/* Customer Info */}
-                      <div className="orders-section-title">
-                        <span>Информация о заказе</span>
-                        <button className="orders-copy-btn">
-                          <Icon name="content_copy" className="w-5 h-5" />
-                        </button>
+                      <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Информация о заказе</h3>
+                        <Button variant="ghost" size="sm" className="h-8 gap-1.5 text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-2 -mr-2">
+                          <Copy className="w-4 h-4" />
+                          <span className="text-xs font-semibold hidden sm:inline">Скопировать</span>
+                        </Button>
                       </div>
                       
-                      <div className="orders-info-box">
-                        <div className="orders-info-row">
-                          <div className="orders-info-icon">
-                            <Icon name="call" className=""  />
-                          </div>
-                          <div className="flex-1">
-                            <div className="orders-info-label">Телефон покупателя:</div>
-                            <div className="orders-info-value">{order.phone}</div>
+                      <div className="rounded-lg bg-muted/50 p-4 flex flex-col gap-4">
+                        <div className="flex items-start gap-3">
+                          <Phone className="w-5 h-5 text-muted-foreground shrink-0 mt-0.5" />
+                          <div className="flex flex-col gap-0.5">
+                            <span className="text-xs font-medium text-muted-foreground">Телефон покупателя:</span>
+                            <span className="text-sm font-semibold">{order.phone}</span>
                           </div>
                         </div>
-                        <div className="orders-info-row">
-                          <div className="orders-info-icon">
-                            <Icon name="inventory_2" className=""  />
-                          </div>
-                          <div className="flex-1">
-                            <div className="orders-info-label">Способ получения:</div>
-                            <div className="orders-info-value">{order.delivery}</div>
+                        <div className="flex items-start gap-3">
+                          <Package className="w-5 h-5 text-muted-foreground shrink-0 mt-0.5" />
+                          <div className="flex flex-col gap-0.5">
+                            <span className="text-xs font-medium text-muted-foreground">Способ получения:</span>
+                            <span className="text-sm font-semibold">{order.delivery}</span>
                           </div>
                         </div>
                         {order.comment && (
-                          <div className="orders-info-row">
-                            <div className="orders-info-icon">
-                              <Icon name="chat" className=""  />
-                            </div>
-                            <div className="flex-1">
-                              <div className="orders-info-label">Комментарий покупателя:</div>
-                              <div className="orders-info-value">{order.comment}</div>
+                          <div className="flex items-start gap-3">
+                            <MessageSquare className="w-5 h-5 text-muted-foreground shrink-0 mt-0.5" />
+                            <div className="flex flex-col gap-0.5">
+                              <span className="text-xs font-medium text-muted-foreground">Комментарий покупателя:</span>
+                              <span className="text-sm font-medium leading-snug">{order.comment}</span>
                             </div>
                           </div>
                         )}
                       </div>
 
-                      <div className="orders-section-title mt-4">Товары</div>
+                      <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mt-6 mb-3">Товары</h3>
                       
                       {/* Items */}
-                      <div className="orders-items-box">
+                      <div className="flex flex-col gap-3">
                         {order.items.map((item, idx) => (
-                          <div key={idx} className="orders-item-row">
-                            <div className="orders-item-img-container">
-                              <img src={item.image} alt="" className="orders-item-img" />
+                          <div key={idx} className="flex gap-4 p-3 rounded-lg border bg-card items-center">
+                            <div className="w-[60px] h-[60px] rounded-md border bg-white overflow-hidden shrink-0 flex items-center justify-center">
+                              <img src={item.image} alt="" className="w-full h-full object-cover" />
                             </div>
-                            <div className="flex-1">
-                              <div className="orders-item-name">{item.name}</div>
-                              <div className="orders-item-price-block">
-                                <span className="orders-item-qty">{item.qty} шт.</span>
-                                <span className="orders-item-price">{item.price * item.qty} сом</span>
+                            <div className="flex flex-col justify-between flex-1 py-1">
+                              <div className="text-sm font-medium leading-tight line-clamp-2">{item.name}</div>
+                              <div className="flex items-center justify-between w-full mt-2">
+                                <Badge variant="secondary" className="font-medium hover:bg-secondary">{item.qty} шт.</Badge>
+                                <span className="text-sm font-semibold">{item.price * item.qty} сом</span>
                               </div>
                             </div>
                           </div>
                         ))}
                       </div>
 
-                      <div className="orders-total-row mt-4">
-                        <span className="orders-total-label">Итого:</span>
-                        <span className="orders-total-value">{order.total} сом</span>
+                      <div className="flex items-center justify-between mt-6">
+                        <span className="text-sm font-semibold text-muted-foreground">Итого:</span>
+                        <span className="text-lg font-bold">{order.total} сом</span>
                       </div>
 
                       {order.status === 'new' && (
-                        <>
-                          {/* Распорка */}
-                          <div className="w-full h-[24px]"></div>
-                          <div className="orders-actions flex gap-3">
-                            <button className="orders-btn-cancel flex-1 flex items-center justify-center gap-1.5">
-                            <Icon name="close" className="text-[20px]"  />
-                            <span>Отменить</span>
-                          </button>
-                          <button className="orders-btn-complete flex-1 flex items-center justify-center gap-1.5">
-                            <Icon name="check" className="text-[20px]"  />
-                            <span>Выполнен</span>
-                          </button>
+                        <div className="flex gap-3 mt-6">
+                          <Button 
+                            variant="outline" 
+                            className="flex-1 h-11 rounded-lg text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/20 font-semibold"
+                          >
+                            <X className="w-5 h-5 mr-1.5" />
+                            Отменить
+                          </Button>
+                          <Button 
+                            className="flex-1 h-11 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
+                          >
+                            <Check className="w-5 h-5 mr-1.5" />
+                            Выполнен
+                          </Button>
                         </div>
-                        </>
                       )}
                     </div>
                   )}
@@ -216,9 +207,6 @@ export default function OrdersPage() {
           </div>
         )}
       </div>
-
-      {/* Spacer for BottomNav */}
-      <div style={{ height: '120px', flexShrink: 0, width: '100%' }} />
-    </div>
+    </>
   )
 }

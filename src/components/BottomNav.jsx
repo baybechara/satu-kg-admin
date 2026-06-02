@@ -26,7 +26,7 @@ export default function BottomNav() {
               onClick={() => navigate(item.path)}
               className="flex flex-col items-center justify-center gap-1 w-16 h-full transition-all outline-none group"
             >
-              <div className={`transition-all duration-200 flex items-center justify-center w-8 h-8 rounded-full ${isActive ? 'bg-neutral-100 text-neutral-900' : 'text-neutral-500 group-hover:bg-neutral-50'}`}>
+              <div className={`transition-all duration-200 flex items-center justify-center w-8 h-8 rounded-full ${isActive ? 'text-neutral-900' : 'text-neutral-500'}`}>
                 <item.icon 
                   className={`w-[20px] h-[20px] transition-all ${isActive ? 'stroke-[2.5px]' : 'stroke-[2px]'}`}
                 />
