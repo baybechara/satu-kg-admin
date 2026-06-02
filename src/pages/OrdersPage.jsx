@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Icon from '@/components/Icon'
 import Header from '@/components/Header'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Skeleton } from '@/components/ui/skeleton'
 import { Copy, Phone, Package, MessageSquare, ChevronDown, ChevronUp, Check, X, Info, Trash2 } from 'lucide-react'
 
 const NewIcon = () => (
@@ -58,13 +59,34 @@ const tabs = [
   { key: 'cancelled', label: 'Отменено', Icon: CancelledIcon },
 ]
 
+function OrderSkeletonCard() {
+  return (
+    <div className="rounded-xl border bg-card text-card-foreground p-4 sm:p-5 flex items-center justify-between">
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center gap-2.5">
+          <Skeleton className="h-5 w-20" />
+          <Skeleton className="h-5 w-32 rounded-full" />
+        </div>
+        <Skeleton className="h-5 w-40" />
+      </div>
+      <Skeleton className="w-8 h-8 rounded-full" />
+    </div>
+  )
+}
+
 export default function OrdersPage() {
   const [orders, setOrders] = useState(mockOrders)
   const [activeTab, setActiveTab] = useState('new')
-  const [expandedOrder, setExpandedOrder] = useState('Заказ №1')
+  const [expandedOrder, setExpandedOrder] = useState(null)
   const [itemToDelete, setItemToDelete] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
 
-  const filteredOrders = orders.filter((o) => o.status === activeTab)
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 600)
+    return () => clearTimeout(timer)
+  }, [])
+
+  const filteredOrders = orders.filter(o => o.status === activeTab)
 
   const handleDeleteClick = (orderId, itemIndex, item, e) => {
     e.stopPropagation()
@@ -115,7 +137,13 @@ export default function OrdersPage() {
       </div>
 
       <div className="pb-4">
-        {filteredOrders.length === 0 ? (
+        {isLoading ? (
+          <div className="flex flex-col gap-4 mt-2">
+            <OrderSkeletonCard />
+            <OrderSkeletonCard />
+            <OrderSkeletonCard />
+          </div>
+        ) : filteredOrders.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 px-4 text-center rounded-xl border border-dashed bg-card text-card-foreground mt-2">
             <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-4">
               <Info className="w-6 h-6 text-muted-foreground" />

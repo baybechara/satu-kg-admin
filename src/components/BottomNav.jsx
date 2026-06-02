@@ -17,7 +17,7 @@ export default function BottomNav() {
       <div className="w-full max-w-[820px] flex items-center justify-around px-2 sm:px-4">
         {menuItems.map((item) => {
           const isActive = location.pathname === item.path 
-            || (item.id === 'catalog' && location.pathname.startsWith('/add-product'))
+            || (item.id === 'catalog' && (location.pathname.startsWith('/add-product') || location.pathname.startsWith('/categories')))
             || (item.id === 'settings' && location.pathname.startsWith('/settings'))
           
           return (

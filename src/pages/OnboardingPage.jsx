@@ -58,9 +58,9 @@ function SwitchRow({ label, enabled, onChange }) {
 function AddButton({ onClick, children }) {
   return (
     <Button
-      variant="outline"
+      variant="secondary"
       onClick={onClick}
-      className="w-full border-dashed text-muted-foreground hover:text-foreground"
+      className="w-full text-foreground"
     >
       <Icon name="add" className="text-[18px] mr-2"  />
       {children}
@@ -71,16 +71,16 @@ function AddButton({ onClick, children }) {
 // ─── Social input ─────────────────────────────────────────────────────────────
 function SocialInput({ logo, placeholder, value, onChange }) {
   return (
-    <div className="flex items-center border border-input rounded-md overflow-hidden focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 transition-all">
-      <div className="flex items-center justify-center w-10 h-10 shrink-0 border-r border-input bg-muted/50">
+    <div className="relative">
+      <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center justify-center text-muted-foreground">
         {logo}
       </div>
-      <input
+      <Input
         type="text"
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className="flex h-10 w-full bg-background px-3 py-2 text-sm placeholder:text-muted-foreground outline-none disabled:cursor-not-allowed disabled:opacity-50"
+        className="pl-9"
       />
     </div>
   )
@@ -390,7 +390,7 @@ export default function OnboardingPage() {
         <div className="flex flex-col gap-4">
           <Field label="Instagram">
             <SocialInput
-              logo={<img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" className="w-5 h-5" alt="IG" />}
+              logo={<img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" className="w-4 h-4 grayscale opacity-70" alt="IG" />}
               placeholder="instagram.com/ваш_магазин"
               value={instagram}
               onChange={e => setInstagram(e.target.value)}
@@ -398,7 +398,7 @@ export default function OnboardingPage() {
           </Field>
           <Field label="Telegram">
             <SocialInput
-              logo={<img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" className="w-5 h-5" alt="TG" />}
+              logo={<img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" className="w-4 h-4 grayscale opacity-70" alt="TG" />}
               placeholder="t.me/ваш_канал"
               value={telegram}
               onChange={e => setTelegram(e.target.value)}
@@ -406,8 +406,12 @@ export default function OnboardingPage() {
           </Field>
           {customLinks.map((val, idx) => (
             <Field key={idx} label={`Другой сайт ${idx + 1}`}>
-              <Input type="url" placeholder="https://yoursite.com" value={val} onChange={e => {
-                const nl = [...customLinks]; nl[idx] = e.target.value; setCustomLinks(nl)
+              <SocialInput 
+                logo={<Icon name="link" className="w-4 h-4 grayscale opacity-70" />}
+                placeholder="https://yoursite.com" 
+                value={val} 
+                onChange={e => {
+                  const nl = [...customLinks]; nl[idx] = e.target.value; setCustomLinks(nl)
               }} />
             </Field>
           ))}

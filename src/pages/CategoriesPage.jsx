@@ -8,11 +8,13 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import React, { useState } from 'react'
+import { Skeleton } from "@/components/ui/skeleton"
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, GripVertical, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import Header from '../components/Header'
 import Toggle from '../components/Toggle'
 import {
   DndContext,
@@ -82,6 +84,20 @@ function SortableCategoryRow({ category, onEdit }) {
   )
 }
 
+function CategorySkeletonRow() {
+  return (
+    <div className="flex items-center px-4 py-3 border-b border-neutral-100 last:border-0 bg-white">
+      <div className="p-2 -ml-2 mr-2">
+        <Skeleton className="w-5 h-5 rounded-md" />
+      </div>
+      <div className="flex-1">
+        <Skeleton className="h-5 w-1/3" />
+      </div>
+      <Skeleton className="w-8 h-6 rounded-full" />
+    </div>
+  )
+}
+
 export default function CategoriesPage() {
   const navigate = useNavigate()
   const [categories, setCategories] = useState(initialCategories)
@@ -92,6 +108,12 @@ export default function CategoriesPage() {
   const [editingCategory, setEditingCategory] = useState(null)
   
   const [newCategoryName, setNewCategoryName] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 600)
+    return () => clearTimeout(timer)
+  }, [])
 
   const filteredCategories = categories.filter(c => activeTab === 'active' ? c.active : !c.active)
   const activeCount = categories.filter(c => c.active).length
@@ -136,23 +158,10 @@ export default function CategoriesPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-neutral-50/50 font-sans">
-      
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-md border-b border-neutral-200">
-        <div className="w-full max-w-[820px] mx-auto px-4 sm:px-6 h-[60px] flex items-center gap-4">
-          <button 
-            onClick={() => navigate(-1)}
-            className="w-9 h-9 rounded-full bg-white flex items-center justify-center border border-neutral-200 shrink-0 active:scale-95 transition-all hover:bg-neutral-50"
-          >
-            <ArrowLeft className="w-5 h-5 text-neutral-700" />
-          </button>
-          <h1 className="text-[20px] font-bold tracking-tight text-neutral-900">Категории</h1>
-        </div>
-      </header>
+    <>
+      <Header title="Категории" leftIcon="arrow_back" onLeftClick={() => navigate(-1)} />
 
-      {/* Main Content */}
-      <main className="flex-1 w-full max-w-[820px] mx-auto px-4 sm:px-6 pt-[84px] pb-[140px] flex flex-col gap-6">
+      <div className="pt-4 pb-[140px] flex flex-col gap-6">
         
         {/* Status Tabs */}
         <div>
@@ -192,23 +201,31 @@ export default function CategoriesPage() {
               strategy={verticalListSortingStrategy}
             >
               <div className="flex flex-col">
-                {filteredCategories.map((cat) => (
-                  <SortableCategoryRow 
-                    key={cat.id} 
-                    category={cat} 
-                    onEdit={setEditingCategory} 
-                  />
-                ))}
-                {filteredCategories.length === 0 && (
-                  <div className="py-8 text-center text-neutral-500 text-[14px]">
-                    Нет категорий
+                {isLoading ? (
+                  <>
+                    <CategorySkeletonRow />
+                    <CategorySkeletonRow />
+                    <CategorySkeletonRow />
+                    <CategorySkeletonRow />
+                  </>
+                ) : filteredCategories.length === 0 ? (
+                  <div className="text-center py-12 text-neutral-400 text-[14px]">
+                    В этом разделе пока нет категорий
                   </div>
+                ) : (
+                  filteredCategories.map((cat) => (
+                    <SortableCategoryRow 
+                      key={cat.id} 
+                      category={cat} 
+                      onEdit={setEditingCategory} 
+                    />
+                  ))
                 )}
               </div>
             </SortableContext>
           </DndContext>
         </div>
-      </main>
+      </div>
 
       {/* Floating Add Button */}
       <div className="fixed bottom-[84px] sm:bottom-[96px] left-0 w-full z-50 pointer-events-none flex justify-center">
@@ -225,9 +242,9 @@ export default function CategoriesPage() {
 
       {/* Add Modal */}
       <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
-        <DialogContent className="sm:max-w-[425px] p-6 rounded-[20px]">
+        <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle className="text-[20px] font-bold">Создать категорию</DialogTitle>
+            <DialogTitle>Создать категорию</DialogTitle>
           </DialogHeader>
           <div className="grid gap-5 py-2 mt-2">
             <div className="flex flex-col gap-2">
@@ -238,7 +255,7 @@ export default function CategoriesPage() {
                 value={newCategoryName}
                 onChange={e => setNewCategoryName(e.target.value)}
                 autoFocus
-                className="h-[44px] rounded-[10px] text-[14px] px-3 border-neutral-300 focus-visible:ring-1 focus-visible:border-neutral-400 bg-neutral-0"
+                className="col-span-3"
               />
             </div>
             <div className="flex items-center justify-between py-1">
@@ -246,20 +263,20 @@ export default function CategoriesPage() {
               <Toggle enabled={false} onChange={() => {}} />
             </div>
           </div>
-          <DialogFooter className="bg-neutral-50 border-t border-neutral-200 px-6 py-4 -mx-6 -mb-6 mt-6 rounded-b-[20px] gap-2 sm:gap-3">
+          <DialogFooter>
             <DialogClose asChild>
-              <Button variant="outline" className="h-[44px] rounded-[10px] text-[14px] font-semibold px-5 border-neutral-300 bg-white">Отмена</Button>
+              <Button variant="outline">Отмена</Button>
             </DialogClose>
-            <Button onClick={handleSaveCategory} className="h-[44px] rounded-[10px] text-[14px] font-semibold px-5 bg-neutral-900 hover:bg-neutral-800 text-white">Создать</Button>
+            <Button onClick={handleSaveCategory}>Создать</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
       {/* Edit Modal */}
       <Dialog open={!!editingCategory} onOpenChange={(open) => !open && setEditingCategory(null)}>
-        <DialogContent className="sm:max-w-[425px] p-6 rounded-[20px]">
+        <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle className="text-[20px] font-bold">Изменить категорию</DialogTitle>
+            <DialogTitle>Изменить категорию</DialogTitle>
           </DialogHeader>
           {editingCategory && (
             <div className="grid gap-5 py-2 mt-2">
@@ -270,7 +287,7 @@ export default function CategoriesPage() {
                   value={editingCategory.name}
                   onChange={e => setEditingCategory({...editingCategory, name: e.target.value})}
                   autoFocus
-                  className="h-[44px] rounded-[10px] text-[14px] px-3 border-neutral-300 focus-visible:ring-1 focus-visible:border-neutral-400 bg-neutral-0"
+                  className="col-span-3"
                 />
               </div>
               <div className="flex items-center justify-between py-1">
@@ -281,17 +298,15 @@ export default function CategoriesPage() {
               </div>
             </div>
           )}
-          <DialogFooter className="bg-neutral-50 border-t border-neutral-200 px-6 py-4 -mx-6 -mb-6 mt-6 rounded-b-[20px] gap-2 sm:gap-3">
+          <DialogFooter>
             <DialogClose asChild>
-              <Button variant="outline" className="h-[44px] rounded-[10px] text-[14px] font-semibold px-5 border-neutral-300 bg-white">Отмена</Button>
+              <Button variant="outline">Отмена</Button>
             </DialogClose>
-            <Button onClick={handleSaveCategory} className="h-[44px] rounded-[10px] text-[14px] font-semibold px-5 bg-neutral-900 hover:bg-neutral-800 text-white">
-              Сохранить
-            </Button>
+            <Button onClick={handleSaveCategory}>Сохранить</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-    </div>
+    </>
   )
 }

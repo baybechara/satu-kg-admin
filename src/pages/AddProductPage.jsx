@@ -6,6 +6,15 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Slider } from '@/components/ui/slider'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogClose,
+} from '@/components/ui/dialog'
+import Toggle from '../components/Toggle'
 
 export default function AddProductPage() {
   const navigate = useNavigate()
@@ -13,6 +22,8 @@ export default function AddProductPage() {
   const [description, setDescription] = useState('')
   const [price, setPrice] = useState(0)
   const [qty, setQty] = useState(10)
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false)
+  const [newCategoryName, setNewCategoryName] = useState('')
 
   const [categories, setCategories] = useState([
     { id: 1, label: 'Все', checked: false },
@@ -36,6 +47,15 @@ export default function AddProductPage() {
         const allOthersSelected = otherCats.every(c => c.checked)
         return nextState.map(cat => cat.id === 1 ? { ...cat, checked: allOthersSelected } : cat)
       })
+    }
+  }
+
+  const handleSaveCategory = () => {
+    if (newCategoryName.trim()) {
+      const newId = Math.max(...categories.map(c => c.id)) + 1
+      setCategories([...categories, { id: newId, label: newCategoryName.trim(), checked: true }])
+      setNewCategoryName('')
+      setIsAddModalOpen(false)
     }
   }
 
@@ -148,11 +168,12 @@ export default function AddProductPage() {
                 <Slider 
                   value={[price]} 
                   onValueChange={(val) => setPrice(val[0])} 
+                  min={10}
                   max={100000} 
-                  step={100}
+                  step={10}
                 />
                 <div className="flex justify-between text-xs text-muted-foreground font-medium">
-                  <span>0 сом (Мин)</span>
+                  <span>10 сом (Мин)</span>
                   <span>100 000 сом (Макс)</span>
                 </div>
               </div>
@@ -181,12 +202,13 @@ export default function AddProductPage() {
                 <Slider 
                   value={[qty]} 
                   onValueChange={(val) => setQty(val[0])} 
-                  max={1000} 
+                  min={1}
+                  max={100} 
                   step={1}
                 />
                 <div className="flex justify-between text-xs text-muted-foreground font-medium">
-                  <span>0 шт (Мин)</span>
-                  <span>1 000 шт (Макс)</span>
+                  <span>1 шт (Мин)</span>
+                  <span>100 шт (Макс)</span>
                 </div>
               </div>
             </div>
@@ -215,7 +237,11 @@ export default function AddProductPage() {
               ))}
             </div>
             
-            <Button variant="outline" className="mt-2 w-full sm:w-fit border-dashed text-muted-foreground hover:text-foreground">
+            <Button 
+              variant="secondary" 
+              className="mt-2 w-full sm:w-fit text-foreground"
+              onClick={() => setIsAddModalOpen(true)}
+            >
               <Plus className="w-4 h-4 mr-2" />
               Создать новую категорию
             </Button>
@@ -236,6 +262,37 @@ export default function AddProductPage() {
         </Button>
       </div>
 
+      {/* Add Category Modal */}
+      <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Создать категорию</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-5 py-2 mt-2">
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="category-name" className="text-[14px] font-semibold text-neutral-800">Название</Label>
+              <Input 
+                id="category-name"
+                placeholder="Например, книги" 
+                value={newCategoryName}
+                onChange={e => setNewCategoryName(e.target.value)}
+                autoFocus
+                className="col-span-3"
+              />
+            </div>
+            <div className="flex items-center justify-between py-1">
+              <span className="text-[14px] font-semibold text-neutral-800">Скрыт</span>
+              <Toggle enabled={false} onChange={() => {}} />
+            </div>
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline">Отмена</Button>
+            </DialogClose>
+            <Button onClick={handleSaveCategory}>Создать</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   )
 }

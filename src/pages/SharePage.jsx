@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { ExternalLink, Copy, Printer } from 'lucide-react'
 import Header from '@/components/Header'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 
 export default function SharePage() {
   const navigate = useNavigate()
@@ -21,30 +22,43 @@ export default function SharePage() {
         {/* Card 1: Link */}
         <div className="w-full bg-card border rounded-xl p-5 flex flex-col gap-6">
           <div className="flex flex-col gap-1.5">
-            <h2 className="text-[18px] font-bold text-neutral-900 tracking-tight">Ссылка на магазин</h2>
+            <h2 className="text-[16px] font-semibold tracking-tight">Ссылка на магазин</h2>
             <p className="text-[14px] text-muted-foreground leading-snug">
               Отправьте ссылку покупателям — они попадут прямо в ваш каталог
             </p>
           </div>
           
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-4 mt-2">
+            <div className="relative">
+              <Input
+                id="store-link"
+                defaultValue="https://mystore.satu.kg"
+                readOnly
+                className="pr-10 h-11 text-[15px] bg-background"
+              />
+              <Button
+                size="icon"
+                variant="ghost"
+                className="absolute right-1.5 top-1/2 -translate-y-1/2 h-8 w-8 text-muted-foreground hover:text-foreground"
+                onClick={copyLink}
+              >
+                <Copy className="h-[18px] w-[18px]" />
+                <span className="sr-only">Копировать</span>
+              </Button>
+            </div>
+            
             <Button 
-              asChild 
-              variant="outline" 
-              className="w-full h-12 rounded-xl border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100 hover:text-blue-800 gap-2"
+              className="w-full h-11 bg-[#84cc16] hover:bg-[#65a30d] text-white font-semibold text-[15px]"
+              onClick={() => {
+                if (navigator.share) {
+                  navigator.share({
+                    title: 'Мой магазин',
+                    url: 'https://mystore.satu.kg'
+                  })
+                }
+              }}
             >
-              <a href="https://mystore.satu.kg" target="_blank" rel="noopener noreferrer">
-                <span className="text-[16px] font-semibold">mystore.satu.kg</span>
-                <ExternalLink className="w-5 h-5" />
-              </a>
-            </Button>
-            <Button 
-              variant="outline"
-              onClick={copyLink}
-              className="w-full flex items-center justify-center gap-2 h-12 rounded-xl text-neutral-900"
-            >
-              <Copy className="w-5 h-5 text-muted-foreground" />
-              <span className="text-[16px] font-semibold">Копировать ссылку</span>
+              Поделиться
             </Button>
           </div>
         </div>
@@ -52,7 +66,7 @@ export default function SharePage() {
         {/* Card 2: Socials */}
         <div className="w-full bg-card border rounded-xl p-5 flex flex-col gap-6">
           <div className="flex flex-col gap-1.5">
-            <h2 className="text-[18px] font-bold text-neutral-900 tracking-tight">Поделиться в соцсетях</h2>
+            <h2 className="text-[16px] font-semibold tracking-tight">Поделиться в соцсетях</h2>
             <p className="text-[14px] text-muted-foreground leading-snug">
               Отправьте ссылку на магазин в Instagram, Telegram или WhatsApp
             </p>
@@ -86,7 +100,7 @@ export default function SharePage() {
                 className="w-40 h-40 object-contain" 
               />
             </div>
-            <h2 className="text-lg font-semibold text-neutral-900 tracking-tight mb-2">Отсканируйте для перехода</h2>
+            <h2 className="text-[16px] font-semibold tracking-tight mb-2">Отсканируйте для перехода</h2>
             <p className="text-sm text-muted-foreground leading-snug max-w-[280px]">
               Распечатайте этот код и разместите у кассы, чтобы покупатели могли сразу попасть в ваш магазин.
             </p>

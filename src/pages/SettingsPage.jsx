@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { Checkbox } from '@/components/ui/checkbox'
+import ScheduleCard from '../components/ScheduleCard'
 import { 
   Truck, Phone, MapPin, Clock, Link as LinkIcon, Store, FileText, 
   Image as ImageIcon, MessageCircle, ChevronRight, User, Lock, 
@@ -34,9 +35,9 @@ function Field({ label, required, children, right }) {
 function AddButton({ onClick, children }) {
   return (
     <Button
-      variant="outline"
+      variant="secondary"
       onClick={onClick}
-      className="w-full border-dashed text-muted-foreground hover:text-foreground"
+      className="w-full text-foreground"
     >
       <Plus className="w-4 h-4 mr-2" />
       {children}
@@ -46,16 +47,16 @@ function AddButton({ onClick, children }) {
 
 function SocialInput({ logo, placeholder, value, onChange }) {
   return (
-    <div className="flex items-center border border-input rounded-md overflow-hidden focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 transition-all">
-      <div className="flex items-center justify-center w-10 h-10 shrink-0 border-r border-input bg-muted/50">
+    <div className="relative">
+      <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center justify-center text-muted-foreground">
         {logo}
       </div>
-      <input
+      <Input
         type="text"
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className="flex h-10 w-full bg-background px-3 py-2 text-sm placeholder:text-muted-foreground outline-none disabled:cursor-not-allowed disabled:opacity-50"
+        className="pl-9"
       />
     </div>
   )
@@ -119,20 +120,19 @@ function SettingsMenu() {
         onRightClick={() => navigate('/settings/profile')} 
       />
 
-      <div className="flex flex-col gap-8 pt-6 pb-20">
+      <div className="flex flex-col gap-5 pt-6 pb-20">
         {sections.map((s) => (
-          <div key={s.title} className="flex flex-col gap-3">
-            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider pl-1">{s.title}</h2>
+          <div key={s.title} className="rounded-xl border bg-card text-card-foreground p-5 flex flex-col gap-4">
+            <h2 className="text-[16px] font-semibold tracking-tight">{s.title}</h2>
             <div className="flex flex-col gap-2">
               {s.items.map((item) => (
                 <button 
                   key={item.label} 
                   onClick={() => navigate(item.path)}
-                  className="flex items-center gap-4 p-4 rounded-xl border bg-card text-card-foreground hover:bg-muted/50 transition-colors text-left"
+                  className="flex items-center gap-3 p-3 rounded-lg border bg-background hover:bg-muted/50 transition-colors text-left"
                 >
                   <item.icon className="w-5 h-5 text-muted-foreground shrink-0" />
-                  <span className="text-[15px] font-medium">{item.label}</span>
-                  <ChevronRight className="w-4 h-4 text-muted-foreground ml-auto" />
+                  <span className="text-[14px] font-medium text-foreground">{item.label}</span>
                 </button>
               ))}
             </div>
@@ -181,7 +181,7 @@ function SettingsSocials() {
 
         <Field label="Instagram">
           <SocialInput 
-            logo={<img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" className="w-5 h-5" alt="IG" />}
+            logo={<img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" className="w-4 h-4 grayscale opacity-70" alt="IG" />}
             placeholder="instagram.com/ваш_магазин" 
             defaultValue="https://instagram.com/beko.kg" 
           />
@@ -189,7 +189,7 @@ function SettingsSocials() {
 
         <Field label="Telegram">
           <SocialInput 
-            logo={<img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" className="w-5 h-5" alt="TG" />}
+            logo={<img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" className="w-4 h-4 grayscale opacity-70" alt="TG" />}
             placeholder="t.me/ваш_канал" 
             defaultValue="t.me/beko_kg" 
           />
@@ -197,7 +197,7 @@ function SettingsSocials() {
 
         <Field label="Youtube">
           <SocialInput 
-            logo={<img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" className="w-5 h-5" alt="YT" />}
+            logo={<img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" className="w-4 h-4 grayscale opacity-70" alt="YT" />}
             placeholder="https://www.youtube.com/..." 
           />
         </Field>
@@ -209,29 +209,10 @@ function SettingsSocials() {
   )
 }
 
-function ScheduleCard({ day, timeFrom, timeTo, enabled, onToggle, onTimeChange }) {
-  return (
-    <div className="flex items-center justify-between p-4 rounded-xl border bg-card">
-      <div className="flex items-center gap-3">
-        <Switch checked={enabled} onCheckedChange={onToggle} />
-        <span className="text-sm font-medium">{day}</span>
-      </div>
-      {enabled ? (
-        <div className="flex items-center gap-2">
-          <Input type="time" value={timeFrom} onChange={(e) => onTimeChange(e.target.value, timeTo)} className="w-[85px] h-8 text-xs" />
-          <span className="text-muted-foreground">-</span>
-          <Input type="time" value={timeTo} onChange={(e) => onTimeChange(timeFrom, e.target.value)} className="w-[85px] h-8 text-xs" />
-        </div>
-      ) : (
-        <span className="text-sm text-muted-foreground">Выходной</span>
-      )}
-    </div>
-  )
-}
 
 function SettingsSchedule() {
   const navigate = useNavigate()
-  const dayLabels = { mon:'Понедельник', tue:'Вторник', wed:'Среда', thu:'Четверг', fri:'Пятница', sat:'Суббота', sun:'Воскресенье' }
+  const dayLabels = { mon:'Пн', tue:'Вт', wed:'Ср', thu:'Чт', fri:'Пт', sat:'Сб', sun:'Вс' }
   const [schedule, setSchedule] = useState({
     mon: { enabled: true, from: '08:00', to: '19:00' },
     tue: { enabled: true, from: '08:00', to: '19:00' },

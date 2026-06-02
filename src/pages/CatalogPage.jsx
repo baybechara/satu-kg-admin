@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/table'
 import Toggle from '../components/Toggle'
 import Header from '../components/Header'
+import { Skeleton } from '@/components/ui/skeleton'
 import { GripVertical, LayoutGrid, Plus } from 'lucide-react'
 import {
   DndContext,
@@ -119,11 +120,51 @@ function SortableRow({ product, toggleProductStatus }) {
   )
 }
 
+function ProductSkeletonRow() {
+  return (
+    <TableRow className="border-neutral-200 bg-white">
+      <TableCell className="pl-4 w-[40px]">
+        <Skeleton className="w-5 h-5 rounded-md" />
+      </TableCell>
+      <TableCell className="max-w-[160px] sm:max-w-none py-3">
+        <div className="flex items-center gap-3">
+          <Skeleton className="w-10 h-10 rounded-[8px] shrink-0" />
+          <Skeleton className="h-4 w-3/4 max-w-[150px]" />
+        </div>
+      </TableCell>
+      <TableCell className="hidden sm:table-cell py-3">
+        <Skeleton className="h-5 w-20 rounded-[6px]" />
+      </TableCell>
+      <TableCell className="text-right py-3">
+        <div className="flex justify-end">
+          <Skeleton className="h-4 w-16" />
+        </div>
+      </TableCell>
+      <TableCell className="hidden sm:table-cell py-3">
+        <div className="flex justify-end">
+          <Skeleton className="h-4 w-10" />
+        </div>
+      </TableCell>
+      <TableCell className="text-right pr-4 py-3">
+        <div className="flex justify-end">
+          <Skeleton className="h-6 w-11 rounded-full" />
+        </div>
+      </TableCell>
+    </TableRow>
+  )
+}
+
 export default function CatalogPage() {
   const navigate = useNavigate()
   const [products, setProducts] = useState(initialProducts)
   const [activeCategoryId, setActiveCategoryId] = useState('all')
   const [activeStatus, setActiveStatus] = useState('active')
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 600)
+    return () => clearTimeout(timer)
+  }, [])
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -254,7 +295,14 @@ export default function CatalogPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredProducts.length === 0 ? (
+                {isLoading ? (
+                  <>
+                    <ProductSkeletonRow />
+                    <ProductSkeletonRow />
+                    <ProductSkeletonRow />
+                    <ProductSkeletonRow />
+                  </>
+                ) : filteredProducts.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={8} className="text-center py-12 text-neutral-400 text-[14px]">
                       В этом разделе пока нет товаров
