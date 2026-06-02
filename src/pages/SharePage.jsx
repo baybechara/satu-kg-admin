@@ -77,20 +77,29 @@ export default function SharePage() {
         </div>
 
         {/* Card 3: QR Code */}
-        <div className="w-full bg-card border rounded-xl p-5 flex flex-col gap-6">
-          <div className="flex flex-col gap-1.5">
-            <h2 className="text-[18px] font-bold text-neutral-900 tracking-tight">QR-код магазина</h2>
-            <p className="text-[14px] text-muted-foreground leading-snug">
-              Распечатайте и разместите у кассы — покупатели смогут сканировать и сразу попасть в ваш магазин
+        <div className="w-full bg-card border rounded-xl flex flex-col pt-8">
+          <div className="flex flex-col items-center px-6 text-center pb-8">
+            <div className="p-4 rounded-2xl border bg-white inline-flex mb-6">
+              <img 
+                src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://mystore.satu.kg" 
+                alt="QR Code" 
+                className="w-40 h-40 object-contain" 
+              />
+            </div>
+            <h2 className="text-lg font-semibold text-neutral-900 tracking-tight mb-2">Отсканируйте для перехода</h2>
+            <p className="text-sm text-muted-foreground leading-snug max-w-[280px]">
+              Распечатайте этот код и разместите у кассы, чтобы покупатели могли сразу попасть в ваш магазин.
             </p>
           </div>
-          <Button 
-            variant="outline"
-            className="w-full flex items-center justify-center gap-2 h-12 rounded-xl text-neutral-900"
-          >
-            <Printer className="w-5 h-5 text-muted-foreground" />
-            <span className="text-[16px] font-semibold">Распечатать QR-код</span>
-          </Button>
+          <div className="border-t p-4 bg-muted/10 rounded-b-xl">
+            <Button 
+              variant="secondary"
+              className="w-full h-10 font-medium bg-neutral-100 hover:bg-neutral-200 text-neutral-900"
+            >
+              <Printer className="w-4 h-4 mr-2 text-muted-foreground" />
+              Распечатать QR-код
+            </Button>
+          </div>
         </div>
 
       </div>

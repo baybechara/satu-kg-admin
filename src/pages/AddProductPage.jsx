@@ -5,11 +5,14 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
+import { Slider } from '@/components/ui/slider'
 
 export default function AddProductPage() {
   const navigate = useNavigate()
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
+  const [price, setPrice] = useState(0)
+  const [qty, setQty] = useState(10)
 
   const [categories, setCategories] = useState([
     { id: 1, label: 'Все', checked: false },
@@ -133,11 +136,25 @@ export default function AddProductPage() {
               <div className="relative">
                 <Input 
                   id="price"
-                  type="text" 
+                  type="number" 
                   className="pr-12" 
+                  value={price || ''}
+                  onChange={(e) => setPrice(Number(e.target.value))}
                   placeholder="0"
                 />
                 <div className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">сом</div>
+              </div>
+              <div className="pt-4 pb-1 flex flex-col gap-3">
+                <Slider 
+                  value={[price]} 
+                  onValueChange={(val) => setPrice(val[0])} 
+                  max={100000} 
+                  step={100}
+                />
+                <div className="flex justify-between text-xs text-muted-foreground font-medium">
+                  <span>0 сом (Мин)</span>
+                  <span>100 000 сом (Макс)</span>
+                </div>
               </div>
             </div>
           </section>
@@ -152,11 +169,25 @@ export default function AddProductPage() {
               <div className="relative">
                 <Input 
                   id="qty"
-                  type="text" 
+                  type="number" 
                   className="pr-10" 
+                  value={qty || ''}
+                  onChange={(e) => setQty(Number(e.target.value))}
                   placeholder="10"
                 />
                 <div className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">шт</div>
+              </div>
+              <div className="pt-4 pb-1 flex flex-col gap-3">
+                <Slider 
+                  value={[qty]} 
+                  onValueChange={(val) => setQty(val[0])} 
+                  max={1000} 
+                  step={1}
+                />
+                <div className="flex justify-between text-xs text-muted-foreground font-medium">
+                  <span>0 шт (Мин)</span>
+                  <span>1 000 шт (Макс)</span>
+                </div>
               </div>
             </div>
           </section>

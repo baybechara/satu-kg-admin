@@ -154,35 +154,56 @@ export default function OrdersPage() {
                     <div className="px-4 sm:px-5 pb-5 pt-3 animate-in slide-in-from-top-2 duration-200">
                       
                       {/* Customer Info */}
-                      <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Информация о заказе</h3>
-                        <Button variant="ghost" size="sm" className="h-8 gap-1.5 text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-2 -mr-2">
+                      <div className="flex items-center justify-between mb-4 mt-2">
+                        <div className="flex flex-col gap-0.5">
+                          <h3 className="text-[15px] font-semibold text-neutral-900 tracking-tight">Информация о заказе</h3>
+                          <p className="text-[13px] text-muted-foreground">Контактные данные и способ доставки.</p>
+                        </div>
+                        <Button variant="ghost" size="sm" className="h-8 gap-1.5 text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-3 shrink-0 rounded-lg -mr-2">
                           <Copy className="w-4 h-4" />
-                          <span className="text-xs font-semibold hidden sm:inline">Скопировать</span>
+                          <span className="text-[13px] font-semibold hidden sm:inline">Скопировать</span>
                         </Button>
                       </div>
                       
-                      <div className="rounded-lg bg-muted/50 p-4 flex flex-col gap-4">
-                        <div className="flex items-start gap-3">
-                          <Phone className="w-5 h-5 text-muted-foreground shrink-0 mt-0.5" />
-                          <div className="flex flex-col gap-0.5">
-                            <span className="text-xs font-medium text-muted-foreground">Телефон покупателя:</span>
-                            <span className="text-sm font-semibold">{order.phone}</span>
+                      <div className="flex flex-col mt-2 mb-2">
+                        <div className="flex items-center justify-between py-3">
+                          <div className="flex items-center gap-4">
+                            <div className="w-10 h-10 rounded-xl bg-muted/40 flex items-center justify-center shrink-0">
+                              <Phone className="w-4 h-4 text-neutral-600" />
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="text-[14px] font-medium text-neutral-900">{order.customer}</span>
+                              <span className="text-[13px] text-muted-foreground">Телефон покупателя</span>
+                            </div>
                           </div>
+                          <span className="text-[14px] font-medium text-neutral-600">{order.phone}</span>
                         </div>
-                        <div className="flex items-start gap-3">
-                          <Package className="w-5 h-5 text-muted-foreground shrink-0 mt-0.5" />
-                          <div className="flex flex-col gap-0.5">
-                            <span className="text-xs font-medium text-muted-foreground">Способ получения:</span>
-                            <span className="text-sm font-semibold">{order.delivery}</span>
+                        
+                        <div className="flex items-center justify-between py-3 border-t">
+                          <div className="flex items-center gap-4">
+                            <div className="w-10 h-10 rounded-xl bg-muted/40 flex items-center justify-center shrink-0">
+                              <Package className="w-4 h-4 text-neutral-600" />
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="text-[14px] font-medium text-neutral-900">{order.delivery}</span>
+                              <span className="text-[13px] text-muted-foreground">Способ получения</span>
+                            </div>
                           </div>
+                          <span className="text-[14px] font-medium text-neutral-600">
+                            {order.delivery === 'Самовывоз' ? 'Пункт выдачи' : 'Адрес курьера'}
+                          </span>
                         </div>
+
                         {order.comment && (
-                          <div className="flex items-start gap-3">
-                            <MessageSquare className="w-5 h-5 text-muted-foreground shrink-0 mt-0.5" />
-                            <div className="flex flex-col gap-0.5">
-                              <span className="text-xs font-medium text-muted-foreground">Комментарий покупателя:</span>
-                              <span className="text-sm font-medium leading-snug">{order.comment}</span>
+                          <div className="flex items-start justify-between py-3 border-t gap-4">
+                            <div className="flex items-start gap-4">
+                              <div className="w-10 h-10 rounded-xl bg-muted/40 flex items-center justify-center shrink-0 mt-0.5">
+                                <MessageSquare className="w-4 h-4 text-neutral-600" />
+                              </div>
+                              <div className="flex flex-col">
+                                <span className="text-[14px] font-medium text-neutral-900">Комментарий</span>
+                                <span className="text-[13px] text-muted-foreground leading-snug max-w-[250px] sm:max-w-[300px]">{order.comment}</span>
+                              </div>
                             </div>
                           </div>
                         )}
@@ -193,23 +214,26 @@ export default function OrdersPage() {
                       {/* Items */}
                       <div className="flex flex-col gap-3">
                         {order.items.map((item, idx) => (
-                          <div key={idx} className="flex gap-4 p-3 rounded-lg border bg-card items-center">
-                            <div className="w-[60px] h-[60px] rounded-md border bg-white overflow-hidden shrink-0 flex items-center justify-center">
+                          <div key={idx} className="flex gap-4 p-3 rounded-xl bg-muted/30 items-center transition-colors hover:bg-muted/50">
+                            <div className="w-[52px] h-[52px] rounded-xl border bg-white overflow-hidden shrink-0">
                               <img src={item.image} alt="" className="w-full h-full object-cover" />
                             </div>
-                            <div className="flex flex-col justify-between flex-1 py-1">
-                              <div className="text-sm font-medium leading-tight line-clamp-2">{item.name}</div>
-                              <div className="flex items-center justify-between w-full mt-2">
-                                <Badge variant="secondary" className="font-medium hover:bg-secondary">{item.qty} шт.</Badge>
-                                <span className="text-sm font-semibold">{item.price * item.qty} сом</span>
+                            <div className="flex flex-col justify-center flex-1 min-w-0">
+                              <div className="text-[15px] font-medium text-neutral-900 leading-tight truncate">{item.name}</div>
+                              <div className="text-[12px] font-medium text-muted-foreground uppercase tracking-wide mt-1">
+                                {item.qty} ШТ. · {item.price} СОМ
                               </div>
+                            </div>
+                            <div className="flex flex-col items-end justify-center shrink-0 pr-1">
+                              <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest mb-0.5">Сумма</div>
+                              <div className="text-[15px] font-bold text-neutral-900">{item.price * item.qty} сом</div>
                             </div>
                             
                             {order.status === 'new' && order.items.length > 1 && (
                               <Button 
                                 variant="ghost" 
                                 size="icon" 
-                                className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10 shrink-0"
+                                className="h-8 w-8 ml-1 text-muted-foreground hover:text-destructive hover:bg-destructive/10 shrink-0"
                                 onClick={(e) => handleDeleteClick(order.id, idx, item, e)}
                               >
                                 <Trash2 className="w-4 h-4" />
@@ -219,28 +243,37 @@ export default function OrdersPage() {
                         ))}
                       </div>
 
-                      <div className="flex items-center justify-between mt-6">
-                        <span className="text-sm font-semibold text-muted-foreground">Итого:</span>
-                        <span className="text-lg font-bold">{order.total} сом</span>
-                      </div>
+                      <div className="border-t mx-[-16px] sm:mx-[-20px] mb-[-20px] mt-6 bg-muted/5 flex flex-col">
+                        <div className="px-4 sm:px-5 py-5 flex flex-col gap-5">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[15px] font-medium text-muted-foreground">Итоговая сумма</span>
+                            <span className="text-lg font-bold text-neutral-900">{order.total} сом</span>
+                          </div>
 
-                      {order.status === 'new' && (
-                        <div className="flex gap-3 mt-6">
-                          <Button 
-                            variant="outline" 
-                            className="flex-1 h-11 rounded-lg text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/20 font-semibold"
-                          >
-                            <X className="w-5 h-5 mr-1.5" />
-                            Отменить
-                          </Button>
-                          <Button 
-                            className="flex-1 h-11 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
-                          >
-                            <Check className="w-5 h-5 mr-1.5" />
-                            Выполнен
-                          </Button>
+                          {order.status === 'new' && (
+                            <div className="flex flex-col gap-3">
+                              <div className="flex gap-3">
+                                <Button 
+                                  variant="outline" 
+                                  className="flex-1 h-11 text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/20 font-semibold bg-white"
+                                >
+                                  <X className="w-5 h-5 mr-1.5" />
+                                  Отменить
+                                </Button>
+                                <Button 
+                                  className="flex-1 h-11 font-semibold"
+                                >
+                                  <Check className="w-5 h-5 mr-1.5" />
+                                  Выполнен
+                                </Button>
+                              </div>
+                              <p className="text-[13px] text-center text-muted-foreground leading-snug">
+                                Отмененные заказы нельзя будет восстановить.
+                              </p>
+                            </div>
+                          )}
                         </div>
-                      )}
+                      </div>
                     </div>
                   )}
                 </div>

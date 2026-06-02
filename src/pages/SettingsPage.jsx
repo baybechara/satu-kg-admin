@@ -9,7 +9,8 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { 
   Truck, Phone, MapPin, Clock, Link as LinkIcon, Store, FileText, 
   Image as ImageIcon, MessageCircle, ChevronRight, User, Lock, 
-  LogOut, Trash2, HelpCircle, ArrowLeft, Camera, Trash, Plus, Check
+  LogOut, Trash2, HelpCircle, ArrowLeft, Camera, Trash, Plus, Check,
+  AlertCircle, ArrowRight
 } from 'lucide-react'
 
 // ─── Shared Components ────────────────────────────────────────────────────────
@@ -534,46 +535,57 @@ function SettingsProfile() {
   return (
     <div className="pt-4 pb-20">
       <SettingsSubpageHeader title="Профиль" onBack={() => navigate('/settings')} />
-      <div className="flex flex-col gap-8">
-        
-        <div className="flex items-center gap-4 bg-card border p-5 rounded-2xl">
-          <div className="w-16 h-16 rounded-xl bg-muted flex items-center justify-center shrink-0">
-            <User className="w-8 h-8 text-muted-foreground" />
+      
+      <div className="flex flex-col bg-card border rounded-xl">
+        <div className="flex flex-col p-5 sm:p-6 gap-6">
+          <div className="flex flex-col gap-1.5">
+            <h2 className="text-lg font-semibold text-neutral-900 tracking-tight">Доступ к аккаунту</h2>
+            <p className="text-sm text-muted-foreground">Обновите свои данные для входа или выйдите из аккаунта.</p>
           </div>
-          <div className="flex flex-col">
-            <h2 className="text-lg font-bold">Имя Владельца</h2>
-            <p className="text-sm text-muted-foreground">+996 500 00 00 00</p>
+
+          <div className="flex flex-col gap-4">
+            <Field label="Имя Владельца">
+              <Input type="text" defaultValue="Имя Владельца" readOnly className="bg-muted/30" />
+            </Field>
+
+            <Field label="Номер телефона">
+              <Input type="tel" defaultValue="+996 500 00 00 00" readOnly className="bg-muted/30" />
+            </Field>
+
+            <Field label="Текущий пароль">
+              <div className="relative">
+                <Input type="password" defaultValue="........" readOnly className="bg-muted/30 pr-24" />
+                <Button variant="ghost" size="sm" className="absolute right-1 top-1 h-8 px-3 text-blue-600 hover:text-blue-700 hover:bg-blue-50 font-semibold uppercase text-xs tracking-wider">
+                  Изменить
+                </Button>
+              </div>
+            </Field>
           </div>
         </div>
 
-        <div className="flex flex-col gap-3">
-          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider pl-1">Аккаунт</h2>
-          <div className="flex flex-col gap-2">
-            <button className="flex items-center gap-4 p-4 rounded-xl border bg-card hover:bg-muted/50 transition-colors text-left">
-              <Lock className="w-5 h-5 text-muted-foreground shrink-0" />
-              <span className="text-[15px] font-medium">Сменить пароль</span>
-              <ChevronRight className="w-4 h-4 text-muted-foreground ml-auto" />
-            </button>
-            <button 
-              onClick={() => navigate('/login')}
-              className="flex items-center gap-4 p-4 rounded-xl border bg-card hover:bg-red-50 transition-colors text-left group"
-            >
-              <LogOut className="w-5 h-5 text-destructive shrink-0" />
-              <span className="text-[15px] font-medium text-destructive">Выйти из аккаунта</span>
-            </button>
-          </div>
-        </div>
+        <div className="border-t bg-muted/10 p-5 flex flex-col gap-4 rounded-b-xl">
+          <Button 
+            variant="outline"
+            className="w-full font-semibold h-11 bg-white hover:bg-muted/50"
+            onClick={() => navigate('/login')}
+          >
+            <LogOut className="w-4 h-4 mr-2" />
+            Выйти из аккаунта
+          </Button>
 
-        <div className="flex flex-col gap-3 mt-4">
-          <h2 className="text-sm font-semibold text-destructive uppercase tracking-wider pl-1">Опасная зона</h2>
-          <div className="flex flex-col gap-2">
-            <button className="flex items-center gap-4 p-4 rounded-xl border border-destructive/20 bg-destructive/5 hover:bg-destructive/10 transition-colors text-left">
-              <Trash2 className="w-5 h-5 text-destructive shrink-0" />
-              <span className="text-[15px] font-medium text-destructive">Удалить магазин навсегда</span>
-            </button>
-          </div>
+          <button className="flex items-center justify-between p-4 rounded-xl border bg-white hover:bg-red-50 transition-colors text-left group">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-destructive/10 flex items-center justify-center shrink-0">
+                <AlertCircle className="w-4 h-4 text-destructive" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-[15px] font-medium text-destructive">Опасная зона</span>
+                <span className="text-[13px] text-muted-foreground group-hover:text-neutral-600 transition-colors">Удалить магазин навсегда</span>
+              </div>
+            </div>
+            <ArrowRight className="w-4 h-4 text-muted-foreground" />
+          </button>
         </div>
-
       </div>
     </div>
   )
