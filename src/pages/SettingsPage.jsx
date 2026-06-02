@@ -152,7 +152,7 @@ function SettingsAddress() {
   return (
     <div className="pt-4 pb-20">
       <SettingsSubpageHeader title="Адрес магазина" onBack={() => navigate('/settings')} />
-      <div className="bg-card border rounded-xl p-6 flex flex-col gap-6">
+      <div className="bg-card border rounded-xl p-5 flex flex-col gap-6">
         <p className="text-sm text-muted-foreground">
           Адрес магазина или точки выдачи
         </p>
@@ -173,7 +173,7 @@ function SettingsSocials() {
   return (
     <div className="pt-4 pb-20">
       <SettingsSubpageHeader title="Соцсети и сайты" onBack={() => navigate('/settings')} />
-      <div className="bg-card border rounded-xl p-6 flex flex-col gap-6">
+      <div className="bg-card border rounded-xl p-5 flex flex-col gap-6">
         <p className="text-sm text-muted-foreground">
           Вы можете создавать ссылки на внешние сайты, которые будут отображаться в верхней части вашего магазина.
         </p>
@@ -244,7 +244,7 @@ function SettingsSchedule() {
   return (
     <div className="pt-4 pb-20">
       <SettingsSubpageHeader title="График работы" onBack={() => navigate('/settings')} />
-      <div className="bg-card border rounded-xl p-6 flex flex-col gap-6">
+      <div className="bg-card border rounded-xl p-5 flex flex-col gap-6">
         <p className="text-sm text-muted-foreground mb-2">
           Настройте часы работы вашего магазина для каждого дня недели.
         </p>
@@ -273,7 +273,7 @@ function SettingsContacts() {
   return (
     <div className="pt-4 pb-20">
       <SettingsSubpageHeader title="Контакты" onBack={() => navigate('/settings')} />
-      <div className="bg-card border rounded-xl p-6 flex flex-col gap-6">
+      <div className="bg-card border rounded-xl p-5 flex flex-col gap-6">
         <p className="text-sm text-muted-foreground">
           Укажите телефон для связи — покупатели увидят его на витрине.
         </p>
@@ -303,7 +303,7 @@ function SettingsDelivery() {
   return (
     <div className="pt-4 pb-20">
       <SettingsSubpageHeader title="Доставка" onBack={() => navigate('/settings')} />
-      <div className="bg-card border rounded-xl p-6 flex flex-col gap-6">
+      <div className="bg-card border rounded-xl p-5 flex flex-col gap-6">
         <p className="text-sm text-muted-foreground mb-2">
           Выберите способы и настройте стоимость доставки.
         </p>
@@ -448,7 +448,7 @@ function SettingsLogo() {
   return (
     <div className="pt-4 pb-20">
       <SettingsSubpageHeader title="Логотип магазина" onBack={() => navigate('/settings')} />
-      <div className="bg-card border rounded-xl p-6 flex flex-col gap-6">
+      <div className="bg-card border rounded-xl p-5 flex flex-col gap-6">
         <p className="text-sm text-muted-foreground">
           Рекомендуемый размер: 600×600 пкс, не более 5 МБ. Форматы: JPG, PNG.
         </p>
@@ -476,7 +476,7 @@ function SettingsName() {
   return (
     <div className="pt-4 pb-20">
       <SettingsSubpageHeader title="Название компании" onBack={() => navigate('/settings')} />
-      <div className="bg-card border rounded-xl p-6 flex flex-col gap-6">
+      <div className="bg-card border rounded-xl p-5 flex flex-col gap-6">
         <p className="text-sm text-muted-foreground">
           Это название увидят покупатели на вашей витрине.
         </p>
@@ -494,7 +494,7 @@ function SettingsDescription() {
   return (
     <div className="pt-4 pb-20">
       <SettingsSubpageHeader title="Описание магазина" onBack={() => navigate('/settings')} />
-      <div className="bg-card border rounded-xl p-6 flex flex-col gap-6">
+      <div className="bg-card border rounded-xl p-5 flex flex-col gap-6">
         <p className="text-sm text-muted-foreground">
           Коротко расскажите о вашем магазине, товарах или услугах. Это поможет покупателям больше узнать о вас.
         </p>
@@ -516,7 +516,7 @@ function SettingsWhatsapp() {
   return (
     <div className="pt-4 pb-20">
       <SettingsSubpageHeader title="WhatsApp" onBack={() => navigate('/settings')} />
-      <div className="bg-card border rounded-xl p-6 flex flex-col gap-6">
+      <div className="bg-card border rounded-xl p-5 flex flex-col gap-6">
         <p className="text-sm text-muted-foreground">
           Укажите номер WhatsApp, на который будут приходить уведомления о новых заказах от покупателей.
         </p>

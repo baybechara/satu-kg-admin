@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ArrowLeft, ImagePlus, Plus, Check, Save } from 'lucide-react'
+import { ArrowLeft, ImagePlus, Plus, Check, Save, CloudUpload } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -70,24 +70,30 @@ export default function AddProductPage() {
         
         {/* Фотографии */}
         <section className="rounded-xl border bg-card text-card-foreground">
-          <div className="p-6 flex flex-col gap-4">
-            <div className="flex flex-col space-y-1.5">
-              <h3 className="font-semibold leading-none tracking-tight">Фотографии</h3>
-              <p className="text-sm text-muted-foreground">Рекомендуемый размер: 800×800 пкс, до 5 МБ</p>
-            </div>
-            <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="aspect-square bg-muted/50 rounded-md border border-dashed border-input flex items-center justify-center cursor-pointer hover:bg-muted transition-colors">
-                  <ImagePlus className="w-5 h-5 text-muted-foreground" />
-                </div>
-              ))}
+          <div className="flex flex-col space-y-1.5 p-5">
+            <h3 className="font-semibold leading-none tracking-tight">Фотографии товара</h3>
+            <p className="text-sm text-muted-foreground">Перетащите файлы сюда или нажмите для выбора</p>
+          </div>
+          
+          <div className="p-5 pt-0">
+            <div className="w-full rounded-xl border border-dashed border-input bg-muted/30 hover:bg-muted/50 transition-colors flex flex-col items-center justify-center py-10 px-4 cursor-pointer text-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
+                <CloudUpload className="w-5 h-5 text-neutral-600" />
+              </div>
+              <div className="flex flex-col gap-1">
+                <span className="text-sm font-semibold text-neutral-900">Загрузить файлы</span>
+                <span className="text-[13px] text-muted-foreground">PNG, JPG до 5 МБ</span>
+              </div>
+              <Button variant="outline" className="mt-2 h-9 px-4 rounded-md font-medium">
+                Выбрать файлы
+              </Button>
             </div>
           </div>
         </section>
 
         {/* Название */}
         <section className="rounded-xl border bg-card text-card-foreground">
-          <div className="p-6 flex flex-col space-y-3">
+          <div className="p-5 flex flex-col space-y-3">
             <Label htmlFor="title" className="font-semibold">Название товара <span className="text-red-500">*</span></Label>
             <Input 
               id="title"
@@ -100,7 +106,7 @@ export default function AddProductPage() {
 
         {/* Описание */}
         <section className="rounded-xl border bg-card text-card-foreground">
-          <div className="p-6 flex flex-col space-y-3">
+          <div className="p-5 flex flex-col space-y-3">
             <div className="flex justify-between items-center">
               <Label htmlFor="desc" className="font-semibold">Описание товара <span className="text-red-500">*</span></Label>
               <span className="text-xs text-muted-foreground">{description.length} / 2000</span>
@@ -119,7 +125,7 @@ export default function AddProductPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {/* Цена */}
           <section className="rounded-xl border bg-card text-card-foreground">
-            <div className="p-6 flex flex-col space-y-3">
+            <div className="p-5 flex flex-col space-y-3">
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="price" className="font-semibold">Цена товара</Label>
                 <p className="text-[13px] text-muted-foreground">Если не указать, будет "Без цены"</p>
@@ -138,7 +144,7 @@ export default function AddProductPage() {
 
           {/* Количество */}
           <section className="rounded-xl border bg-card text-card-foreground">
-            <div className="p-6 flex flex-col space-y-3">
+            <div className="p-5 flex flex-col space-y-3">
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="qty" className="font-semibold">Количество</Label>
                 <p className="text-[13px] text-muted-foreground">Остаток на складе</p>
