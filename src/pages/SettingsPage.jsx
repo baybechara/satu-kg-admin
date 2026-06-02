@@ -1,115 +1,167 @@
-import Icon from '../components/Icon.jsx'
 import { useState } from 'react'
 import { Routes, Route, useNavigate } from 'react-router-dom'
-import PageHeader from '../components/PageHeader'
-import Button from '../components/Button'
-import InputField from '../components/InputField'
-import ScheduleCard from '../components/ScheduleCard'
-import SwitchCard from '../components/SwitchCard'
 import Header from '../components/Header'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Switch } from '@/components/ui/switch'
+import { Checkbox } from '@/components/ui/checkbox'
+import { 
+  Truck, Phone, MapPin, Clock, Link as LinkIcon, Store, FileText, 
+  Image as ImageIcon, MessageCircle, ChevronRight, User, Lock, 
+  LogOut, Trash2, HelpCircle, ArrowLeft, Camera, Trash, Plus, Check
+} from 'lucide-react'
+
+// ─── Shared Components ────────────────────────────────────────────────────────
+
+function Field({ label, required, children, right }) {
+  return (
+    <div className="flex flex-col gap-1.5">
+      {label && (
+        <div className="flex items-center justify-between">
+          <Label className="font-semibold text-neutral-800">
+            {label}{required && <span className="text-destructive ml-0.5">*</span>}
+          </Label>
+          {right}
+        </div>
+      )}
+      {children}
+    </div>
+  )
+}
+
+function AddButton({ onClick, children }) {
+  return (
+    <Button
+      variant="outline"
+      onClick={onClick}
+      className="w-full border-dashed text-muted-foreground hover:text-foreground"
+    >
+      <Plus className="w-4 h-4 mr-2" />
+      {children}
+    </Button>
+  )
+}
+
+function SocialInput({ logo, placeholder, value, onChange }) {
+  return (
+    <div className="flex items-center border border-input rounded-md overflow-hidden focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 transition-all">
+      <div className="flex items-center justify-center w-10 h-10 shrink-0 border-r border-input bg-muted/50">
+        {logo}
+      </div>
+      <input
+        type="text"
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        className="flex h-10 w-full bg-background px-3 py-2 text-sm placeholder:text-muted-foreground outline-none disabled:cursor-not-allowed disabled:opacity-50"
+      />
+    </div>
+  )
+}
 
 // Shared Subpage Header
 function SettingsSubpageHeader({ title, onBack }) {
-  return <Header title={title} leftIcon="arrow_back" onLeftClick={onBack} variant="sub" />
+  return (
+    <>
+      <header className="fixed top-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-md border-b border-neutral-200">
+        <div className="w-full max-w-[820px] mx-auto px-4 sm:px-6 h-[60px] flex items-center gap-4">
+          <button 
+            onClick={onBack}
+            className="w-9 h-9 rounded-full bg-white flex items-center justify-center border border-neutral-200 shrink-0 active:scale-95 transition-all hover:bg-neutral-50"
+          >
+            <ArrowLeft className="w-5 h-5 text-neutral-700" />
+          </button>
+          <h1 className="text-lg font-semibold tracking-tight text-neutral-900">{title}</h1>
+        </div>
+      </header>
+      <div className="h-[60px] shrink-0 w-full mb-4" />
+    </>
+  )
 }
 
 function SaveButton() {
   return (
-    <>
-      {/* Spacer to push content above the floating button */}
-      <div style={{ height: '200px', flexShrink: 0, width: '100%' }} />
-      
-      <div className="fixed bottom-[104px] left-1/2 -translate-x-1/2 w-full max-w-[820px] admin-container z-30">
-        <button className="w-full bg-neutral-800 hover:bg-neutral-900 text-white flex items-center justify-center h-[56px] rounded-[16px] shadow-[0px_4px_20px_rgba(0,0,0,0.15)] transition-all active:scale-95">
-          <span className="text-[16px] font-bold font-['Open_Sans']">Сохранить изменения</span>
-        </button>
+    <div className="fixed bottom-[84px] sm:bottom-[96px] left-0 w-full z-50 pointer-events-none flex justify-center">
+      <div className="w-full max-w-[820px] px-4 sm:px-6 flex justify-end">
+        <Button className="h-[48px] px-6 rounded-full shadow-none bg-neutral-900 hover:bg-neutral-800 text-white font-medium text-[14px] pointer-events-auto">
+          Сохранить изменения
+        </Button>
       </div>
-    </>
+    </div>
   )
 }
 
 function SettingsMenu() {
   const navigate = useNavigate()
   const sections = [
-    { title: 'Доставка', items: [{ icon: 'inventory_2', label: 'Способы доставки заказа', path: '/settings/delivery' }] },
+    { title: 'Доставка', items: [{ icon: Truck, label: 'Способы доставки заказа', path: '/settings/delivery' }] },
     { title: 'Контакты', items: [
-      { icon: 'badge', label: 'Способы связи', path: '/settings/contacts' },
-      { icon: 'location_on', label: 'Адрес компании', path: '/settings/address' },
-      { icon: 'storefront', label: 'График работы', path: '/settings/schedule' },
-      { icon: 'domain', label: 'Ссылки на внешние сайты', path: '/settings/socials' },
+      { icon: Phone, label: 'Способы связи', path: '/settings/contacts' },
+      { icon: MapPin, label: 'Адрес компании', path: '/settings/address' },
+      { icon: Clock, label: 'График работы', path: '/settings/schedule' },
+      { icon: LinkIcon, label: 'Ссылки на внешние сайты', path: '/settings/socials' },
     ]},
     { title: 'О магазине', items: [
-      { icon: 'store', label: 'Название компании', path: '/settings/name' },
-      { icon: 'article', label: 'Описание', path: '/settings/description' },
-      { icon: 'format_shapes', label: 'Логотип', path: '/settings/logo' },
-      { icon: 'chat', label: 'Номер WhatsApp для заказов', path: '/settings/whatsapp' },
+      { icon: Store, label: 'Название компании', path: '/settings/name' },
+      { icon: FileText, label: 'Описание', path: '/settings/description' },
+      { icon: ImageIcon, label: 'Логотип', path: '/settings/logo' },
+      { icon: MessageCircle, label: 'Номер WhatsApp для заказов', path: '/settings/whatsapp' },
     ]},
   ]
 
   return (
-    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-neutral-50 relative pb-32 flex flex-col">
+    <>
       <Header 
         title="Настройки магазина" 
         rightIcon="person" 
         onRightClick={() => navigate('/settings/profile')} 
       />
 
-      <div className="flex flex-col gap-8 page-padding pt-6 pb-4">
+      <div className="flex flex-col gap-8 pt-6 pb-20">
         {sections.map((s) => (
-          <div key={s.title} className="flex flex-col gap-4">
-            <h2 className="text-[15px] font-medium text-neutral-500 font-['Open_Sans']">{s.title}</h2>
+          <div key={s.title} className="flex flex-col gap-3">
+            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider pl-1">{s.title}</h2>
             <div className="flex flex-col gap-2">
               {s.items.map((item) => (
                 <button 
                   key={item.label} 
                   onClick={() => navigate(item.path)}
-                  className="flex items-center gap-4 h-[52px] text-left transition-all active:opacity-70 bg-transparent"
+                  className="flex items-center gap-4 p-4 rounded-xl border bg-card text-card-foreground hover:bg-muted/50 transition-colors text-left"
                 >
-                  <Icon name={item.icon} className="text-[28px] text-neutral-700 shrink-0"  />
-                  <span className="text-[17px] font-semibold text-neutral-900 font-['Open_Sans']">{item.label}</span>
+                  <item.icon className="w-5 h-5 text-muted-foreground shrink-0" />
+                  <span className="text-[15px] font-medium">{item.label}</span>
+                  <ChevronRight className="w-4 h-4 text-muted-foreground ml-auto" />
                 </button>
               ))}
             </div>
           </div>
         ))}
-      </div>
 
-      {/* Spacer for BottomNav */}
-      <div style={{ height: '100px', flexShrink: 0 }} />
-
-      {/* Floating Help Button */}
-      <div className="fixed bottom-[104px] left-1/2 -translate-x-1/2 w-full max-w-[820px] admin-container z-30 flex justify-end">
-        <button className="btn-add-product bg-neutral-800 hover:bg-neutral-900 text-white flex items-center justify-center gap-2 px-6 h-[56px] rounded-[16px] shadow-[0px_4px_20px_rgba(0,0,0,0.15)] transition-all active:scale-95">
-          <Icon name="help" className="text-[24px]"  />
-          <span className="text-[16px] font-bold font-['Open_Sans']">Нужна помощь?</span>
-        </button>
+        <Button variant="outline" className="h-14 rounded-xl border-dashed mt-4 bg-transparent">
+          <HelpCircle className="w-5 h-5 mr-2 text-muted-foreground" />
+          Нужна помощь?
+        </Button>
       </div>
-    </div>
+    </>
   )
 }
 
 function SettingsAddress() {
   const navigate = useNavigate()
   return (
-    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-neutral-50 relative pb-[120px] flex flex-col">
+    <div className="pt-4 pb-20">
       <SettingsSubpageHeader title="Адрес магазина" onBack={() => navigate('/settings')} />
-      <div className="page-padding pt-6 flex flex-col gap-6">
-        <div>
-          <h2 className="text-[24px] font-bold text-neutral-900 mb-2 font-['Open_Sans']">Добавьте адрес</h2>
-          <p className="text-[15px] text-neutral-700 font-['Open_Sans'] leading-[1.4]">Адрес магазина или точки выдачи</p>
-        </div>
+      <div className="bg-card border rounded-xl p-6 flex flex-col gap-6">
+        <p className="text-sm text-muted-foreground">
+          Адрес магазина или точки выдачи
+        </p>
         
-        <InputField 
-          label="Адрес" 
-          icon="location_on" 
-          placeholder="Введите адрес" 
-          defaultValue="" 
-        />
+        <Field label="Адрес магазина">
+          <Input type="text" placeholder="Введите адрес" defaultValue="г. Бишкек, ЦУМ" />
+        </Field>
         
-        <Button variant="alt" className="flex items-center justify-center gap-3 w-full bg-white">
-          <Icon name="add_location_alt" className="text-[24px]"  />
-          <span>Добавить еще адрес</span>
-        </Button>
+        <AddButton>Добавить еще адрес</AddButton>
       </div>
       <SaveButton />
     </div>
@@ -119,52 +171,59 @@ function SettingsAddress() {
 function SettingsSocials() {
   const navigate = useNavigate()
   return (
-    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-neutral-50 relative pb-[120px] flex flex-col">
+    <div className="pt-4 pb-20">
       <SettingsSubpageHeader title="Соцсети и сайты" onBack={() => navigate('/settings')} />
-      <div className="page-padding pt-6 flex flex-col gap-6">
-        <div>
-          <h2 className="text-[24px] font-bold text-neutral-900 mb-2 font-['Open_Sans']">Ваши соцсети и сайты</h2>
-          <p className="text-[15px] text-neutral-700 font-['Open_Sans'] leading-[1.4]">
-            Вы можете создавать ссылки на внешние сайты, которые будут отображаться в верхней части вашего магазина.
-          </p>
-        </div>
+      <div className="bg-card border rounded-xl p-6 flex flex-col gap-6">
+        <p className="text-sm text-muted-foreground">
+          Вы можете создавать ссылки на внешние сайты, которые будут отображаться в верхней части вашего магазина.
+        </p>
 
-        <div className="flex flex-col gap-2.5">
-          <label className="text-[16px] font-semibold text-neutral-900 font-['Open_Sans']">Instagram</label>
-          <div className="input-wrap bg-neutral-100 !border-none">
-            <div className="w-10 h-10 flex items-center justify-center shrink-0 ml-1">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" className="w-6 h-6" alt="IG" />
-            </div>
-            <input type="text" placeholder="https://www.instagram.com/..." className="input-field bg-transparent" />
-          </div>
-        </div>
+        <Field label="Instagram">
+          <SocialInput 
+            logo={<img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" className="w-5 h-5" alt="IG" />}
+            placeholder="instagram.com/ваш_магазин" 
+            defaultValue="https://instagram.com/beko.kg" 
+          />
+        </Field>
 
-        <div className="flex flex-col gap-2.5">
-          <label className="text-[16px] font-semibold text-neutral-900 font-['Open_Sans']">Telegram</label>
-          <div className="input-wrap bg-neutral-100 !border-none">
-            <div className="w-10 h-10 flex items-center justify-center shrink-0 ml-1">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" className="w-6 h-6" alt="TG" />
-            </div>
-            <input type="text" placeholder="instagram.com/ваш_магазин" className="input-field bg-transparent" />
-          </div>
-        </div>
+        <Field label="Telegram">
+          <SocialInput 
+            logo={<img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" className="w-5 h-5" alt="TG" />}
+            placeholder="t.me/ваш_канал" 
+            defaultValue="t.me/beko_kg" 
+          />
+        </Field>
 
-        <div className="flex flex-col gap-2.5">
-          <label className="text-[16px] font-semibold text-neutral-900 font-['Open_Sans']">Youtube</label>
-          <div className="input-wrap bg-neutral-100 !border-none">
-            <div className="w-10 h-10 flex items-center justify-center shrink-0 ml-1">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" className="w-6 h-6" alt="YT" />
-            </div>
-            <input type="text" placeholder="https://www.youtube.com/..." className="input-field bg-transparent" />
-          </div>
-        </div>
+        <Field label="Youtube">
+          <SocialInput 
+            logo={<img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" className="w-5 h-5" alt="YT" />}
+            placeholder="https://www.youtube.com/..." 
+          />
+        </Field>
 
-        <Button variant="alt" className="flex items-center justify-center gap-3 w-full mt-2 bg-white">
-          <Icon name="link" className="text-[24px]"  />
-          <span>Добавить еще</span>
-        </Button>
+        <AddButton>Добавить еще</AddButton>
       </div>
       <SaveButton />
+    </div>
+  )
+}
+
+function ScheduleCard({ day, timeFrom, timeTo, enabled, onToggle, onTimeChange }) {
+  return (
+    <div className="flex items-center justify-between p-4 rounded-xl border bg-card">
+      <div className="flex items-center gap-3">
+        <Switch checked={enabled} onCheckedChange={onToggle} />
+        <span className="text-sm font-medium">{day}</span>
+      </div>
+      {enabled ? (
+        <div className="flex items-center gap-2">
+          <Input type="time" value={timeFrom} onChange={(e) => onTimeChange(e.target.value, timeTo)} className="w-[85px] h-8 text-xs" />
+          <span className="text-muted-foreground">-</span>
+          <Input type="time" value={timeTo} onChange={(e) => onTimeChange(timeFrom, e.target.value)} className="w-[85px] h-8 text-xs" />
+        </div>
+      ) : (
+        <span className="text-sm text-muted-foreground">Выходной</span>
+      )}
     </div>
   )
 }
@@ -183,15 +242,12 @@ function SettingsSchedule() {
   })
 
   return (
-    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-neutral-50 relative pb-[120px] flex flex-col">
+    <div className="pt-4 pb-20">
       <SettingsSubpageHeader title="График работы" onBack={() => navigate('/settings')} />
-      <div className="page-padding pt-6 flex flex-col gap-6">
-        <div>
-          <h2 className="text-[24px] font-bold text-neutral-900 mb-2 font-['Open_Sans']">Часы работы магазина</h2>
-          <p className="text-[15px] text-neutral-700 font-['Open_Sans'] leading-[1.4]">
-            Рекомендуемый размер — 600 x 600 пикселей, максимальный размер — 5 МБ.
-          </p>
-        </div>
+      <div className="bg-card border rounded-xl p-6 flex flex-col gap-6">
+        <p className="text-sm text-muted-foreground mb-2">
+          Настройте часы работы вашего магазина для каждого дня недели.
+        </p>
 
         <div className="flex flex-col gap-3">
           {Object.entries(dayLabels).map(([key, name]) => (
@@ -215,32 +271,22 @@ function SettingsSchedule() {
 function SettingsContacts() {
   const navigate = useNavigate()
   return (
-    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-neutral-50 relative pb-[120px] flex flex-col">
+    <div className="pt-4 pb-20">
       <SettingsSubpageHeader title="Контакты" onBack={() => navigate('/settings')} />
-      <div className="page-padding pt-6 flex flex-col gap-6">
-        <div>
-          <h2 className="text-[24px] font-bold text-neutral-900 mb-2 font-['Open_Sans']">Контакты магазина</h2>
-          <p className="text-[15px] text-neutral-700 font-['Open_Sans'] leading-[1.4]">
-            Укажите телефон для связи — покупатели увидят его на витрине.
-          </p>
-        </div>
+      <div className="bg-card border rounded-xl p-6 flex flex-col gap-6">
+        <p className="text-sm text-muted-foreground">
+          Укажите телефон для связи — покупатели увидят его на витрине.
+        </p>
         
-        <InputField 
-          label={<>Номер телефона <span className="text-red-500">*</span></>} 
-          icon="phone_enabled" 
-          defaultValue="+996 503 310 794" 
-        />
+        <Field label="Номер телефона" required>
+          <Input type="tel" placeholder="+996 (___) ___-___" defaultValue="+996 503 310 794" />
+        </Field>
 
-        <InputField 
-          label="Резервный номер (необязательно)" 
-          icon="phone_enabled" 
-          defaultValue="+996 503 310 794" 
-        />
+        <Field label="Резервный номер">
+          <Input type="tel" placeholder="+996 (___) ___-___" />
+        </Field>
         
-        <Button variant="alt" className="flex items-center justify-center gap-3 w-full mt-2 bg-white">
-          <Icon name="add_call" className="text-[24px]"  />
-          <span>Добавить резервный номер</span>
-        </Button>
+        <AddButton>Добавить резервный номер</AddButton>
       </div>
       <SaveButton />
     </div>
@@ -249,57 +295,147 @@ function SettingsContacts() {
 
 function SettingsDelivery() {
   const navigate = useNavigate()
-  const [deliveryPickup, setDeliveryPickup] = useState(true)
-  const [deliveryCourier, setDeliveryCourier] = useState(true)
-  const [deliveryCourierCost, setDeliveryCourierCost] = useState('150')
-  const [deliveryFixed, setDeliveryFixed] = useState(false)
-  const [deliveryFixedCost, setDeliveryFixedCost] = useState('')
-  const [deliveryFreeLimit, setDeliveryFreeLimit] = useState(false)
-  const [deliveryFreeLimitThreshold, setDeliveryFreeLimitThreshold] = useState('')
+  const [deliveryPickup, setPickup] = useState(true)
+  const [deliveryCourier, setCourier] = useState(true)
+  const [deliveryFixed, setFixed] = useState(false)
+  const [deliveryFreeLimit, setFreeLimit] = useState(false)
 
   return (
-    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-neutral-50 relative pb-[120px] flex flex-col">
+    <div className="pt-4 pb-20">
       <SettingsSubpageHeader title="Доставка" onBack={() => navigate('/settings')} />
-      <div className="page-padding pt-6 flex flex-col gap-6">
-        <div>
-          <h2 className="text-[24px] font-bold text-neutral-900 mb-2 font-['Open_Sans']">Доставка</h2>
-          <p className="text-[15px] text-neutral-700 font-['Open_Sans'] leading-[1.4]">
-            Выберите способы и настройте стоимость доставки.
-          </p>
+      <div className="bg-card border rounded-xl p-6 flex flex-col gap-6">
+        <p className="text-sm text-muted-foreground mb-2">
+          Выберите способы и настройте стоимость доставки.
+        </p>
+
+        <div className="flex flex-col gap-2">
+          <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-widest">Способы доставки</p>
+
+          <label
+            className={`flex items-start gap-3 p-3.5 rounded-xl border cursor-pointer transition-all ${
+              deliveryPickup
+                ? 'border-green-300 bg-green-50/40'
+                : 'border-input bg-card hover:border-neutral-300'
+            }`}
+          >
+            <Checkbox
+              checked={deliveryPickup}
+              onCheckedChange={setPickup}
+              className="mt-0.5 shrink-0"
+            />
+            <div className="flex flex-col gap-0.5 flex-1">
+              <span className="text-sm font-semibold text-neutral-800">Самовывоз из магазина</span>
+              <span className="text-xs text-muted-foreground">г. Бишкек, ЦУМ</span>
+            </div>
+            <Store className="w-5 h-5 text-muted-foreground shrink-0" />
+          </label>
+
+          <label
+            className={`flex items-start gap-3 p-3.5 rounded-xl border cursor-pointer transition-all ${
+              deliveryCourier
+                ? 'border-green-300 bg-green-50/40'
+                : 'border-input bg-card hover:border-neutral-300'
+            }`}
+          >
+            <Checkbox
+              checked={deliveryCourier}
+              onCheckedChange={setCourier}
+              className="mt-0.5 shrink-0"
+            />
+            <div className="flex flex-col gap-2 flex-1">
+              <div className="flex flex-col gap-0.5">
+                <span className="text-sm font-semibold text-neutral-800">Доставка курьером</span>
+                <span className="text-xs text-muted-foreground">Укажите стоимость доставки</span>
+              </div>
+              {deliveryCourier && (
+                <div
+                  className="flex items-center border border-input rounded-md overflow-hidden bg-background"
+                  onClick={e => e.preventDefault()}
+                >
+                  <input
+                    type="number"
+                    placeholder="0"
+                    defaultValue="150"
+                    className="flex-1 h-9 px-2.5 text-sm text-neutral-800 placeholder:text-muted-foreground outline-none bg-transparent"
+                  />
+                  <span className="text-xs text-muted-foreground pr-3 shrink-0">сом</span>
+                </div>
+              )}
+            </div>
+            <Truck className="w-5 h-5 text-muted-foreground shrink-0" />
+          </label>
         </div>
 
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-3">
-            <SwitchCard label="Самовывоз (забрать из магазина)" icon="store" enabled={deliveryPickup} onChange={setDeliveryPickup} />
-            {deliveryPickup && (
-              <div className="bg-neutral-300 rounded-[16px] p-4 text-[14px] text-neutral-700">
-                Покупатели увидят адрес: <span className="font-bold">г. Бишкек, ЦУМ</span>
+        <div className="flex flex-col gap-2 mt-4">
+          <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-widest">Ценовые правила</p>
+
+          <label
+            className={`flex items-start gap-3 p-3.5 rounded-xl border cursor-pointer transition-all ${
+              deliveryFixed
+                ? 'border-green-300 bg-green-50/40'
+                : 'border-input bg-card hover:border-neutral-300'
+            }`}
+          >
+            <Checkbox
+              checked={deliveryFixed}
+              onCheckedChange={setFixed}
+              className="mt-0.5 shrink-0"
+            />
+            <div className="flex flex-col gap-2 flex-1">
+              <div className="flex flex-col gap-0.5">
+                <span className="text-sm font-semibold text-neutral-800">Фиксированная цена на всё</span>
+                <span className="text-xs text-muted-foreground">Одна цена доставки для всех товаров</span>
               </div>
-            )}
-          </div>
+              {deliveryFixed && (
+                <div
+                  className="flex items-center border border-input rounded-md overflow-hidden bg-background"
+                  onClick={e => e.preventDefault()}
+                >
+                  <input
+                    type="number"
+                    placeholder="0"
+                    className="flex-1 h-9 px-2.5 text-sm text-neutral-800 placeholder:text-muted-foreground outline-none bg-transparent"
+                  />
+                  <span className="text-xs text-muted-foreground pr-3 shrink-0">сом</span>
+                </div>
+              )}
+            </div>
+            <Check className="w-5 h-5 text-muted-foreground shrink-0" />
+          </label>
 
-          <div className="flex flex-col gap-3 mt-2">
-            <SwitchCard label="Доставка курьером" icon="local_shipping" enabled={deliveryCourier} onChange={setDeliveryCourier} />
-            {deliveryCourier && (
-              <InputField label="Стоимость доставки (сом)" placeholder="Напр. 150" value={deliveryCourierCost} onChange={(e) => setDeliveryCourierCost(e.target.value)} />
-            )}
-          </div>
-
-          <h3 className="text-[15px] font-bold text-neutral-900 uppercase tracking-wider mt-4">Глобальные настройки стоимости</h3>
-          
-          <div className="flex flex-col gap-3">
-            <SwitchCard label="Фиксированная стоимость на всё" icon="payments" enabled={deliveryFixed} onChange={setDeliveryFixed} />
-            {deliveryFixed && (
-              <InputField label="Сумма (сом)" placeholder="Напр. 200" value={deliveryFixedCost} onChange={(e) => setDeliveryFixedCost(e.target.value)} />
-            )}
-          </div>
-
-          <div className="flex flex-col gap-3 mt-2">
-            <SwitchCard label="Бесплатно при заказе от суммы" icon="redeem" enabled={deliveryFreeLimit} onChange={setDeliveryFreeLimit} />
-            {deliveryFreeLimit && (
-              <InputField label="Порог бесплатной доставки (сом)" placeholder="Напр. 2000" value={deliveryFreeLimitThreshold} onChange={(e) => setDeliveryFreeLimitThreshold(e.target.value)} />
-            )}
-          </div>
+          <label
+            className={`flex items-start gap-3 p-3.5 rounded-xl border cursor-pointer transition-all ${
+              deliveryFreeLimit
+                ? 'border-green-300 bg-green-50/40'
+                : 'border-input bg-card hover:border-neutral-300'
+            }`}
+          >
+            <Checkbox
+              checked={deliveryFreeLimit}
+              onCheckedChange={setFreeLimit}
+              className="mt-0.5 shrink-0"
+            />
+            <div className="flex flex-col gap-2 flex-1">
+              <div className="flex flex-col gap-0.5">
+                <span className="text-sm font-semibold text-neutral-800">Бесплатно от суммы</span>
+                <span className="text-xs text-muted-foreground">Доставка бесплатна при заказе выше порога</span>
+              </div>
+              {deliveryFreeLimit && (
+                <div
+                  className="flex items-center border border-input rounded-md overflow-hidden bg-background"
+                  onClick={e => e.preventDefault()}
+                >
+                  <input
+                    type="number"
+                    placeholder="0"
+                    className="flex-1 h-9 px-2.5 text-sm text-neutral-800 placeholder:text-muted-foreground outline-none bg-transparent"
+                  />
+                  <span className="text-xs text-muted-foreground pr-3 shrink-0">сом</span>
+                </div>
+              )}
+            </div>
+            <Check className="w-5 h-5 text-muted-foreground shrink-0" />
+          </label>
         </div>
       </div>
       <SaveButton />
@@ -310,29 +446,23 @@ function SettingsDelivery() {
 function SettingsLogo() {
   const navigate = useNavigate()
   return (
-    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-neutral-50 relative pb-[120px] flex flex-col">
+    <div className="pt-4 pb-20">
       <SettingsSubpageHeader title="Логотип магазина" onBack={() => navigate('/settings')} />
-      <div className="page-padding pt-6 flex flex-col gap-6">
-        <div>
-          <h2 className="text-[24px] font-bold text-neutral-900 mb-2 font-['Open_Sans']">Логотип магазина</h2>
-          <p className="text-[15px] text-neutral-700 font-['Open_Sans'] leading-[1.4]">
-            Рекомендуемый размер: 600×600 пкс, не более 5 МБ. Форматы: JPG, PNG.
-          </p>
-        </div>
+      <div className="bg-card border rounded-xl p-6 flex flex-col gap-6">
+        <p className="text-sm text-muted-foreground">
+          Рекомендуемый размер: 600×600 пкс, не более 5 МБ. Форматы: JPG, PNG.
+        </p>
 
-        <div className="w-[140px] h-[140px] rounded-full bg-blue-600 flex items-center justify-center shrink-0 shadow-sm mx-0">
-          <span className="text-white text-[32px] font-bold">beko</span>
+        <div className="w-32 h-32 rounded-full bg-blue-600 flex items-center justify-center mx-auto">
+          <span className="text-white text-3xl font-bold">beko</span>
         </div>
         
-        <div className="flex flex-col gap-3 mt-2">
-          <Button variant="alt" className="flex items-center justify-center gap-3 w-full bg-white">
-            <Icon name="add_a_photo" className="text-[24px]"  />
-            <span>Загрузить логотип</span>
+        <div className="flex flex-col gap-3 mt-4">
+          <Button variant="outline" className="w-full flex gap-2">
+            <Camera className="w-4 h-4" /> Загрузить логотип
           </Button>
-          
-          <Button variant="alt" className="flex items-center justify-center gap-3 w-full bg-white border-transparent shadow-none text-neutral-900">
-            <Icon name="delete" className="text-[24px]"  />
-            <span>Удалить логотип</span>
+          <Button variant="ghost" className="w-full flex gap-2 text-destructive hover:text-destructive hover:bg-destructive/10">
+            <Trash className="w-4 h-4" /> Удалить логотип
           </Button>
         </div>
       </div>
@@ -344,20 +474,15 @@ function SettingsLogo() {
 function SettingsName() {
   const navigate = useNavigate()
   return (
-    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-neutral-50 relative flex flex-col">
+    <div className="pt-4 pb-20">
       <SettingsSubpageHeader title="Название компании" onBack={() => navigate('/settings')} />
-      <div className="page-padding pt-6 flex flex-col gap-6">
-        <div>
-          <h2 className="text-[24px] font-bold text-neutral-900 mb-2 font-['Open_Sans']">Название магазина</h2>
-          <p className="text-[15px] text-neutral-700 font-['Open_Sans'] leading-[1.4]">
-            Это название увидят покупатели на вашей витрине.
-          </p>
-        </div>
-        <InputField 
-          label="Название" 
-          placeholder="Например, Супермаркет 'Глобус'" 
-          defaultValue="Beko" 
-        />
+      <div className="bg-card border rounded-xl p-6 flex flex-col gap-6">
+        <p className="text-sm text-muted-foreground">
+          Это название увидят покупатели на вашей витрине.
+        </p>
+        <Field label="Название магазина">
+          <Input placeholder="Например, Супермаркет 'Глобус'" defaultValue="Beko" />
+        </Field>
       </div>
       <SaveButton />
     </div>
@@ -367,23 +492,19 @@ function SettingsName() {
 function SettingsDescription() {
   const navigate = useNavigate()
   return (
-    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-neutral-50 relative flex flex-col">
+    <div className="pt-4 pb-20">
       <SettingsSubpageHeader title="Описание магазина" onBack={() => navigate('/settings')} />
-      <div className="page-padding pt-6 flex flex-col gap-6">
-        <div>
-          <h2 className="text-[24px] font-bold text-neutral-900 mb-2 font-['Open_Sans']">Описание</h2>
-          <p className="text-[15px] text-neutral-700 font-['Open_Sans'] leading-[1.4]">
-            Коротко расскажите о вашем магазине, товарах или услугах. Это поможет покупателям больше узнать о вас.
-          </p>
-        </div>
-        <div className="flex flex-col gap-2">
-          <label className="text-[14px] font-semibold text-neutral-500 uppercase tracking-wider">О магазине</label>
+      <div className="bg-card border rounded-xl p-6 flex flex-col gap-6">
+        <p className="text-sm text-muted-foreground">
+          Коротко расскажите о вашем магазине, товарах или услугах. Это поможет покупателям больше узнать о вас.
+        </p>
+        <Field label="О магазине">
           <textarea 
-            className="w-full bg-neutral-100 rounded-[16px] p-4 text-[16px] text-neutral-900 outline-none border-none resize-none min-h-[140px] font-['Open_Sans']"
+            className="flex min-h-[140px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 resize-y"
             placeholder="Опишите ваш магазин..."
             defaultValue="Официальный представитель Beko в Кыргызстане."
           />
-        </div>
+        </Field>
       </div>
       <SaveButton />
     </div>
@@ -393,21 +514,15 @@ function SettingsDescription() {
 function SettingsWhatsapp() {
   const navigate = useNavigate()
   return (
-    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-neutral-50 relative flex flex-col">
+    <div className="pt-4 pb-20">
       <SettingsSubpageHeader title="WhatsApp" onBack={() => navigate('/settings')} />
-      <div className="page-padding pt-6 flex flex-col gap-6">
-        <div>
-          <h2 className="text-[24px] font-bold text-neutral-900 mb-2 font-['Open_Sans']">Номер для заказов</h2>
-          <p className="text-[15px] text-neutral-700 font-['Open_Sans'] leading-[1.4]">
-            Укажите номер WhatsApp, на который будут приходить уведомления о новых заказах от покупателей.
-          </p>
-        </div>
-        <InputField 
-          label="Номер WhatsApp" 
-          icon="chat" 
-          placeholder="+996 ..." 
-          defaultValue="+996 503 310 794" 
-        />
+      <div className="bg-card border rounded-xl p-6 flex flex-col gap-6">
+        <p className="text-sm text-muted-foreground">
+          Укажите номер WhatsApp, на который будут приходить уведомления о новых заказах от покупателей.
+        </p>
+        <Field label="Основной номер WhatsApp">
+          <Input type="tel" placeholder="+996 (___) ___-___" defaultValue="+996 503 310 794" />
+        </Field>
       </div>
       <SaveButton />
     </div>
@@ -417,43 +532,44 @@ function SettingsWhatsapp() {
 function SettingsProfile() {
   const navigate = useNavigate()
   return (
-    <div className="w-full max-w-[820px] mx-auto min-h-screen bg-neutral-50 relative flex flex-col">
+    <div className="pt-4 pb-20">
       <SettingsSubpageHeader title="Профиль" onBack={() => navigate('/settings')} />
-      <div className="page-padding pt-6 flex flex-col gap-8 pb-[120px]">
+      <div className="flex flex-col gap-8">
         
-        <div className="flex items-center gap-4 bg-white p-5 rounded-[20px] shadow-sm">
-          <div className="w-16 h-16 rounded-[18px] bg-neutral-100 flex items-center justify-center shrink-0">
-            <Icon name="person" className="text-[32px] text-neutral-500"  />
+        <div className="flex items-center gap-4 bg-card border p-5 rounded-2xl">
+          <div className="w-16 h-16 rounded-xl bg-muted flex items-center justify-center shrink-0">
+            <User className="w-8 h-8 text-muted-foreground" />
           </div>
           <div className="flex flex-col">
-            <h2 className="text-[18px] font-bold text-neutral-900 font-['Open_Sans']">Имя Владельца</h2>
-            <p className="text-[14px] text-neutral-500 font-['Open_Sans']">+996 500 00 00 00</p>
+            <h2 className="text-lg font-bold">Имя Владельца</h2>
+            <p className="text-sm text-muted-foreground">+996 500 00 00 00</p>
           </div>
         </div>
 
-        <div className="flex flex-col gap-4">
-          <h2 className="text-[15px] font-medium text-neutral-500 font-['Open_Sans']">Аккаунт</h2>
+        <div className="flex flex-col gap-3">
+          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider pl-1">Аккаунт</h2>
           <div className="flex flex-col gap-2">
-            <button className="flex items-center gap-4 h-[52px] text-left transition-all active:opacity-70 bg-transparent">
-              <Icon name="lock" className="text-[28px] text-neutral-700 shrink-0"  />
-              <span className="text-[17px] font-semibold text-neutral-900 font-['Open_Sans']">Сменить пароль</span>
+            <button className="flex items-center gap-4 p-4 rounded-xl border bg-card hover:bg-muted/50 transition-colors text-left">
+              <Lock className="w-5 h-5 text-muted-foreground shrink-0" />
+              <span className="text-[15px] font-medium">Сменить пароль</span>
+              <ChevronRight className="w-4 h-4 text-muted-foreground ml-auto" />
             </button>
             <button 
               onClick={() => navigate('/login')}
-              className="flex items-center gap-4 h-[52px] text-left transition-all active:opacity-70 bg-transparent"
+              className="flex items-center gap-4 p-4 rounded-xl border bg-card hover:bg-red-50 transition-colors text-left group"
             >
-              <Icon name="logout" className="text-[28px] text-red-500 shrink-0"  />
-              <span className="text-[17px] font-semibold text-red-500 font-['Open_Sans']">Выйти из аккаунта</span>
+              <LogOut className="w-5 h-5 text-destructive shrink-0" />
+              <span className="text-[15px] font-medium text-destructive">Выйти из аккаунта</span>
             </button>
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 mt-2">
-          <h2 className="text-[15px] font-medium text-neutral-500 font-['Open_Sans']">Опасная зона</h2>
+        <div className="flex flex-col gap-3 mt-4">
+          <h2 className="text-sm font-semibold text-destructive uppercase tracking-wider pl-1">Опасная зона</h2>
           <div className="flex flex-col gap-2">
-            <button className="flex items-center gap-4 h-[52px] text-left transition-all active:opacity-70 bg-transparent">
-              <Icon name="delete_forever" className="text-[28px] text-red-500 shrink-0"  />
-              <span className="text-[17px] font-semibold text-red-500 font-['Open_Sans']">Удалить магазин навсегда</span>
+            <button className="flex items-center gap-4 p-4 rounded-xl border border-destructive/20 bg-destructive/5 hover:bg-destructive/10 transition-colors text-left">
+              <Trash2 className="w-5 h-5 text-destructive shrink-0" />
+              <span className="text-[15px] font-medium text-destructive">Удалить магазин навсегда</span>
             </button>
           </div>
         </div>
@@ -463,7 +579,6 @@ function SettingsProfile() {
   )
 }
 
-// Ensure the wildcard route falls back correctly
 export default function SettingsPage() {
   return (
     <Routes>
@@ -478,7 +593,6 @@ export default function SettingsPage() {
       <Route path="description" element={<SettingsDescription />} />
       <Route path="logo" element={<SettingsLogo />} />
       <Route path="whatsapp" element={<SettingsWhatsapp />} />
-      {/* Catch-all to default to menu */}
       <Route path="*" element={<SettingsMenu />} />
     </Routes>
   )

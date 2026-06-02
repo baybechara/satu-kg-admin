@@ -4,7 +4,8 @@ import Header from '@/components/Header'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
-import { Copy, Phone, Package, MessageSquare, ChevronDown, ChevronUp, Check, X, Info } from 'lucide-react'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Copy, Phone, Package, MessageSquare, ChevronDown, ChevronUp, Check, X, Info, Trash2 } from 'lucide-react'
 
 const NewIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -58,10 +59,37 @@ const tabs = [
 ]
 
 export default function OrdersPage() {
+  const [orders, setOrders] = useState(mockOrders)
   const [activeTab, setActiveTab] = useState('new')
   const [expandedOrder, setExpandedOrder] = useState('Заказ №1')
+  const [itemToDelete, setItemToDelete] = useState(null)
 
-  const filteredOrders = mockOrders.filter((o) => o.status === activeTab)
+  const filteredOrders = orders.filter((o) => o.status === activeTab)
+
+  const handleDeleteClick = (orderId, itemIndex, item, e) => {
+    e.stopPropagation()
+    setItemToDelete({ orderId, itemIndex, item })
+  }
+
+  const confirmDelete = () => {
+    if (!itemToDelete) return;
+    
+    setOrders(prev => prev.map(order => {
+      if (order.id !== itemToDelete.orderId) return order;
+      
+      const newItems = [...order.items];
+      const removedItem = newItems.splice(itemToDelete.itemIndex, 1)[0];
+      const newTotal = order.total - (removedItem.price * removedItem.qty);
+      
+      return {
+        ...order,
+        items: newItems,
+        total: Math.max(0, newTotal)
+      }
+    }));
+    
+    setItemToDelete(null)
+  }
 
   return (
     <>
@@ -77,6 +105,9 @@ export default function OrdersPage() {
                 className="flex items-center justify-center gap-2 text-[14px] font-medium rounded-lg transition-all data-[state=active]:bg-white data-[state=active]:text-neutral-900 data-[state=active]:shadow-sm data-[state=inactive]:text-neutral-500 hover:text-neutral-700"
               >
                 <span>{tab.label}</span>
+                <span className={`text-[12px] font-bold rounded-full min-w-[20px] h-[20px] flex items-center justify-center px-1.5 ${activeTab === tab.key ? 'bg-neutral-200 text-neutral-900' : 'bg-neutral-200/50 text-neutral-500'}`}>
+                  {orders.filter(o => o.status === tab.key).length}
+                </span>
               </TabsTrigger>
             ))}
           </TabsList>
@@ -173,6 +204,17 @@ export default function OrdersPage() {
                                 <span className="text-sm font-semibold">{item.price * item.qty} сом</span>
                               </div>
                             </div>
+                            
+                            {order.status === 'new' && order.items.length > 1 && (
+                              <Button 
+                                variant="ghost" 
+                                size="icon" 
+                                className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10 shrink-0"
+                                onClick={(e) => handleDeleteClick(order.id, idx, item, e)}
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            )}
                           </div>
                         ))}
                       </div>
@@ -207,6 +249,25 @@ export default function OrdersPage() {
           </div>
         )}
       </div>
+
+      <Dialog open={!!itemToDelete} onOpenChange={(open) => !open && setItemToDelete(null)}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle className="text-lg">Удалить товар?</DialogTitle>
+            <DialogDescription className="text-sm mt-1.5">
+              Вы уверены, что хотите удалить <b>{itemToDelete?.item?.name}</b> из заказа? Это действие пересчитает общую сумму.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="mt-4 flex gap-2">
+            <Button variant="outline" onClick={() => setItemToDelete(null)} className="flex-1">
+              Отмена
+            </Button>
+            <Button variant="destructive" onClick={confirmDelete} className="flex-1">
+              Удалить
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   )
 }
